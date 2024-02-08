@@ -1,12 +1,22 @@
 import { useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { loginRequest, loginSuccess, loginFailed } from "../reducers/auth"
+import { jwtDecode } from "jwt-decode";
+
 
 const Auth = () => {
+    const auth = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
+
+    const { isLoggedIn, user, isLoading, error} = auth
 
     const [signup, setSignup] = useState(false)
 
     const handleLogin = async(e) => {
-    // TODO: Add loading state
         e.preventDefault();
+        // Set loading
+        dispatch(loginRequest());
+
         const form = e.target;
         const payload = {
             username: form.username.value,
@@ -21,15 +31,17 @@ const Auth = () => {
             body: JSON.stringify(payload),
         })
         const result = await response.json()
-        // Login successful
+
         if (response.status === 200){
             const token = result.token;
             localStorage.setItem("token", token);
-        // TODO: Handle is loggedin state
+            // Decode token, send the user data to the state
+            const decodedJWT = jwtDecode(token)
+            dispatch(loginSuccess(decodedJWT.user))
         }
     } catch(err) {
-        // TODO:  error and show message
-        console.log(err)
+        // Invalid credentials, set error message
+        dispatch(loginFailed())
     }
     }
 
@@ -40,6 +52,7 @@ const Auth = () => {
          rounded-lg drop-shadow-md p-3">
             <h1 className=" pt-4 mb-6 font-Rubik text-2xl font-bold">
                 Welcome to FaithHub!</h1>
+            {error && <h2>{error}</h2>}
             <form className="flex flex-col gap-6 mb-4" onSubmit={handleLogin}>
                 <input className="ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg" 
                 type="text" name="username" placeholder="Username"></input>

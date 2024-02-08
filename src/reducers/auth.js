@@ -17,10 +17,16 @@ export const authSlice = createSlice({
         loginSuccess(state,action) {
             state.isLoggedIn = true;
             state.isLoading = false;
-            state.user = action.payload
+            state.user = action.payload;
+            state.error = null;
+        },
+        loginFailed(state){
+            state.error = "Invalid credentials. Please double-check your username and password.";
+            state.isLoading = false;
         }
+
     }
 })
 
-export const { loginRequest, loginSuccess } = authSlice.actions;
+export const { loginRequest, loginSuccess, loginFailed } = authSlice.actions;
 export default authSlice.reducer
