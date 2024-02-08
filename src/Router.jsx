@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import Auth from "./reducers/auth";
+import Auth from "./components/Auth";
 
 
 const Router = () => {
@@ -10,11 +10,14 @@ const Router = () => {
             element: <App />,
             children: [
                 {
-                    path:"/authentication",
-                    element: <Auth />
+
 
                 }
-            ]
+            ],
+        },
+        {
+            path: "/auth",
+            element: <Auth />
         }
     ])
     return <RouterProvider router={router} />
