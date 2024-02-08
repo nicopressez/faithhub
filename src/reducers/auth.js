@@ -13,12 +13,12 @@ export const authSlice = createSlice({
     reducers: {
         loginRequest(state) {
             state.isLoading = true;
+            state.error = null;
         },
         loginSuccess(state,action) {
             state.isLoggedIn = true;
             state.isLoading = false;
             state.user = action.payload;
-            state.error = null;
         },
         loginFailed(state){
             state.error = "Invalid credentials. Please double-check your username and password.";

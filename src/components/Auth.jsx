@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { loginRequest, loginSuccess, loginFailed } from "../reducers/auth"
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import Signup from "./Signup";
 
 
 const Auth = () => {
@@ -56,7 +57,6 @@ const Auth = () => {
         }, 500);
     }
     }
-
 // Login
     if (!signup) return (
     <div className=" bg-gray-100 w-screen h-screen fixed">
@@ -73,19 +73,20 @@ const Auth = () => {
                  ${isLoading ? "brightness-95" : null} `}
                 type="password" name="password" placeholder="Password"></input>
                 <input className={`rounded-lg p-3 ml-6 mr-6  bg-cyan-400 text-white
-                   font-bold ${isLoading ? "brightness-95" : null}`}
+                   font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
                  type="submit" value="Login" ></input>
             </form>
-            <p className="pb-4 text-cyan-500 underline">
-                Don't have an account yet? Sign up here</p>
+            <button className="pb-4 text-cyan-500 underline hover:cursor-default
+            hover:brightness-[0.85]" onClick={() => setSignup(true)}>
+                Don't have an account yet? Sign up here</button>
         </div>
     </div>
 
     )
 
-// User selected signup
+// Render signup page
     if (signup) return(
-        <div></div>
+        <Signup />
     )
 }
 
