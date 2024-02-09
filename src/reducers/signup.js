@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import defaultImg from "../assets/defaultProfile.png"
 
 const initialState = {
   isLoading: false,
@@ -35,8 +34,7 @@ export const signupSlice = createSlice({
         },
         signupSuccess(state){
             state.isLoading = false,
-            state.error = null,
-            state.credentials = null
+            state.error = null
         }
     }
 })

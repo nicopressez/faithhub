@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { loginRequest, loginSuccess } from "../reducers/auth"
+import { loginSuccess } from "../reducers/auth"
 import { signupRequest, signupFailed, signupSuccess, signupNext, signupChange } from "../reducers/signup"
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
@@ -76,8 +76,20 @@ const Signup = () => {
 
         const handleSignup_pageTwo = async(e) => {
             e.preventDefault();
+            dispatch(signupRequest())
             const formData = new FormData();
-            
+
+            // Check if data sent is valid
+            if (e.target.first_name.value.length < 4 || e.target.first_name.value.length > 16 ) {
+                dispatch(signupFailed("Your first name must be between 4 and 16 characters long"))
+                return;
+            }
+            if (e.target.last_name.value.length < 4 || e.target.last_name.value.length > 16 ) {
+                dispatch(signupFailed("Your last name must be between 4 and 16 characters long"))
+                return;
+            }
+
+            // Data valid, send all credentials to new form         
             if (e.target.profile_picture.files.length > 0) {
                 formData.append("profile_picture", e.target.profile_picture.files[0]);
             } else {
@@ -100,8 +112,17 @@ const Signup = () => {
                 body: formData,
         
             });
-            const data = await response.json()
-            console.log(data)
+            const result = await response.json()
+            dispatch(signupSuccess())
+
+            // Signup successful, user logged in
+            if (response.status === 200){
+                const token = result.token;
+                localStorage.setItem("token", token);
+                // Decode token, send user data to state
+                const decodedJWT = jwtDecode(token)
+                dispatch(loginSuccess(decodedJWT.user))
+            } 
         } catch (err) {
             //TODO : Handle errors
             console.log(err)
@@ -141,7 +162,7 @@ const Signup = () => {
          rounded-lg drop-shadow-md p-3 font-Rubik">
             <h1 className=" pt-4 mb-6 text-2xl font-bold">
                 Personal info</h1>
-            {error && <h2 className="text-red-600 pb-2">{error}</h2>}
+        
             <form className="flex flex-col gap-7 mb-4" onSubmit={handleSignup_pageTwo}>
                 <label htmlFor="profile_picture" className="group w-32 h-32 ml-auto mr-auto rounded-full">
                 <img src={uploadImg} className="hidden w-16 absolute left-[290px] top-[115px] group-hover:block z-10
@@ -150,8 +171,11 @@ const Signup = () => {
                 ml-auto mr-auto"></img>
                 </label>
     
-                <input defaultValue={photo} id="profile_picture"name="profile_picture" type="file" onChange={handlePhotoChange} className="
+                <input id="profile_picture"name="profile_picture" type="file" onChange={handlePhotoChange} className="
                  w-0 h-0 absolute"></input>
+
+                 {error && <h2 className="text-red-600 pb-2">{error}</h2>}
+
                 <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
                 ${isLoading ? "brightness-95" : null}`} 
                 type="text" name="first_name" placeholder="First name" value={credentials.first_name} onChange={handleChange}></input>
