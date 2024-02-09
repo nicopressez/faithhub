@@ -1,30 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  signupLoading: false,
-  signupError: null,
-  signupCredentials: null,
+  isLoading: false,
+  error: null,
+  credentials: null,
 };
 
 export const signupSlice = createSlice({
     name:'signup',
     initialState,
     reducers: {
-        signupRequest(state, action){
-            state.signupLoading = true,
-            state.signupCredentials = action.payload
+        signupRequest(state){
+            state.isLoading = true
+        },
+        signupNext(state,action) {
+            state.isLoading = false,
+            state.credentials = action.payload
         },
         signupFailed(state, action){
-            state.signupLoading = false,
-            state.signupError = action.payload
+            state.isLoading = false,
+            state.error = action.payload
         },
         signupSuccess(state){
-            state.signupLoading = false,
-            state.signupError = null,
-            state.signupCredentials = null
+            state.isLoading = false,
+            state.error = null,
+            state.credentials = null
         }
     }
 })
 
-export const { signupRequest, signupFailed, signupSuccess} = signupSlice
+export const { signupRequest, signupFailed, signupSuccess, signupNext} = signupSlice.actions
 export default signupSlice.reducer

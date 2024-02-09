@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { loginRequest, loginSuccess, loginFailed } from "../reducers/auth"
-import { signupRequest, signupFailed, signupSuccess } from "../reducers/signup"
+import { signupRequest, signupFailed, signupSuccess, signupNext } from "../reducers/signup"
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
@@ -12,9 +12,10 @@ const Signup = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
-// TODO: Get reducers for SIGNUP
     const { isLoggedIn } = auth;
     const { isLoading, error, credentials} = signup;
+
+    const [page, setPage] = useState(1)
 
     // Redirect once logged in
     useEffect(() => {
@@ -24,20 +25,44 @@ const Signup = () => {
     },[isLoggedIn, navigate])
 
     const handleSignup_pageOne = async(e) => {
-        //TODO Check if credentials are valid before moving on to page two
             e.preventDefault();
-            const form = e.target;
-    
+            dispatch(signupRequest())
+
+            const values = {
+                username: e.target.username.value,
+                password: e.target.password.value,
+                password_verif: e.target.password_verif.value,
+            }
+            // Check if credentials are valid
+            const checkUsername = await fetch(`https://faithhub-backend.fly.dev/profile/username/${values.username}`)
+            if (values.username < 4 || values.username > 16){
+                dispatch(signupFailed("Username must be between 4 and 16 characters long"))
+                return;
+            }
+            if (checkUsername.status !== 200) {
+                dispatch(signupFailed("Username already taken. Please enter a new one."))
+                return;
+            }
+            if (values.password !== values.password_verif){
+                dispatch(signupFailed("Passwords don't match. Please double-check before clicking 'Next'"))
+                return;
+            }
+            if (values.password.length < 8) {
+                dispatch(signupFailed("Password must be at least 8 characters long"))
+                return;
+            }
+            dispatch(signupNext(values))
+            setPage(2)
         }
 
-    return (
+    if (page ===1)return (
         <div className=" bg-gray-100 w-screen h-screen fixed">
         <div className=" ml-auto mr-auto mt-52 text-center bg-white w-1/3
          rounded-lg drop-shadow-md p-3 font-Rubik">
             <h1 className=" pt-4 mb-6 text-2xl font-bold">
                 Sign up</h1>
             {error && <h2 className="text-red-600 pb-2">{error}</h2>}
-            <form className="flex flex-col gap-6 mb-4" onSubmit={handleSignup_pageOne()}>
+            <form className="flex flex-col gap-6 mb-4" onSubmit={handleSignup_pageOne}>
                 <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
                 ${isLoading ? "brightness-95" : null}`} 
                 type="text" name="username" placeholder="Username"></input>
@@ -53,6 +78,10 @@ const Signup = () => {
             </form>
         </div>
     </div>
+    )
+
+    if(page === 2) return (
+        <h1>page 2</h1>
     )
 }
 
