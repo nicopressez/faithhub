@@ -28,6 +28,7 @@ const Signup = () => {
         }
     },[isLoggedIn, navigate])
 
+
     const handlePhotoChange = (e) => {
         setPhoto(URL.createObjectURL(e.target.files[0]))
     }
@@ -75,6 +76,36 @@ const Signup = () => {
 
         const handleSignup_pageTwo = async(e) => {
             e.preventDefault();
+            const formData = new FormData();
+            
+            if (e.target.profile_picture.files.length > 0) {
+                formData.append("profile_picture", e.target.profile_picture.files[0]);
+            } else {
+                // If no file is selected, append the default photo
+                const defaultImgBlob = await fetch(defaultImg).then((res) => res.blob());
+                const defaultImgFile = new File([defaultImgBlob], "defaultProfile.png");
+                formData.append("profile_picture", defaultImgFile); 
+            }
+            
+            formData.append("username", credentials.username)
+            formData.append("first_name", credentials.first_name);
+            formData.append("last_name", credentials.last_name);
+            formData.append("password", credentials.password);
+            formData.append("password_verif", credentials.password_verif);
+
+
+            try {
+            const response = await fetch("https://faithhub-backend.fly.dev/auth/signup", {
+                method: "POST",
+                body: formData,
+        
+            });
+            const data = await response.json()
+            console.log(data)
+        } catch (err) {
+            //TODO : Handle errors
+            console.log(err)
+        }
 
 
         }
@@ -119,7 +150,7 @@ const Signup = () => {
                 ml-auto mr-auto"></img>
                 </label>
     
-                <input  id="profile_picture"name="profile_picture" type="file" onChange={handlePhotoChange} className="
+                <input defaultValue={photo} id="profile_picture"name="profile_picture" type="file" onChange={handlePhotoChange} className="
                  w-0 h-0 absolute"></input>
                 <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
                 ${isLoading ? "brightness-95" : null}`} 
@@ -127,9 +158,14 @@ const Signup = () => {
                 <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
                  ${isLoading ? "brightness-95" : null} `}
                 type="text" name="last_name" placeholder="Last name" value={credentials.last_name} onChange={handleChange}></input>
+
+
                 <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
                  ${isLoading ? "brightness-95" : null} `}
-                type="text" name="location" placeholder="Location (optional) " value={credentials.location} onChange={handleChange} />
+                type="text" name="location" placeholder="Location (optional) " value={credentials.location} onChange={e => {
+                    handleChange(e)}} />
+
+
                 <input className={`rounded-lg p-3 ml-6 mr-6  bg-cyan-400 text-white
                    font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
                  type="submit" value="Sign up" ></input>
