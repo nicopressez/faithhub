@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { Transition } from '@headlessui/react';
 import { useSelector, useDispatch } from "react-redux"
 import { loginSuccess } from "../reducers/auth"
 import { signupRequest, signupFailed, signupSuccess, signupNext, signupChange } from "../reducers/signup"
@@ -133,11 +134,21 @@ const Signup = ({setToSignup}) => {
 
         }
 
-    if (page ===1)return (
+    return (
         <div className=" bg-gray-100 w-screen h-screen fixed">
-        <div className=" ml-auto mr-auto mt-52 text-center bg-white w-1/3
+            <div className=" ml-auto mr-auto mt-32 text-center bg-white w-1/3
          rounded-lg drop-shadow-md p-3 font-Rubik">
-            <button className="float-left text-cyan-500 underline "onClick={() => setToSignup(false)}>
+            <Transition 
+                show={page ===1}
+                enter="transition-opacity duration-300"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="transition-opacity duration-0"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+            >
+        
+            <button className="float-left text-cyan-500 underline hover:brightness-[0.85]"onClick={() => setToSignup(false)}>
                 Back</button>
             <h1 className=" pt-4 mb-6 text-2xl font-bold">
                 Sign up</h1>
@@ -156,15 +167,21 @@ const Signup = ({setToSignup}) => {
                    font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
                  type="submit" value="Next" ></input>
             </form>
-        </div>
-    </div>
-    )
+        
+        </Transition>
 
-    if(page === 2) return (
-        <div className=" bg-gray-100 w-screen h-screen fixed">
-        <div className=" ml-auto mr-auto mt-32 text-center bg-white w-1/3
-         rounded-lg drop-shadow-md p-3 font-Rubik">
-            <button className="float-left text-cyan-500 underline "onClick={() => setPage(1)}>
+        
+              <Transition
+                show={page === 2}
+                enter="transition-opacity duration-500"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="transition-opacity duration-0"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+            >
+            
+            <button className="float-left text-cyan-500 underline hover:brightness-[0.85]"onClick={() => setPage(1)}>
                 Back</button>
             <h1 className=" pt-4 mb-6 text-2xl font-bold">
                 Personal info</h1>
@@ -200,8 +217,9 @@ const Signup = ({setToSignup}) => {
                    font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
                  type="submit" value="Sign up" ></input>
             </form>
+            </Transition>
         </div>
-    </div>
+        </div>
     )
 }
 

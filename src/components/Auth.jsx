@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { Transition } from '@headlessui/react';
 import { useSelector, useDispatch } from "react-redux"
 import { loginRequest, loginSuccess, loginFailed } from "../reducers/auth"
 import { jwtDecode } from "jwt-decode";
@@ -57,9 +58,19 @@ const Auth = () => {
     }
     }
 // Login
-    if (!toSignup) return (
-    <div className=" bg-gray-100 w-screen h-screen fixed">
-        <div className=" ml-auto mr-auto mt-52 text-center bg-white w-1/3
+    return (
+        <div className=" bg-gray-100 w-screen h-screen fixed">
+        <Transition 
+        show={toSignup === false}
+        enter="transition-opacity duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-0"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+    >
+        <div className=" 
+        ml-auto mr-auto mt-52 text-center bg-white w-1/3
          rounded-lg drop-shadow-md p-3 font-Rubik">
             <h1 className=" pt-4 mb-6 text-2xl font-bold">
                 Welcome to FaithHub!</h1>
@@ -75,18 +86,29 @@ const Auth = () => {
                    font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
                  type="submit" value="Login" ></input>
             </form>
-            <button className="pb-4 text-cyan-500 underline hover:cursor-default
+            <button className="pb-4 text-cyan-500 underline
             hover:brightness-[0.85]" onClick={() => setToSignup(true)}>
                 Don&apos;t have an account yet? Sign up here</button>
         </div>
-    </div>
 
-    )
 
-// Render signup page
-    if (toSignup) return(
+    </Transition>
+
+    <Transition 
+    show={toSignup === true}
+    enter="transition-opacity duration-300"
+    enterFrom="opacity-0"
+    enterTo="opacity-100"
+    leave="transition-opacity duration-0"
+    leaveFrom="opacity-100"
+    leaveTo="opacity-0"
+>
         <Signup setToSignup={setToSignup}/>
+        </Transition>
+        </div>
+
     )
 }
+    
 
 export default Auth
