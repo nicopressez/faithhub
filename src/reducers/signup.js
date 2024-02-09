@@ -16,6 +16,7 @@ export const signupSlice = createSlice({
         signupNext(state,action) {
             state.isLoading = false,
             state.credentials = action.payload
+            state.error = null
         },
         signupFailed(state, action){
             state.isLoading = false,

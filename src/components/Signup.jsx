@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { loginRequest, loginSuccess, loginFailed } from "../reducers/auth"
+import { loginRequest, loginSuccess } from "../reducers/auth"
 import { signupRequest, signupFailed, signupSuccess, signupNext } from "../reducers/signup"
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ const Signup = () => {
     const { isLoading, error, credentials} = signup;
 
     const [page, setPage] = useState(1)
+    const [photo, setPhoto] = useState()
 
     // Redirect once logged in
     useEffect(() => {
@@ -23,6 +24,10 @@ const Signup = () => {
             navigate("/home");
         }
     },[isLoggedIn, navigate])
+
+    const handlePhotoChange = (e) => {
+        setPhoto(URL.createObjectURL(e.target.files[0]))
+    }
 
     const handleSignup_pageOne = async(e) => {
             e.preventDefault();
@@ -53,6 +58,10 @@ const Signup = () => {
             }
             dispatch(signupNext(values))
             setPage(2)
+        };
+
+        const handleSignup_pageTwo = async() => {
+
         }
 
     if (page ===1)return (
@@ -81,7 +90,32 @@ const Signup = () => {
     )
 
     if(page === 2) return (
-        <h1>page 2</h1>
+        <div className=" bg-gray-100 w-screen h-screen fixed">
+        <div className=" ml-auto mr-auto mt-52 text-center bg-white w-1/3
+         rounded-lg drop-shadow-md p-3 font-Rubik">
+            <h1 className=" pt-4 mb-6 text-2xl font-bold">
+                Personal info</h1>
+            {error && <h2 className="text-red-600 pb-2">{error}</h2>}
+            <form className="flex flex-col gap-7 mb-4" onSubmit={handleSignup_pageTwo}>
+                <img src={photo} className=""></img>
+                <input type="file" onChange={handlePhotoChange}></input>
+                <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
+                ${isLoading ? "brightness-95" : null}`} 
+                type="text" name="first_name" placeholder="First name"></input>
+                <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
+                 ${isLoading ? "brightness-95" : null} `}
+                type="text" name="last_name" placeholder="Last name"></input>
+                <label htmlFor="location" className=" text-xs absolute top-[14rem] left-10"
+                >Optional</label>
+                <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
+                 ${isLoading ? "brightness-95" : null} `}
+                type="text" name="location" placeholder="Location" />
+                <input className={`rounded-lg p-3 ml-6 mr-6  bg-cyan-400 text-white
+                   font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
+                 type="submit" value="Sign up" ></input>
+            </form>
+        </div>
+    </div>
     )
 }
 
