@@ -13,7 +13,7 @@ const Auth = () => {
 
     const { isLoggedIn, isLoading, error} = auth
 
-    const [signup, setSignup] = useState(false)
+    const [toSignup, setToSignup] = useState(false)
 
 // Redirect once logged in
     useEffect(() => {
@@ -57,7 +57,7 @@ const Auth = () => {
     }
     }
 // Login
-    if (!signup) return (
+    if (!toSignup) return (
     <div className=" bg-gray-100 w-screen h-screen fixed">
         <div className=" ml-auto mr-auto mt-52 text-center bg-white w-1/3
          rounded-lg drop-shadow-md p-3 font-Rubik">
@@ -76,7 +76,7 @@ const Auth = () => {
                  type="submit" value="Login" ></input>
             </form>
             <button className="pb-4 text-cyan-500 underline hover:cursor-default
-            hover:brightness-[0.85]" onClick={() => setSignup(true)}>
+            hover:brightness-[0.85]" onClick={() => setToSignup(true)}>
                 Don&apos;t have an account yet? Sign up here</button>
         </div>
     </div>
@@ -84,8 +84,8 @@ const Auth = () => {
     )
 
 // Render signup page
-    if (signup) return(
-        <Signup />
+    if (toSignup) return(
+        <Signup setToSignup={setToSignup}/>
     )
 }
 

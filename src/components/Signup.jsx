@@ -6,9 +6,11 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import uploadImg from "../assets/upload.png"
 import defaultImg from "../assets/defaultProfile.png"
+import { PropTypes } from "prop-types";
 
 
-const Signup = () => {
+
+const Signup = ({setToSignup}) => {
     const auth = useSelector((state) => state.auth)
     const signup = useSelector((state) => state.signup)
     const dispatch = useDispatch()
@@ -135,6 +137,8 @@ const Signup = () => {
         <div className=" bg-gray-100 w-screen h-screen fixed">
         <div className=" ml-auto mr-auto mt-52 text-center bg-white w-1/3
          rounded-lg drop-shadow-md p-3 font-Rubik">
+            <button className="float-left text-cyan-500 underline "onClick={() => setToSignup(false)}>
+                Back</button>
             <h1 className=" pt-4 mb-6 text-2xl font-bold">
                 Sign up</h1>
             {error && <h2 className="text-red-600 pb-2">{error}</h2>}
@@ -160,6 +164,8 @@ const Signup = () => {
         <div className=" bg-gray-100 w-screen h-screen fixed">
         <div className=" ml-auto mr-auto mt-32 text-center bg-white w-1/3
          rounded-lg drop-shadow-md p-3 font-Rubik">
+            <button className="float-left text-cyan-500 underline "onClick={() => setPage(1)}>
+                Back</button>
             <h1 className=" pt-4 mb-6 text-2xl font-bold">
                 Personal info</h1>
         
@@ -197,6 +203,10 @@ const Signup = () => {
         </div>
     </div>
     )
+}
+
+Signup.propTypes = {
+    setToSignup: PropTypes.func,
 }
 
 export default Signup
