@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { loginRequest, loginSuccess, loginFailed } from "../reducers/auth"
+import { signupRequest, signupFailed, signupSuccess } from "../reducers/signup"
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
 
 const Signup = () => {
     const auth = useSelector((state) => state.auth)
+    const signup = useSelector((state) => state.signup)
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
 // TODO: Get reducers for SIGNUP
-    const { isLoggedIn, isLoading, error} = auth
-    const [newCredentials, setNewCredentials] = useState();
+    const { isLoggedIn } = auth;
+    const { isLoading, error, credentials} = signup;
 
     // Redirect once logged in
     useEffect(() => {

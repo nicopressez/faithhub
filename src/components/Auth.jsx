@@ -11,7 +11,6 @@ const Auth = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
-
     const { isLoggedIn, isLoading, error} = auth
 
     const [signup, setSignup] = useState(false)
@@ -78,7 +77,7 @@ const Auth = () => {
             </form>
             <button className="pb-4 text-cyan-500 underline hover:cursor-default
             hover:brightness-[0.85]" onClick={() => setSignup(true)}>
-                Don't have an account yet? Sign up here</button>
+                Don&apos;t have an account yet? Sign up here</button>
         </div>
     </div>
 
