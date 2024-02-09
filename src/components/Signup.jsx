@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { loginRequest, loginSuccess } from "../reducers/auth"
-import { signupRequest, signupFailed, signupSuccess, signupNext } from "../reducers/signup"
+import { signupRequest, signupFailed, signupSuccess, signupNext, signupChange } from "../reducers/signup"
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import uploadImg from "../assets/upload.png"
+import defaultImg from "../assets/defaultProfile.png"
 
 
 const Signup = () => {
@@ -13,11 +14,12 @@ const Signup = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
+
     const { isLoggedIn } = auth;
     const { isLoading, error, credentials} = signup;
 
     const [page, setPage] = useState(1)
-    const [photo, setPhoto] = useState()
+    const [photo, setPhoto] = useState(defaultImg)
 
     // Redirect once logged in
     useEffect(() => {
@@ -30,11 +32,21 @@ const Signup = () => {
         setPhoto(URL.createObjectURL(e.target.files[0]))
     }
 
+// Update credentials on input change
+    const handleChange = (e) => {
+        const { name, value} = e.target;
+        dispatch(signupChange({
+            ...credentials,
+            [name]: value,
+        }))
+    }
+
     const handleSignup_pageOne = async(e) => {
             e.preventDefault();
             dispatch(signupRequest())
 
             const values = {
+                ...credentials,
                 username: e.target.username.value,
                 password: e.target.password.value,
                 password_verif: e.target.password_verif.value,
@@ -61,7 +73,9 @@ const Signup = () => {
             setPage(2)
         };
 
-        const handleSignup_pageTwo = async() => {
+        const handleSignup_pageTwo = async(e) => {
+            e.preventDefault();
+
 
         }
 
@@ -75,13 +89,13 @@ const Signup = () => {
             <form className="flex flex-col gap-6 mb-4" onSubmit={handleSignup_pageOne}>
                 <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
                 ${isLoading ? "brightness-95" : null}`} 
-                type="text" name="username" placeholder="Username"></input>
+                type="text" name="username" placeholder="Username" value={credentials.username} onChange={handleChange}></input>
                 <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
                  ${isLoading ? "brightness-95" : null} `}
-                type="password" name="password" placeholder="Password"></input>
+                type="password" name="password" placeholder="Password" value={credentials.password} onChange={handleChange}></input>
                 <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
                  ${isLoading ? "brightness-95" : null} `}
-                type="password" name="password_verif" placeholder="Confirm password" />
+                type="password" name="password_verif" placeholder="Confirm password" value={credentials.password_verif} onChange={handleChange} />
                 <input className={`rounded-lg p-3 ml-6 mr-6  bg-cyan-400 text-white
                    font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
                  type="submit" value="Next" ></input>
@@ -99,7 +113,8 @@ const Signup = () => {
             {error && <h2 className="text-red-600 pb-2">{error}</h2>}
             <form className="flex flex-col gap-7 mb-4" onSubmit={handleSignup_pageTwo}>
                 <label htmlFor="profile_picture" className="group w-32 h-32 ml-auto mr-auto rounded-full">
-                <img src={uploadImg} className="hidden w-16 absolute left-[290px] top-[115px] group-hover:block z-10"></img>
+                <img src={uploadImg} className="hidden w-16 absolute left-[290px] top-[115px] group-hover:block z-10
+                "></img>
                 <img src={photo} className="group-hover:brightness-90 rounded-full object-cover w-32 h-32
                 ml-auto mr-auto"></img>
                 </label>
@@ -108,13 +123,13 @@ const Signup = () => {
                  w-0 h-0 absolute"></input>
                 <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
                 ${isLoading ? "brightness-95" : null}`} 
-                type="text" name="first_name" placeholder="First name"></input>
+                type="text" name="first_name" placeholder="First name" value={credentials.first_name} onChange={handleChange}></input>
                 <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
                  ${isLoading ? "brightness-95" : null} `}
-                type="text" name="last_name" placeholder="Last name"></input>
+                type="text" name="last_name" placeholder="Last name" value={credentials.last_name} onChange={handleChange}></input>
                 <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
                  ${isLoading ? "brightness-95" : null} `}
-                type="text" name="location" placeholder="Location (optional)" />
+                type="text" name="location" placeholder="Location (optional) " value={credentials.location} onChange={handleChange} />
                 <input className={`rounded-lg p-3 ml-6 mr-6  bg-cyan-400 text-white
                    font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
                  type="submit" value="Sign up" ></input>
