@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux"
-import { loginRequest, loginSuccess, loginFailed } from "../reducers/auth"
 
 const Homepage = () => {
     const navigate = useNavigate()
@@ -19,7 +18,7 @@ const Homepage = () => {
         }
     },[isLoggedIn,navigate])
     return (
-        <div>homepage</div>
+        <div className="bg-gray-100 w-screen h-screen">homepage</div>
     )
 }
 
