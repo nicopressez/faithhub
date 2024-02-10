@@ -97,9 +97,10 @@ const Signup = ({toSignup, setToSignup}) => {
                 formData.append("profile_picture", e.target.profile_picture.files[0]);
             } else {
                 // If no file is selected, append the default photo
-                const defaultImgBlob = await fetch(defaultImg).then((res) => res.blob());
-                const defaultImgFile = new File([defaultImgBlob], "defaultProfile.png");
-                formData.append("profile_picture", defaultImgFile); 
+                const defaultImgResponse = await fetch(defaultImg);
+                const defaultImgBlob = await defaultImgResponse.blob();
+                const defaultImgFile = new File([defaultImgBlob], "defaultProfile.png", { type: defaultImgResponse.headers.get("content-type") });
+                formData.append("profile_picture", defaultImgFile)
             }
             
             formData.append("username", credentials.username)
