@@ -65,28 +65,26 @@ const Auth = () => {
         enter="transition-all duration-500"
                 enterFrom="translate-x-40 opacity-0"
                 enterTo="translate-x-0 opacity-100"
-                leave="transition-opacity duration-0"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
+                
     >
         <div className=" 
-        ml-auto mr-auto mt-32 text-center bg-white w-1/3
-         rounded-lg drop-shadow-md p-3 font-Rubik">
-            <h1 className=" pt-4 mb-6 text-2xl font-bold">
+        ml-auto mr-auto mt-20 lg:mt-32 text-center bg-white lg:w-1/3
+         rounded-lg drop-shadow-md p-1 pb-8 lg:p-3 font-Rubik" >
+            <h1 className=" pt-4 mb-4 text-2xl font-bold">
                 Welcome to FaithHub!</h1>
-            {error && <h2 className="text-red-600 pb-2">{error}</h2>}
+            {error && <h2 className="text-red-600 pb-6 lg:pb-2">{error}</h2>}
             <form className="flex flex-col gap-6 mb-4" onSubmit={handleLogin}>
-                <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
+                <input className={`mr-4 ml-4 lg:ml-6 lg:mr-6 p-3 border-gray-200 border-2 rounded-lg
                 ${isLoading ? "brightness-95" : null}`} 
                 type="text" name="username" placeholder="Username"></input>
-                <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
+                <input className={`mr-4 ml-4 lg:ml-6 lg:mr-6 p-3 border-gray-200 border-2 rounded-lg
                  ${isLoading ? "brightness-95" : null} `}
                 type="password" name="password" placeholder="Password"></input>
-                <input className={`rounded-lg p-3 ml-6 mr-6  bg-cyan-400 text-white
+                <input className={`rounded-lg p-3 mr-4 ml-4 lg:ml-6 lg:mr-6  bg-cyan-400 text-white
                    font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
                  type="submit" value="Login" ></input>
             </form>
-            <button className="pb-4 text-cyan-500 underline
+            <button className="text-sm lg:text-base pb-4 text-cyan-500 underline
             hover:brightness-[0.85]" onClick={() => setToSignup(true)}>
                 Don&apos;t have an account yet? Sign up here</button>
         </div>
@@ -99,9 +97,7 @@ const Auth = () => {
     enter="transition-all duration-500"
                 enterFrom="translate-x-40 opacity-0"
                 enterTo="translate-x-0 opacity-100"
-                leave="transition-transform duration-0"
-                leaveFrom="-translate-x-40"
-                leaveTo="-translate-x-0"
+                
 >
         <Signup toSignup={toSignup} setToSignup={setToSignup}/>
         </Transition>

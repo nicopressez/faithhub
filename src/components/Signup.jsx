@@ -145,25 +145,25 @@ const Signup = ({toSignup, setToSignup}) => {
                 leaveFrom="opacity-0"
                 leaveTo="opacity-0"
             >
-                <div className=" ml-auto mr-auto mt-32 text-center bg-white w-1/3
-         rounded-lg drop-shadow-md p-3 font-Rubik">
+                <div className="mt-20 lg:mt-32 ml-auto mr-auto text-center bg-white lg:w-1/3
+         rounded-lg drop-shadow-md p-1 lg:p-3 font-Rubik">
         
             <button className="float-left h-0 text-cyan-500 underline hover:brightness-[0.85]"onClick={() => setToSignup(false)}>
                 Back</button>
-            <h1 className="  pt-4 mb-6 text-2xl font-bold">
+            <h1 className="  pt-4 mb-4 text-2xl font-bold">
                 Sign up</h1>
-            {error && <h2 className="text-red-600 pb-2">{error}</h2>}
+            {error && <h2 className="text-red-600 pb-6 lg:pb-2">{error}</h2>}
             <form className="flex flex-col gap-6 mb-4" onSubmit={handleSignup_pageOne}>
-                <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
+                <input className={`mr-4 ml-4 lg:ml-6 lg:mr-6 p-3 border-gray-200 border-2 rounded-lg
                 ${isLoading ? "brightness-95" : null}`} 
                 type="text" name="username" placeholder="Username" value={credentials.username} onChange={handleChange}></input>
-                <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
+                <input className={`mr-4 ml-4 lg:ml-6 lg:mr-6 p-3 border-gray-200 border-2 rounded-lg
                  ${isLoading ? "brightness-95" : null} `}
                 type="password" name="password" placeholder="Password" value={credentials.password} onChange={handleChange}></input>
-                <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
+                <input className={`mr-4 ml-4 lg:ml-6 lg:mr-6 p-3 border-gray-200 border-2 rounded-lg
                  ${isLoading ? "brightness-95" : null} `}
                 type="password" name="password_verif" placeholder="Confirm password" value={credentials.password_verif} onChange={handleChange} />
-                <input className={`rounded-lg p-3 ml-6 mr-6  bg-cyan-400 text-white
+                <input className={`rounded-lg p-3 mr-4 ml-4 lg:ml-6 lg:mr-6  bg-cyan-400 text-white
                    font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
                  type="submit" value="Next" ></input>
             </form>
@@ -180,42 +180,42 @@ const Signup = ({toSignup, setToSignup}) => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
             >
-                <div className=" ml-auto mr-auto mt-32 text-center bg-white w-1/3
-         rounded-lg drop-shadow-md p-3 font-Rubik">
+                <div className="mt-20 lg:mt-32 ml-auto mr-auto text-center bg-white lg:w-1/3
+         rounded-lg drop-shadow-md p-1 lg:p-3 font-Rubik">
             
             <button className="float-left h-0 text-cyan-500 underline hover:brightness-[0.85]"onClick={() => setPage(1)}>
                 Back</button>
             <h1 className=" pt-4 mb-4 text-2xl font-bold">
                 Personal info</h1>
         
-            <form className="flex flex-col gap-7 mb-4" onSubmit={handleSignup_pageTwo}>
-                <label htmlFor="profile_picture" className="group w-32 h-32 ml-auto mr-auto rounded-full">
+            <form className="flex flex-col gap-6 mb-4" onSubmit={handleSignup_pageTwo}>
+                <label htmlFor="profile_picture" className="group w-20 h-20 lg:w-32 lg:h-32 ml-auto mr-auto rounded-full">
                 <img src={uploadImg} className="hidden w-16 absolute left-[290px] top-[115px] group-hover:block z-10
                 "></img>
-                <img src={photo} className="group-hover:brightness-90 rounded-full object-cover w-32 h-32
+                <img src={photo} className="group-hover:brightness-90 rounded-full object-cover w-20 h-20 lg:w-32 md:h-32
                 ml-auto mr-auto"></img>
                 </label>
     
                 <input id="profile_picture"name="profile_picture" type="file" onChange={handlePhotoChange} className="
                  w-0 h-0 absolute"></input>
 
-                 {error && <h2 className="text-red-600 pb-2">{error}</h2>}
+                 {error && <h2 className="text-red-600  lg:pb-2">{error}</h2>}
 
-                <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
+                <input className={`mr-4 ml-4 lg:ml-6 lg:mr-6 p-3 border-gray-200 border-2 rounded-lg
                 ${isLoading ? "brightness-95" : null}`} 
                 type="text" name="first_name" placeholder="First name" value={credentials.first_name} onChange={handleChange}></input>
-                <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
+                <input className={`mr-4 ml-4 lg:ml-6 lg:mr-6 p-3 border-gray-200 border-2 rounded-lg
                  ${isLoading ? "brightness-95" : null} `}
                 type="text" name="last_name" placeholder="Last name" value={credentials.last_name} onChange={handleChange}></input>
 
 
-                <input className={`ml-6 mr-6 p-3 border-gray-200 border-2 rounded-lg
+                <input className={`mr-4 ml-4 lg:ml-6 lg:mr-6 p-3 border-gray-200 border-2 rounded-lg
                  ${isLoading ? "brightness-95" : null} `}
                 type="text" name="location" placeholder="Location (optional) " value={credentials.location} onChange={e => {
                     handleChange(e)}} />
 
 
-                <input className={`rounded-lg p-3 ml-6 mr-6  bg-cyan-400 text-white
+                <input className={`rounded-lg p-3 mr-4 ml-4 lg:ml-6 lg:mr-6  bg-cyan-400 text-white
                    font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
                  type="submit" value="Sign up" ></input>
             </form>
