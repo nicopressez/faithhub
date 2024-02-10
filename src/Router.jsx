@@ -13,12 +13,12 @@ const Router = () => {
                 {
                  path: "/home",
                  element: <Homepage />
+                },
+                {
+                    path: "/auth",
+                    element: <Auth />
                 }
             ],
-        },
-        {
-            path: "/auth",
-            element: <Auth />
         }
     ])
     return <RouterProvider router={router} />

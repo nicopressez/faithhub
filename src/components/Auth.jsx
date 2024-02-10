@@ -70,9 +70,9 @@ const Auth = () => {
         <div className=" 
         ml-auto mr-auto mt-20 lg:mt-32 text-center bg-white lg:w-1/3
          rounded-lg drop-shadow-md p-1 pb-8 lg:p-3 font-Rubik" >
-            <h1 className=" pt-4 mb-4 text-2xl font-bold">
+            <h1 className=" pt-4 mb-4 text-xl lg:text-2xl font-bold">
                 Welcome to FaithHub!</h1>
-            {error && <h2 className="text-red-600 pb-6 lg:pb-2">{error}</h2>}
+            {error && <h2 className="text-red-600 pb-6 lg:pb-4">{error}</h2>}
             <form className="flex flex-col gap-6 mb-4" onSubmit={handleLogin}>
                 <input className={`mr-4 ml-4 lg:ml-6 lg:mr-6 p-3 border-gray-200 border-2 rounded-lg
                 ${isLoading ? "brightness-95" : null}`} 

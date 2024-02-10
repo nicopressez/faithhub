@@ -127,8 +127,8 @@ const Signup = ({toSignup, setToSignup}) => {
                 dispatch(loginSuccess(decodedJWT.user))
             } 
         } catch (err) {
-            //TODO : Handle errors
-            console.log(err)
+            dispatch(signupFailed("There was an error. Please try again"))
+                return;
         }
 
 
@@ -150,9 +150,9 @@ const Signup = ({toSignup, setToSignup}) => {
         
             <button className="float-left h-0 text-cyan-500 underline hover:brightness-[0.85]"onClick={() => setToSignup(false)}>
                 Back</button>
-            <h1 className="  pt-4 mb-4 text-2xl font-bold">
+            <h1 className="  pt-4 mb-4 text-xl lg:text-2xl font-bold">
                 Sign up</h1>
-            {error && <h2 className="text-red-600 pb-6 lg:pb-2">{error}</h2>}
+            {error && <h2 className="text-red-600 pb-6 lg:pb-4">{error}</h2>}
             <form className="flex flex-col gap-6 mb-4" onSubmit={handleSignup_pageOne}>
                 <input className={`mr-4 ml-4 lg:ml-6 lg:mr-6 p-3 border-gray-200 border-2 rounded-lg
                 ${isLoading ? "brightness-95" : null}`} 
@@ -185,7 +185,7 @@ const Signup = ({toSignup, setToSignup}) => {
             
             <button className="float-left h-0 text-cyan-500 underline hover:brightness-[0.85]"onClick={() => setPage(1)}>
                 Back</button>
-            <h1 className=" pt-4 mb-4 text-2xl font-bold">
+            <h1 className=" pt-4 mb-4 text-xl lg:text-2xl font-bold">
                 Personal info</h1>
         
             <form className="flex flex-col gap-6 mb-4" onSubmit={handleSignup_pageTwo}>
