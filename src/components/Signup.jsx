@@ -135,22 +135,22 @@ const Signup = ({setToSignup}) => {
         }
 
     return (
-        <div className=" bg-gray-100 w-screen h-screen fixed">
-            <div className=" ml-auto mr-auto mt-32 text-center bg-white w-1/3
-         rounded-lg drop-shadow-md p-3 font-Rubik">
-            <Transition 
-                show={page ===1}
-                enter="transition-opacity duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="transition-opacity duration-0"
-                leaveFrom="opacity-100"
+        <>
+            <Transition
+                show={page === 1}
+                enter="transition-all duration-500"
+                enterFrom="translate-x-40 opacity-0"
+                enterTo="translate-x-0 opacity-100"
+                leave="transition-opacity duration-100"
+                leaveFrom="opacity-0"
                 leaveTo="opacity-0"
             >
+                <div className=" ml-auto mr-auto mt-32 text-center bg-white w-1/3
+         rounded-lg drop-shadow-md p-3 font-Rubik">
         
-            <button className="float-left text-cyan-500 underline hover:brightness-[0.85]"onClick={() => setToSignup(false)}>
+            <button className="float-left h-0 text-cyan-500 underline hover:brightness-[0.85]"onClick={() => setToSignup(false)}>
                 Back</button>
-            <h1 className=" pt-4 mb-6 text-2xl font-bold">
+            <h1 className="  pt-4 mb-6 text-2xl font-bold">
                 Sign up</h1>
             {error && <h2 className="text-red-600 pb-2">{error}</h2>}
             <form className="flex flex-col gap-6 mb-4" onSubmit={handleSignup_pageOne}>
@@ -167,23 +167,25 @@ const Signup = ({setToSignup}) => {
                    font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
                  type="submit" value="Next" ></input>
             </form>
-        
+            </div>
         </Transition>
 
         
               <Transition
                 show={page === 2}
-                enter="transition-opacity duration-500"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
+                enter="transition-all duration-500"
+                enterFrom="translate-x-40 opacity-0"
+                enterTo="translate-x-0 opacity-100"
                 leave="transition-opacity duration-0"
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
             >
+                <div className=" ml-auto mr-auto mt-32 text-center bg-white w-1/3
+         rounded-lg drop-shadow-md p-3 font-Rubik">
             
-            <button className="float-left text-cyan-500 underline hover:brightness-[0.85]"onClick={() => setPage(1)}>
+            <button className="float-left h-0 text-cyan-500 underline hover:brightness-[0.85]"onClick={() => setPage(1)}>
                 Back</button>
-            <h1 className=" pt-4 mb-6 text-2xl font-bold">
+            <h1 className=" pt-4 mb-4 text-2xl font-bold">
                 Personal info</h1>
         
             <form className="flex flex-col gap-7 mb-4" onSubmit={handleSignup_pageTwo}>
@@ -217,9 +219,9 @@ const Signup = ({setToSignup}) => {
                    font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
                  type="submit" value="Sign up" ></input>
             </form>
+            </div>
             </Transition>
-        </div>
-        </div>
+            </>
     )
 }
 

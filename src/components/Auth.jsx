@@ -57,20 +57,20 @@ const Auth = () => {
         }, 500);
     }
     }
-// Login
+
     return (
         <div className=" bg-gray-100 w-screen h-screen fixed">
         <Transition 
         show={toSignup === false}
-        enter="transition-opacity duration-300"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-0"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
+        enter="transition-all duration-500"
+                enterFrom="translate-x-40 opacity-0"
+                enterTo="translate-x-0 opacity-100"
+                leave="transition-opacity duration-0"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
     >
         <div className=" 
-        ml-auto mr-auto mt-52 text-center bg-white w-1/3
+        ml-auto mr-auto mt-32 text-center bg-white w-1/3
          rounded-lg drop-shadow-md p-3 font-Rubik">
             <h1 className=" pt-4 mb-6 text-2xl font-bold">
                 Welcome to FaithHub!</h1>
@@ -96,12 +96,12 @@ const Auth = () => {
 
     <Transition 
     show={toSignup === true}
-    enter="transition-opacity duration-300"
-    enterFrom="opacity-0"
-    enterTo="opacity-100"
-    leave="transition-opacity duration-0"
-    leaveFrom="opacity-100"
-    leaveTo="opacity-0"
+    enter="transition-all duration-500"
+                enterFrom="translate-x-40 opacity-0"
+                enterTo="translate-x-0 opacity-100"
+                leave="transition-transform duration-0"
+                leaveFrom="-translate-x-40"
+                leaveTo="-translate-x-0"
 >
         <Signup setToSignup={setToSignup}/>
         </Transition>
