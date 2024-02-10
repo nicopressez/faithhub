@@ -11,7 +11,7 @@ import { PropTypes } from "prop-types";
 
 
 
-const Signup = ({setToSignup}) => {
+const Signup = ({toSignup, setToSignup}) => {
     const auth = useSelector((state) => state.auth)
     const signup = useSelector((state) => state.signup)
     const dispatch = useDispatch()
@@ -134,14 +134,14 @@ const Signup = ({setToSignup}) => {
 
         }
 
-    return (
+    if (toSignup) return (
         <>
             <Transition
                 show={page === 1}
                 enter="transition-all duration-500"
                 enterFrom="translate-x-40 opacity-0"
                 enterTo="translate-x-0 opacity-100"
-                leave="transition-opacity duration-100"
+                leave="transition-opacity duration-0"
                 leaveFrom="opacity-0"
                 leaveTo="opacity-0"
             >
@@ -226,6 +226,7 @@ const Signup = ({setToSignup}) => {
 }
 
 Signup.propTypes = {
+    toSignup: PropTypes.bool,
     setToSignup: PropTypes.func,
 }
 

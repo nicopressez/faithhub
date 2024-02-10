@@ -103,7 +103,7 @@ const Auth = () => {
                 leaveFrom="-translate-x-40"
                 leaveTo="-translate-x-0"
 >
-        <Signup setToSignup={setToSignup}/>
+        <Signup toSignup={toSignup} setToSignup={setToSignup}/>
         </Transition>
         </div>
 
