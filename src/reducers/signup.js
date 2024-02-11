@@ -14,30 +14,33 @@ const initialState = {
 };
 
 export const signupSlice = createSlice({
-    name:'signup',
-    initialState,
-    reducers: {
-        signupRequest(state){
-            state.isLoading = true
-        },
-        signupNext(state,action) {
-            state.isLoading = false,
-            state.credentials = action.payload
-            state.error = null
-        },
-        signupChange(state,action){
-            state.credentials = action.payload
-        },
-        signupFailed(state, action){
-            state.isLoading = false,
-            state.error = action.payload
-        },
-        signupSuccess(state){
-            state.isLoading = false,
-            state.error = null
-        }
-    }
-})
+  name: "signup",
+  initialState,
+  reducers: {
+    signupRequest(state) {
+      state.isLoading = true;
+    },
+    signupNext(state, action) {
+      (state.isLoading = false), (state.credentials = action.payload);
+      state.error = null;
+    },
+    signupChange(state, action) {
+      state.credentials = action.payload;
+    },
+    signupFailed(state, action) {
+      (state.isLoading = false), (state.error = action.payload);
+    },
+    signupSuccess(state) {
+      (state.isLoading = false), (state.error = null);
+    },
+  },
+});
 
-export const { signupRequest, signupFailed, signupSuccess, signupNext, signupChange} = signupSlice.actions
-export default signupSlice.reducer
+export const {
+  signupRequest,
+  signupFailed,
+  signupSuccess,
+  signupNext,
+  signupChange,
+} = signupSlice.actions;
+export default signupSlice.reducer;
