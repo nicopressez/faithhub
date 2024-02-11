@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Transition } from "@headlessui/react";
 import { logoutSuccess } from "../reducers/auth";
+import { Link } from "react-router-dom";
 
 
 const Header = () => {
@@ -44,12 +45,14 @@ const Header = () => {
         className="bg-white font-Rubik h-[3.5rem] drop-shadow 
     fixed top-0 w-screen z-50 flex flex-row items-center "
       >
+        <Link to={"/home"}>
         <h1
           className=" text-cyan-400 font-extrabold tracking-wide
          text-2xl lg:text-3xl ml-8"
         >
           FaithHub
         </h1>
+        </Link>
         <form>
           <input
             type="text"

@@ -20,12 +20,15 @@ const Router = () => {
           element: <Auth />,
         },
         {
-          path: "/profile/:id",
-          element: <Profile />,
+          path: "/profile",
           children: [
             {
               path: "/profile/:id/settings",
               element: <ProfileSettings />
+            },
+            {
+              path: "/profile/:id",
+              element: <Profile />
             }
           ]
         }
