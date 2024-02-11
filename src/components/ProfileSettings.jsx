@@ -8,6 +8,8 @@ import {
 import uploadImg from "../assets/upload.png";
 import { useEffect, useState } from "react";
 import ErrorPage from "./ErrorPage";
+import { logoutSuccess } from "../reducers/auth";
+
 
 const ProfileSettings = () => {
   const { id } = useParams();
@@ -112,7 +114,6 @@ const ProfileSettings = () => {
           body: formData,
         },
       );
-      console.log(await response.json());
       dispatch(updateSuccess());
     } catch (err) {
       //TODO: Error handling
@@ -120,8 +121,27 @@ const ProfileSettings = () => {
     }
   };
 
+// TODO : Add confirm delete button
   const handleDelete = async (e) => {
     e.preventDefault();
+    try {
+      const response = await fetch(
+        `https://faithhub-backend.fly.dev/profile/${id}/delete`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        },
+      );
+      console.log(await response.json());
+      localStorage.removeItem("token")
+      dispatch(logoutSuccess());
+    } catch (err) {
+      //TODO: Error handling
+      console.log(err);
+    }
+    
   };
 
   if (user && user._id === id)
