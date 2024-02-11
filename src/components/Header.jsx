@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMessage, faBell } from "@fortawesome/free-solid-svg-icons";
 
 
+
 const Header = () => {
 
         const auth = useSelector((state) => state.auth)
@@ -19,6 +20,7 @@ const Header = () => {
     )
 
     return (
+        <>
         <div className="bg-white font-Rubik h-[3.5rem] drop-shadow 
     fixed top-0 w-screen z-50 flex flex-row items-center ">
         <h1 className=" text-cyan-400 font-extrabold tracking-wide
@@ -33,8 +35,11 @@ const Header = () => {
         <FontAwesomeIcon icon={faBell} className=" mr-6 w-6 h-6   text-cyan-400"/>
         {user.profile_picture &&  <img className=" mr-6 w-11 h-11 rounded-full object-cover"
         src={`https://faithhub-backend.fly.dev/${user.profile_picture}`}/>}
+        
 
     </div>
+
+   </>
     )
 }
 
