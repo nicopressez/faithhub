@@ -24,14 +24,14 @@ const Router = () => {
           children: [
             {
               path: "/profile/:id/settings",
-              element: <ProfileSettings />
+              element: <ProfileSettings />,
             },
             {
               path: "/profile/:id",
-              element: <Profile />
-            }
-          ]
-        }
+              element: <Profile />,
+            },
+          ],
+        },
       ],
     },
   ]);

@@ -11,18 +11,16 @@ import { Menu, Transition } from "@headlessui/react";
 import { logoutSuccess } from "../reducers/auth";
 import { Link } from "react-router-dom";
 
-
 const Header = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-
   const { isLoggedIn, user } = auth;
 
-  const handleLogout = () =>  {
-    localStorage.removeItem("token")
-    dispatch(logoutSuccess())
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    dispatch(logoutSuccess());
+  };
 
   if (!isLoggedIn)
     return (
@@ -46,12 +44,12 @@ const Header = () => {
     fixed top-0 w-screen z-50 flex flex-row items-center "
       >
         <Link to={"/home"}>
-        <h1
-          className=" text-cyan-400 font-extrabold tracking-wide
+          <h1
+            className=" text-cyan-400 font-extrabold tracking-wide
          text-2xl lg:text-3xl ml-8"
-        >
-          FaithHub
-        </h1>
+          >
+            FaithHub
+          </h1>
         </Link>
         <form>
           <input
@@ -118,7 +116,6 @@ const Header = () => {
                   <button
                     className={`${active && "bg-gray-200"} text-red-500 pl-2 text-left`}
                     onClick={handleLogout}
-                    
                   >
                     <FontAwesomeIcon
                       icon={faRightFromBracket}

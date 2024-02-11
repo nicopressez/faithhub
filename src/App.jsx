@@ -22,11 +22,10 @@ function App() {
       const decodedJWT = jwtDecode(token);
       dispatch(loginSuccess(decodedJWT.user));
     }
-    if (!localStorage.getItem("token")){
-        navigate("/auth");  
+    if (!localStorage.getItem("token")) {
+      navigate("/auth");
     }
   }, [dispatch, isLoggedIn, navigate]);
-
 
   return (
     <>

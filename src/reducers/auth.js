@@ -25,12 +25,12 @@ export const authSlice = createSlice({
         "Invalid credentials. Please double-check your username and password.";
       state.isLoading = false;
     },
-    logoutSuccess(state){
-        state.isLoggedIn = false,
-        state.user = null
-    }
+    logoutSuccess(state) {
+      (state.isLoggedIn = false), (state.user = null);
+    },
   },
 });
 
-export const { loginRequest, loginSuccess, loginFailed, logoutSuccess } = authSlice.actions;
+export const { loginRequest, loginSuccess, loginFailed, logoutSuccess } =
+  authSlice.actions;
 export default authSlice.reducer;
