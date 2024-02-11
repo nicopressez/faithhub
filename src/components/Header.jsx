@@ -92,7 +92,7 @@ const Header = () => {
                 {({ active }) => (
                   <a
                     className={`${active && "bg-gray-200"} pl-2`}
-                    href="/profile"
+                    href={`/profile/${user._id}`}
                   >
                     <FontAwesomeIcon icon={faUser} className="h-4 w-4 pr-2" />
                     Profile
@@ -103,7 +103,7 @@ const Header = () => {
                 {({ active }) => (
                   <a
                     className={`${active && "bg-gray-200"} pl-2`}
-                    href="/profile/settings"
+                    href={`/profile/${user._id}/settings`}
                   >
                     <FontAwesomeIcon icon={faGear} className="w-4 h-4 pr-2" />
                     Account settings

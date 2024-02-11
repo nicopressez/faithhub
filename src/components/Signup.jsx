@@ -134,6 +134,7 @@ const Signup = ({ toSignup, setToSignup }) => {
     formData.append("last_name", credentials.last_name);
     formData.append("password", credentials.password);
     formData.append("password_verif", credentials.password_verif);
+    formData.append("location", credentials.location);
 
     try {
       const response = await fetch(
