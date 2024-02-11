@@ -4,9 +4,16 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "./reducers/auth";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function App() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const auth = useSelector((state) => state.auth);
+
+  const { isLoggedIn } = auth;
 
   // Token check to assign login
   useEffect(() => {
@@ -16,6 +23,12 @@ function App() {
       dispatch(loginSuccess(decodedJWT.user));
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/auth");
+    }
+  }, [isLoggedIn, navigate]);
 
   return (
     <>

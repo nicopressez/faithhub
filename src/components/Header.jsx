@@ -8,12 +8,20 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Transition } from "@headlessui/react";
+import { logoutSuccess } from "../reducers/auth";
+
 
 const Header = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+
   const { isLoggedIn, user } = auth;
+
+  const handleLogout = () =>  {
+    localStorage.removeItem("token")
+    dispatch(logoutSuccess())
+  }
 
   if (!isLoggedIn)
     return (
@@ -68,12 +76,12 @@ const Header = () => {
             />
           </Menu.Button>
           <Transition
-            enter="transition duration-100 ease-out"
-            enterFrom="transform scale-95 opacity-0"
-            enterTo="transform scale-100 opacity-100"
-            leave="transition duration-75 ease-out"
-            leaveFrom="transform scale-100 opacity-100"
-            leaveTo="transform scale-95 opacity-0"
+            enter="transition duration-200 ease-out"
+            enterFrom="transform scale-y-0 opacity-0"
+            enterTo="transform scale-y-100 opacity-100"
+            leave="transition duration-200 ease-out"
+            leaveFrom="transform scale-y-100 opacity-100"
+            leaveTo="transform scale-y-100 opacity-0"
           >
             <Menu.Items
               className="absolute mt-2 mr-2 right-0 w-64 flex
@@ -104,16 +112,17 @@ const Header = () => {
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <a
-                    className={`${active && "bg-gray-200"} text-red-500 pl-2`}
-                    href="/profile/settings"
+                  <button
+                    className={`${active && "bg-gray-200"} text-red-500 pl-2 text-left`}
+                    onClick={handleLogout}
+                    
                   >
                     <FontAwesomeIcon
                       icon={faRightFromBracket}
                       className="w-4 h-4 pr-2"
                     />
                     Log out
-                  </a>
+                  </button>
                 )}
               </Menu.Item>
             </Menu.Items>
