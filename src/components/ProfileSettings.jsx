@@ -7,6 +7,7 @@ import {
 } from "../reducers/settings";
 import uploadImg from "../assets/upload.png";
 import { useEffect, useState } from "react";
+import ErrorPage from "./ErrorPage";
 
 const ProfileSettings = () => {
   const { id } = useParams();
@@ -32,19 +33,22 @@ const ProfileSettings = () => {
     e.preventDefault();
     dispatch(updateRequest());
 
-  // Check if username already taken
-  if (e.target.username.value !== user.username){
-  const checkUsername = await fetch(
-    `https://faithhub-backend.fly.dev/profile/username/${e.target.username.value}`,
-  );
-  if (checkUsername.status !== 200) {
-    return dispatch(updateFailed({
-      ...errors,
-      username: "This username is already taken."
-    }))
-  }}
+    // Check if username already taken
+    if (e.target.username.value !== user.username) {
+      const checkUsername = await fetch(
+        `https://faithhub-backend.fly.dev/profile/username/${e.target.username.value}`,
+      );
+      if (checkUsername.status !== 200) {
+        return dispatch(
+          updateFailed({
+            ...errors,
+            username: "This username is already taken.",
+          }),
+        );
+      }
+    }
 
-  // Check form fields validity before making update request
+    // Check form fields validity before making update request
     if (
       e.target.username.value.length > 16 ||
       e.target.username.value.length < 4
@@ -56,45 +60,46 @@ const ProfileSettings = () => {
         }),
       );
     }
-    if(
+    if (
       e.target.first_name.value.length < 2 ||
       e.target.first_name.value.length > 12
-    ){
-      dispatch(updateFailed({
-        ...errors,
-        first_name: "First name must be 2 to 12 characters long",
-      })
+    ) {
+      dispatch(
+        updateFailed({
+          ...errors,
+          first_name: "First name must be 2 to 12 characters long",
+        }),
       );
     }
-    if(
+    if (
       e.target.last_name.value.length < 2 ||
       e.target.last_name.value.length > 12
-    ){
-      dispatch(updateFailed({
-        ...errors,
-        last_name: "Last name must be 2 to 12 characters long",
-      })
+    ) {
+      dispatch(
+        updateFailed({
+          ...errors,
+          last_name: "Last name must be 2 to 12 characters long",
+        }),
       );
     }
 
-    // If any errors, return 
-    if(Object.keys(errors).find((field) =>
-    errors[field] !== null)){
+    // If any errors, return
+    if (Object.keys(errors).find((field) => errors[field] !== null)) {
       return;
     }
 
     const formData = new FormData();
-    if (e.target.profile_picture.files.length > 0){
-      formData.append("profile_picture", e.target.profile_picture.files[0])
+    if (e.target.profile_picture.files.length > 0) {
+      formData.append("profile_picture", e.target.profile_picture.files[0]);
     } else {
-      formData.append("profile_picture", user.profile_picture)
+      formData.append("profile_picture", user.profile_picture);
     }
-      formData.append("username", e.target.username.value)
-      formData.append("first_name", e.target.first_name.value)
-      formData.append("last_name", e.target.last_name.value)
-      formData.append("bio", e.target.bio.value)
-      formData.append("location", e.target.location.value)
-      console.log(formData)
+    formData.append("username", e.target.username.value);
+    formData.append("first_name", e.target.first_name.value);
+    formData.append("last_name", e.target.last_name.value);
+    formData.append("bio", e.target.bio.value);
+    formData.append("location", e.target.location.value);
+    console.log(formData);
 
     try {
       const response = await fetch(
@@ -102,13 +107,13 @@ const ProfileSettings = () => {
         {
           method: "PATCH",
           headers: {
-            "Authorization": `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: formData,
         },
       );
-      console.log(await response.json())
-      dispatch(updateSuccess())
+      console.log(await response.json());
+      dispatch(updateSuccess());
     } catch (err) {
       //TODO: Error handling
       console.log(err);
@@ -252,8 +257,7 @@ const ProfileSettings = () => {
       </div>
     );
 
-  // TODO: Add page if not authorized
-  return <h1 className="pt-32">not authorized</h1>;
+  return <ErrorPage />;
 };
 
 export default ProfileSettings;

@@ -4,6 +4,7 @@ import Auth from "./components/Auth";
 import Homepage from "./components/Homepage";
 import Profile from "./components/Profile";
 import ProfileSettings from "./components/ProfileSettings";
+import ErrorPage from "./components/ErrorPage";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -34,6 +35,10 @@ const Router = () => {
         },
       ],
     },
+    {
+      path: "*",
+      element: <ErrorPage />
+    }
   ]);
   return <RouterProvider router={router} />;
 };
