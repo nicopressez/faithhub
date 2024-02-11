@@ -72,12 +72,20 @@ const ProfileSettings = () => {
     }
 
     const formData = new FormData();
+    if (e.target.profile_picture.files.length > 0){
+      formData.append("profile_picture", e.target.profile_picture.files[0])
+    }
+      formData.append("username", e.target.username.value)
+      formData.append("first_name", e.target.first_name.value)
+      formData.append("last_name", e.target.last_name.value)
+      formData.append("bio", e.target.bio.value)
+      formData.append("location", e.target.location.value)
 
     try {
       const response = await fetch(
         `https://faithhub-backend.fly.dev/profile/${id}/edit`,
         {
-          method: "POST",
+          method: "PATCH",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             "Content-Type": "application/json",
@@ -85,6 +93,8 @@ const ProfileSettings = () => {
           body: formData,
         },
       );
+      console.log(await response.json())
+      dispatch(updateSuccess())
     } catch (err) {
       //TODO: Error handling
       console.log(err);
@@ -164,7 +174,8 @@ const ProfileSettings = () => {
                   type="text"
                   defaultValue={user.username}
                   id="username"
-                  className="bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2"
+                  className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
                   placeholder="Required"
                 ></input>
 
@@ -173,7 +184,8 @@ const ProfileSettings = () => {
                   type="text"
                   defaultValue={user.first_name}
                   id="first_name"
-                  className="bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2"
+                  className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
                   placeholder="Required"
                 ></input>
 
@@ -182,7 +194,8 @@ const ProfileSettings = () => {
                   type="text"
                   defaultValue={user.last_name}
                   id="last_name"
-                  className="bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2"
+                  className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
                   placeholder="Required"
                 ></input>
 
@@ -191,7 +204,8 @@ const ProfileSettings = () => {
                   type="text"
                   defaultValue={user.bio}
                   placeholder="Optional"
-                  className="bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2"
+                  className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
                 ></input>
 
                 <input
@@ -200,7 +214,8 @@ const ProfileSettings = () => {
                   defaultValue={user.location}
                   id="location"
                   placeholder="Optional"
-                  className="bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-5"
+                  className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
                 ></input>
               </div>
             </div>
