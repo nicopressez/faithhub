@@ -32,6 +32,18 @@ const ProfileSettings = () => {
     e.preventDefault();
     dispatch(updateRequest());
 
+  // Check if username already taken
+  if (e.target.username.value !== user.username){
+  const checkUsername = await fetch(
+    `https://faithhub-backend.fly.dev/profile/username/${e.target.username.value}`,
+  );
+  if (checkUsername.status !== 200) {
+    return dispatch(updateFailed({
+      ...errors,
+      username: "This username is already taken."
+    }))
+  }}
+
   // Check form fields validity before making update request
     if (
       e.target.username.value.length > 16 ||
@@ -66,7 +78,7 @@ const ProfileSettings = () => {
     }
 
     // If any errors, return 
-    if(Object.keys(errors).filter((field) =>
+    if(Object.keys(errors).find((field) =>
     errors[field] !== null)){
       return;
     }
@@ -74,21 +86,23 @@ const ProfileSettings = () => {
     const formData = new FormData();
     if (e.target.profile_picture.files.length > 0){
       formData.append("profile_picture", e.target.profile_picture.files[0])
+    } else {
+      formData.append("profile_picture", user.profile_picture)
     }
       formData.append("username", e.target.username.value)
       formData.append("first_name", e.target.first_name.value)
       formData.append("last_name", e.target.last_name.value)
       formData.append("bio", e.target.bio.value)
       formData.append("location", e.target.location.value)
+      console.log(formData)
 
     try {
       const response = await fetch(
-        `https://faithhub-backend.fly.dev/profile/${id}/edit`,
+        `https://faithhub-backend.fly.dev/profile/${id}/update`,
         {
           method: "PATCH",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-            "Content-Type": "application/json",
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
           },
           body: formData,
         },
