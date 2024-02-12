@@ -9,6 +9,7 @@ import uploadImg from "../assets/upload.png";
 import { useEffect, useState } from "react";
 import ErrorPage from "./ErrorPage";
 import { logoutSuccess, tokenRefresh } from "../reducers/auth";
+import Loading from "./Loading";
 
 
 const ProfileSettings = () => {
@@ -298,6 +299,10 @@ const ProfileSettings = () => {
 
 // If trying to access someone else's settings, show 404 page
  if(user && user._id !== id) return <ErrorPage />;
+
+ return (
+  <Loading />
+)
 };
 
 export default ProfileSettings;

@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Loading from "./Loading";
+import { faScaleUnbalanced } from "@fortawesome/free-solid-svg-icons";
+import ErrorPage from "./ErrorPage";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState();
+  const [error, setError] = useState(false)
   const { id } = useParams();
 
   useEffect(() => {
@@ -12,10 +16,13 @@ const Profile = () => {
           `https://faithhub-backend.fly.dev/profile/${id}`,
         );
         const result = await response.json();
+        if (result.status !== 200 ) {
+          setError(true)
+        }
         setUserInfo(result.user);
+
       } catch (err) {
-        // TODO: Add error page if user not found
-        console.log(err);
+        setError(true)
       }
     };
     fetchUserInfo();
@@ -39,6 +46,15 @@ const Profile = () => {
         </div>
       </div>
     );
+
+      if(error) return (
+        <ErrorPage />
+        )
+      
+
+    return (
+      <Loading />
+    )
 };
 
 export default Profile;
