@@ -28,9 +28,12 @@ export const authSlice = createSlice({
     logoutSuccess(state) {
       (state.isLoggedIn = false), (state.user = null);
     },
+    tokenRefresh(state,action){
+      state.user = action.payload;
+    }
   },
 });
 
-export const { loginRequest, loginSuccess, loginFailed, logoutSuccess } =
+export const { loginRequest, loginSuccess, loginFailed, logoutSuccess, tokenRefresh } =
   authSlice.actions;
 export default authSlice.reducer;

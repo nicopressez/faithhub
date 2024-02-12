@@ -13,7 +13,6 @@ const Profile = () => {
         );
         const result = await response.json();
         setUserInfo(result.user);
-        console.log(result);
       } catch (err) {
         // TODO: Add error page if user not found
         console.log(err);

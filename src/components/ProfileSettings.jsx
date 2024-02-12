@@ -8,7 +8,7 @@ import {
 import uploadImg from "../assets/upload.png";
 import { useEffect, useState } from "react";
 import ErrorPage from "./ErrorPage";
-import { logoutSuccess } from "../reducers/auth";
+import { logoutSuccess, tokenRefresh } from "../reducers/auth";
 
 
 const ProfileSettings = () => {
@@ -20,12 +20,29 @@ const ProfileSettings = () => {
   const dispatch = useDispatch();
 
   const [currentPic, setCurrentPic] = useState();
+  const [userInfo, setUserInfo] = useState();
 
   useEffect(() => {
-    if (user && user.profile_picture) {
-      setCurrentPic(`https://faithhub-backend.fly.dev/${user.profile_picture}`);
+    const fetchUserInfo = async () => {
+      try {
+        const response = await fetch(
+          `https://faithhub-backend.fly.dev/profile/${id}`,
+        );
+        const result = await response.json();
+        setUserInfo(result.user);
+      } catch (err) {
+        // TODO: Add error page if user not found
+        console.log(err);
+      }
+    };
+    fetchUserInfo()
+  }, [id]);
+
+  useEffect(() => {
+    if (userInfo && userInfo.profile_picture) {
+      setCurrentPic(`https://faithhub-backend.fly.dev/${userInfo.profile_picture}`);
     }
-  }, [user]);
+  }, [userInfo])
 
   const onPicChange = (e) => {
     setCurrentPic(URL.createObjectURL(e.target.files[0]));
@@ -36,7 +53,7 @@ const ProfileSettings = () => {
     dispatch(updateRequest());
 
     // Check if username already taken
-    if (e.target.username.value !== user.username) {
+    if (e.target.username.value !== userInfo.username) {
       const checkUsername = await fetch(
         `https://faithhub-backend.fly.dev/profile/username/${e.target.username.value}`,
       );
@@ -94,15 +111,13 @@ const ProfileSettings = () => {
     if (e.target.profile_picture.files.length > 0) {
       formData.append("profile_picture", e.target.profile_picture.files[0]);
     } else {
-      formData.append("profile_picture", user.profile_picture);
+      formData.append("profile_picture", userInfo.profile_picture);
     }
     formData.append("username", e.target.username.value);
     formData.append("first_name", e.target.first_name.value);
     formData.append("last_name", e.target.last_name.value);
     formData.append("bio", e.target.bio.value);
     formData.append("location", e.target.location.value);
-    console.log(formData);
-
     try {
       const response = await fetch(
         `https://faithhub-backend.fly.dev/profile/${id}/update`,
@@ -114,7 +129,12 @@ const ProfileSettings = () => {
           body: formData,
         },
       );
+      const result = await response.json()
+      // Update user info and token
+      dispatch(tokenRefresh(result.user))
+      localStorage.setItem("token", result.token)
       dispatch(updateSuccess());
+
     } catch (err) {
       //TODO: Error handling
       console.log(err);
@@ -134,7 +154,6 @@ const ProfileSettings = () => {
           },
         },
       );
-      console.log(await response.json());
       localStorage.removeItem("token")
       dispatch(logoutSuccess());
     } catch (err) {
@@ -144,7 +163,7 @@ const ProfileSettings = () => {
     
   };
 
-  if (user && user._id === id)
+  if (userInfo && user && user._id === id)
     return (
       <div className="bg-gray-100 w-screen h-screen pt-[3.5rem]">
         <div
@@ -211,7 +230,7 @@ const ProfileSettings = () => {
                 <input
                   name="username"
                   type="text"
-                  defaultValue={user.username}
+                  defaultValue={userInfo.username}
                   id="username"
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
@@ -221,7 +240,7 @@ const ProfileSettings = () => {
                 <input
                   name="first_name"
                   type="text"
-                  defaultValue={user.first_name}
+                  defaultValue={userInfo.first_name}
                   id="first_name"
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
@@ -231,7 +250,7 @@ const ProfileSettings = () => {
                 <input
                   name="last_name"
                   type="text"
-                  defaultValue={user.last_name}
+                  defaultValue={userInfo.last_name}
                   id="last_name"
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
@@ -241,7 +260,7 @@ const ProfileSettings = () => {
                 <input
                   name="bio"
                   type="text"
-                  defaultValue={user.bio}
+                  defaultValue={userInfo.bio}
                   placeholder="Optional"
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
@@ -250,7 +269,7 @@ const ProfileSettings = () => {
                 <input
                   name="location"
                   type="text"
-                  defaultValue={user.location}
+                  defaultValue={userInfo.location}
                   id="location"
                   placeholder="Optional"
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
@@ -277,7 +296,8 @@ const ProfileSettings = () => {
       </div>
     );
 
-  return <ErrorPage />;
+// If trying to access someone else's settings, show 404 page
+ if(user && user._id !== id) return <ErrorPage />;
 };
 
 export default ProfileSettings;

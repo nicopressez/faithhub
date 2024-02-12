@@ -71,10 +71,10 @@ const Header = () => {
 
         <Menu as="div" className="relative">
           <Menu.Button>
-            <img
+           {user && <img
               className=" mr-6 w-11 h-11 rounded-full object-cover"
               src={`https://faithhub-backend.fly.dev/${user.profile_picture}`}
-            />
+            />}
           </Menu.Button>
           <Transition
             enter="transition duration-200 ease-out"
