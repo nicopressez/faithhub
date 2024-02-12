@@ -6,6 +6,7 @@ import {
   faGear,
   faRightFromBracket,
   faUser,
+  faMagnifyingGlass
 } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Transition } from "@headlessui/react";
 import { logoutSuccess } from "../reducers/auth";
@@ -45,10 +46,10 @@ const Header = () => {
         className="bg-white font-Rubik h-[3.5rem] drop-shadow 
     fixed top-0 w-screen z-50 flex flex-row items-center "
       >
-        <Link to={"/home"}>
+        <Link to={"/home"} className="flex">
           <h1
-            className=" text-cyan-400 font-extrabold tracking-wide
-         text-2xl lg:text-3xl ml-8"
+            className=" text-xl ml-3  text-cyan-400 font-extrabold tracking-wide
+          lg:text-3xl lg:ml-8 "
           >
             FaithHub
           </h1>
@@ -58,25 +59,27 @@ const Header = () => {
             type="text"
             placeholder="Search... "
             className="
-            bg-gray-100 p-1 pl-3 pr-10 ml-8 rounded-large"
+            bg-gray-100 hidden md:flex md:w-auto p-1 md:pl-3 pr-3 md:pr-10 ml-3 md:ml-8 rounded-large"
           ></input>
         </form>
         <div className="flex-grow"></div>
+        <FontAwesomeIcon icon={faMagnifyingGlass}
+        className="flex md:hidden mr-4 md:mr-6 w-6 h-6 text-cyan-400" />
         <FontAwesomeIcon
           icon={faMessage}
-          className=" mr-6 w-6 h-6 text-cyan-400"
+          className=" mr-4 md:mr-6 w-6 h-6 text-cyan-400"
         />
         <FontAwesomeIcon
           icon={faBell}
-          className=" mr-6 w-6 h-6   text-cyan-400"
+          className="mr-3 md:mr-6 w-6 h-6   text-cyan-400"
         />
 
         <Menu as="div" className="relative">
           <Menu.Button>
-           { user && <img
-              className=" mr-6 w-11 h-11 rounded-full object-cover"
-              src={`https://faithhub-backend.fly.dev/${user.profile_picture}`}
-            />}
+            <img
+              className="w-9 h-9 mr-4 md:mr-6 md:w-11 md:h-11 rounded-full object-cover"
+              src={user && `https://faithhub-backend.fly.dev/${user.profile_picture}`}
+            />
           </Menu.Button>
           <Transition
             enter="transition duration-200 ease-out"
@@ -87,7 +90,7 @@ const Header = () => {
             leaveTo="transform scale-y-100 opacity-0"
           >
             <Menu.Items
-              className="absolute mt-2 mr-2 right-0 w-64 flex
+              className="absolute mt-2 mr-2 right-0 w-52 md:w-64 flex
        flex-col bg-white gap-1 drop-shadow-xl rounded-lg text-lg 
          pt-2 pb-2 justify-center"
             >
