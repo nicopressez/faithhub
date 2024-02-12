@@ -50,6 +50,17 @@ const ProfileSettings = () => {
     setCurrentPic(URL.createObjectURL(e.target.files[0]));
   };
 
+// Toggle confirm settings button on change
+  const handleChange = (e) =>  {
+    e.preventDefault()
+    const { value, name} = e.target;
+    if (userInfo[name] === value){
+      setSettingChange(false)
+      return;
+    }
+    setSettingChange(true)
+  }
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     dispatch(updateRequest());
@@ -196,7 +207,7 @@ const ProfileSettings = () => {
               id="profile_picture"
               name="profile_picture"
               type="file"
-              onChange={(e) => {setSettingChange(true)
+              onChange={(e) => {handleChange(e);
               onPicChange(e)}}
               className="
                  w-0 h-0 absolute"
@@ -239,7 +250,7 @@ const ProfileSettings = () => {
                   type="text"
                   defaultValue={userInfo.username}
                   id="username"
-                  onChange={() => setSettingChange(true)}
+                  onChange={handleChange}
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
                   placeholder="Required"
@@ -250,7 +261,7 @@ const ProfileSettings = () => {
                   type="text"
                   defaultValue={userInfo.first_name}
                   id="first_name"
-                  onChange={() => setSettingChange(true)}
+                  onChange={handleChange}
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
                   placeholder="Required"
@@ -261,7 +272,7 @@ const ProfileSettings = () => {
                   type="text"
                   defaultValue={userInfo.last_name}
                   id="last_name"
-                  onChange={() => setSettingChange(true)}
+                  onChange={handleChange}
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
                   placeholder="Required"
@@ -273,7 +284,7 @@ const ProfileSettings = () => {
                   defaultValue={userInfo.bio}
                   placeholder="Optional"
                   id="bio"
-                  onChange={() => setSettingChange(true)}
+                  onChange={handleChange}
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
                 ></input>
@@ -283,7 +294,7 @@ const ProfileSettings = () => {
                   type="text"
                   defaultValue={userInfo.location}
                   id="location"
-                  onChange={() => setSettingChange(true)}
+                  onChange={handleChange}
                   placeholder="Optional"
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
