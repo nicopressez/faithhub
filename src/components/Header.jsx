@@ -10,16 +10,18 @@ import {
 import { Menu, Transition } from "@headlessui/react";
 import { logoutSuccess } from "../reducers/auth";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const { user } = auth;
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    dispatch(logoutSuccess());
+        dispatch(logoutSuccess());
+        navigate("/auth")
   };
 
   if (!localStorage.getItem("token"))

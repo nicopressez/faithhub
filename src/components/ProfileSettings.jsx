@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateRequest,
@@ -20,7 +20,9 @@ const ProfileSettings = () => {
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
   const { isLoading, errors, success } = settings;
+
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const [currentPic, setCurrentPic] = useState();
   const [userInfo, setUserInfo] = useState();
@@ -178,8 +180,8 @@ const ProfileSettings = () => {
           },
         },
       );
-      localStorage.removeItem("token")
       dispatch(logoutSuccess());
+      navigate("/auth");
     } catch (err) {
       setErrorPage(true)
     }
@@ -351,7 +353,7 @@ const ProfileSettings = () => {
       will be permanently removed. This action cannot be undone.
     </p>
 
-    <button onClick={() => {setDeleteDialog(false); handleDelete()}}
+    <button onClick={(e) => {setDeleteDialog(false); handleDelete(e)}}
     className=" bg-red-600 p-1 pl-3 pr-3 rounded-md text-lg text-white mr-3">
       Delete</button>
     <button onClick={() => setDeleteDialog(false)}
