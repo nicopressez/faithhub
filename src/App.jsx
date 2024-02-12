@@ -15,17 +15,28 @@ function App() {
 
   const { isLoggedIn } = auth;
 
-  // Token check to assign login
+  // Token refresh or redirect if no token
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      const token = localStorage.getItem("token");
-      const decodedJWT = jwtDecode(token);
-      dispatch(loginSuccess(decodedJWT.user));
+    if (localStorage.getItem("token")){
+      const fetchToken = async () => {
+      const currentToken = localStorage.getItem("token")
+      const response = await fetch("https://faithhub-backend.fly.dev/auth/token", {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${currentToken}`
+        }
+      })
+      const result = await response.json()
+      localStorage.setItem("token", result.token)
+      const decodedToken = jwtDecode(result.token)
+      dispatch(loginSuccess(decodedToken.user))
     }
-    if (!localStorage.getItem("token")) {
-      navigate("/auth");
-    }
-  }, [dispatch, isLoggedIn, navigate]);
+  fetchToken()
+  }
+   if (!localStorage.getItem("token")){
+    navigate("/auth")
+   }
+  }, [dispatch, navigate, isLoggedIn]);
 
   return (
     <>
