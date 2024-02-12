@@ -25,7 +25,7 @@ export const settingsSlice = createSlice({
       state.success = true;
     },
     updateFailed(state, action) {
-      (state.isLoading = false), (state.errors = action.payload);
+      (state.isLoading = false), (state.errors = action.payload), (state.success = true);
     },
   },
 });

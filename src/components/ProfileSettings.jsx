@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import ErrorPage from "./ErrorPage";
 import { logoutSuccess, tokenRefresh } from "../reducers/auth";
 import Loading from "./Loading";
+import { Dialog } from '@headlessui/react'
+
 
 
 const ProfileSettings = () => {
@@ -23,6 +25,8 @@ const ProfileSettings = () => {
   const [currentPic, setCurrentPic] = useState();
   const [userInfo, setUserInfo] = useState();
   const [settingChange, setSettingChange] = useState([]);
+  const [errorPage, setErrorPage] = useState(false);
+  const [deleteDialog, setDeleteDialog] = useState(false)
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -33,8 +37,7 @@ const ProfileSettings = () => {
         const result = await response.json();
         setUserInfo(result.user);
       } catch (err) {
-        // TODO: Add error page if user not found
-        console.log(err);
+        setErrorPage(true)
       }
     };
     fetchUserInfo()
@@ -158,8 +161,7 @@ const ProfileSettings = () => {
       dispatch(updateSuccess());
 
     } catch (err) {
-      //TODO: Error handling
-      console.log(err);
+      setErrorPage(true)
     }
   };
 
@@ -179,20 +181,21 @@ const ProfileSettings = () => {
       localStorage.removeItem("token")
       dispatch(logoutSuccess());
     } catch (err) {
-      //TODO: Error handling
-      console.log(err);
+      setErrorPage(true)
     }
     
   };
 
   if (userInfo && user && user._id === id)
     return (
-      <div className="bg-gray-100 w-screen h-screen pt-[3.5rem]">
+  <>
+      <div className={`bg-gray-100 w-screen h-screen pt-[3.5rem] ${deleteDialog ?
+       " blur-sm": null}`}>
         <div
           className=" 
         ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-2/4
-         rounded-lg drop-shadow-md p-1 pb-8 lg:p-3 lg:pl-10 lg:pr-10 font-Rubik"
-        >
+         rounded-lg drop-shadow-md p-1 pb-8 lg:p-3 lg:pl-10 lg:pr-10 font-Rubik "
+         >
           <h2 className="text-2xl font-bold mb-2 text-center"> Settings </h2>
           <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
           <form onSubmit={handleUpdate} className="">
@@ -312,9 +315,10 @@ const ProfileSettings = () => {
             </div>
             <hr className="w-3/4 ml-auto mr-auto"></hr>
             <button
-              className="bg-red-500 text-white p-1 pl-6 pr-6 rounded-md 
+              type="button"
+              className="bg-red-600 text-white p-1 pl-6 pr-6 rounded-md 
         text-xl mt-5 block ml-auto mr-auto"
-              onClick={handleDelete}
+              onClick={() => setDeleteDialog(true)}
             >
               Delete account
             </button>
@@ -327,13 +331,38 @@ const ProfileSettings = () => {
               className=" bg-cyan-400 text-white
         p-1 pl-6 pr-6 rounded-md text-xl mt-3 block ml-auto mr-auto hover:cursor-pointer"
             ></input>}
+            
           </form>
         </div>
+    
       </div>
+      <Dialog open={deleteDialog} onClose={() => setDeleteDialog(false)}
+      className="absolute top-[30%] -translate-x-1/2 left-1/2 bg-white lg:w-1/3
+      rounded-lg drop-shadow-md p-1  font-Rubik text-center">
+  <Dialog.Panel>
+    <Dialog.Title className="font-bold  text-xl
+    mt-2 mb-2">Deactivate account</Dialog.Title>
+    <Dialog.Description className="font-bold mb-2">
+      This will permanently deactivate your account
+    </Dialog.Description>
+
+    <p className=" w-full ml-auto mr-auto mb-5">
+      Are you sure you want to deactivate your account? All of your data
+      will be permanently removed. This action cannot be undone.
+    </p>
+
+    <button onClick={() => {setDeleteDialog(false); handleDelete()}}
+    className=" bg-red-600 p-1 pl-3 pr-3 rounded-md text-lg text-white mr-3">
+      Delete</button>
+    <button onClick={() => setDeleteDialog(false)}
+    className="bg-gray-400 p-1 pl-3 pr-3 rounded-md text-lg text-white mr-3">Cancel</button>
+  </Dialog.Panel>
+</Dialog>
+</>
     );
 
 // If trying to access someone else's settings, show 404 page
- if(user && user._id !== id) return <ErrorPage />;
+ if(user && user._id !== id || errorPage) return <ErrorPage />;
 
  return (
   <Loading />
