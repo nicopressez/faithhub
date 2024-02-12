@@ -22,7 +22,7 @@ const ProfileSettings = () => {
 
   const [currentPic, setCurrentPic] = useState();
   const [userInfo, setUserInfo] = useState();
-  const [settingChange, setSettingChange] = useState(false);
+  const [settingChange, setSettingChange] = useState([]);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -54,11 +54,20 @@ const ProfileSettings = () => {
   const handleChange = (e) =>  {
     e.preventDefault()
     const { value, name} = e.target;
+    // The value is back to the original, remove from settingChange
     if (userInfo[name] === value){
-      setSettingChange(false)
+      if (settingChange.find(setting => setting === name))
+      { 
+      const updated = settingChange.filter(setting => setting !== name)
+      setSettingChange(updated)
+      }
       return;
     }
-    setSettingChange(true)
+    // Value isnt the same as original, add to settingChange
+    if(!settingChange.find(setting => setting === name)){
+    const addedChange = settingChange.concat(name)
+    setSettingChange(addedChange)
+    }
   }
 
   const handleUpdate = async (e) => {
@@ -311,7 +320,7 @@ const ProfileSettings = () => {
             </button>
 
             
-            {settingChange &&
+            {settingChange[0] &&
               <input
               type="Submit"
               value="Confirm settings"
