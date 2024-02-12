@@ -200,14 +200,14 @@ const ProfileSettings = () => {
          >
           <h2 className="text-2xl font-bold mb-2 text-center"> Settings </h2>
           <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
-          <form onSubmit={handleUpdate} className="">
+          <form onSubmit={handleUpdate} className="flex flex-col ">
             <label
               htmlFor="profile_picture"
-              className="group mb-5 w-20 h-20 md:w-32 md:h-32 ml-auto mr-auto rounded-full"
+              className="relative group w-20 h-20 lg:w-32 lg:h-32 ml-auto mr-auto rounded-full"
             >
               <img
                 src={uploadImg}
-                className="hidden w-16 absolute left-[290px] top-[115px] group-hover:block z-10
+                className="hidden w-16 absolute left-[50%] -translate-x-1/2 top-[20%] group-hover:block z-10
                 "
               ></img>
               <img

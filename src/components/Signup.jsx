@@ -257,16 +257,16 @@ const Signup = ({ toSignup, setToSignup }) => {
             >
               <label
                 htmlFor="profile_picture"
-                className="group w-20 h-20 lg:w-32 lg:h-32 ml-auto mr-auto rounded-full"
+                className=" relative group w-20 h-20 lg:w-32 lg:h-32 ml-auto mr-auto rounded-full"
               >
                 <img
                   src={uploadImg}
-                  className="hidden w-16 absolute left-[290px] top-[115px] group-hover:block z-10
+                  className="hidden w-16 absolute left-[50%] -translate-x-1/2 top-[20%] group-hover:block z-10
                 "
                 ></img>
                 <img
                   src={photo}
-                  className="group-hover:brightness-90 rounded-full object-cover w-20 h-20 lg:w-32 md:h-32
+                  className="group-hover:brightness-90 rounded-full object-cover w-20 h-20 md:w-32 md:h-32
                 ml-auto mr-auto"
                 ></img>
               </label>
