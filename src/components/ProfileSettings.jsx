@@ -17,11 +17,12 @@ const ProfileSettings = () => {
   const settings = useSelector((state) => state.settings);
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
-  const { isLoading, errors } = settings;
+  const { isLoading, errors, success } = settings;
   const dispatch = useDispatch();
 
   const [currentPic, setCurrentPic] = useState();
   const [userInfo, setUserInfo] = useState();
+  const [settingChange, setSettingChange] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -195,7 +196,8 @@ const ProfileSettings = () => {
               id="profile_picture"
               name="profile_picture"
               type="file"
-              onChange={onPicChange}
+              onChange={(e) => {setSettingChange(true)
+              onPicChange(e)}}
               className="
                  w-0 h-0 absolute"
             ></input>
@@ -203,12 +205,16 @@ const ProfileSettings = () => {
             {Object.keys(errors).map(
               (field, index) =>
                 errors[field] !== null && (
-                  <div key={index} className="text-red-500">
+                  <div key={index} className="text-red-600 text-center
+                  text-lg font-bold mt-2">
                     {errors[field]}
                   </div>
                 ),
             )}
-            <div className="grid grid-cols-2 mt-5">
+            {success && 
+            <h3 className=" text-cyan-500 text-center
+            text-lg font-bold mt-2">Profile updated successfully!</h3>}
+            <div className="grid grid-cols-2 mt-3">
               <div className="flex flex-col font-bold ml-10">
                 <label htmlFor="username" className="text-lg mb-2 p-1">
                   Username:{" "}
@@ -233,6 +239,7 @@ const ProfileSettings = () => {
                   type="text"
                   defaultValue={userInfo.username}
                   id="username"
+                  onChange={() => setSettingChange(true)}
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
                   placeholder="Required"
@@ -243,6 +250,7 @@ const ProfileSettings = () => {
                   type="text"
                   defaultValue={userInfo.first_name}
                   id="first_name"
+                  onChange={() => setSettingChange(true)}
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
                   placeholder="Required"
@@ -253,6 +261,7 @@ const ProfileSettings = () => {
                   type="text"
                   defaultValue={userInfo.last_name}
                   id="last_name"
+                  onChange={() => setSettingChange(true)}
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
                   placeholder="Required"
@@ -263,15 +272,18 @@ const ProfileSettings = () => {
                   type="text"
                   defaultValue={userInfo.bio}
                   placeholder="Optional"
+                  id="bio"
+                  onChange={() => setSettingChange(true)}
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
                 ></input>
 
-                <input
+                  <input
                   name="location"
                   type="text"
                   defaultValue={userInfo.location}
                   id="location"
+                  onChange={() => setSettingChange(true)}
                   placeholder="Optional"
                   className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
@@ -286,12 +298,15 @@ const ProfileSettings = () => {
             >
               Delete account
             </button>
-            <input
+
+            
+            {settingChange &&
+              <input
               type="Submit"
               value="Confirm settings"
               className=" bg-cyan-400 text-white
         p-1 pl-6 pr-6 rounded-md text-xl mt-3 block ml-auto mr-auto hover:cursor-pointer"
-            ></input>
+            ></input>}
           </form>
         </div>
       </div>

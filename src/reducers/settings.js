@@ -9,6 +9,7 @@ const initialState = {
     bio: null,
     location: null,
   },
+  success: false,
 };
 
 export const settingsSlice = createSlice({
@@ -17,9 +18,11 @@ export const settingsSlice = createSlice({
   reducers: {
     updateRequest(state) {
       state.isLoading = true;
+      state.success = false;
     },
     updateSuccess(state) {
       state.isLoading = false;
+      state.success = true;
     },
     updateFailed(state, action) {
       (state.isLoading = false), (state.errors = action.payload);

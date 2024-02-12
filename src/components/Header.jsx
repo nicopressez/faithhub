@@ -15,7 +15,7 @@ const Header = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const { isLoggedIn, user } = auth;
+  const { user } = auth;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
