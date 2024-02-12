@@ -195,15 +195,15 @@ const ProfileSettings = () => {
        " blur-sm": null}`}>
         <div
           className=" 
-        ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-2/4
-         rounded-lg drop-shadow-md p-1 pb-8 lg:p-3 lg:pl-10 lg:pr-10 font-Rubik "
+        ml-auto mr-auto mt-8 md:mt-20 bg-white md:w-2/4
+         rounded-lg drop-shadow-md p-1 pb-8 md:p-3 md:pl-10 md:pr-10 font-Rubik "
          >
           <h2 className="text-2xl font-bold mb-2 text-center"> Settings </h2>
           <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
           <form onSubmit={handleUpdate} className="">
             <label
               htmlFor="profile_picture"
-              className="group w-20 mb-5 h-20 lg:w-32 lg:h-32 ml-auto mr-auto rounded-full"
+              className="group mb-5 w-20 h-20 md:w-32 md:h-32 ml-auto mr-auto rounded-full"
             >
               <img
                 src={uploadImg}
@@ -212,7 +212,7 @@ const ProfileSettings = () => {
               ></img>
               <img
                 src={currentPic}
-                className="group-hover:brightness-90 rounded-full object-cover  w-20 h-20 lg:w-32 md:h-32
+                className="group-hover:brightness-90 rounded-full object-cover  w-20 h-20 md:w-32 md:h-32
                 ml-auto mr-auto"
               ></img>
             </label>
@@ -240,7 +240,7 @@ const ProfileSettings = () => {
             <h3 className=" text-cyan-500 text-center
             text-lg font-bold mt-2">Profile updated successfully!</h3>}
             <div className="grid grid-cols-2 mt-3">
-              <div className="flex flex-col font-bold ml-10">
+              <div className="flex flex-col font-bold md:ml-10">
                 <label htmlFor="username" className="text-lg mb-2 p-1">
                   Username:{" "}
                 </label>
@@ -339,7 +339,7 @@ const ProfileSettings = () => {
     
       </div>
       <Dialog open={deleteDialog} onClose={() => setDeleteDialog(false)}
-      className="absolute top-[30%] -translate-x-1/2 left-1/2 bg-white lg:w-1/3
+      className="absolute top-[25%] md:top-[30%] -translate-x-1/2 left-1/2 bg-white w-full md:w-1/3
       rounded-lg drop-shadow-md p-1  font-Rubik text-center">
   <Dialog.Panel>
     <Dialog.Title className="font-bold  text-xl
@@ -348,13 +348,13 @@ const ProfileSettings = () => {
       This will permanently deactivate your account
     </Dialog.Description>
 
-    <p className=" w-full ml-auto mr-auto mb-5">
+    <p className=" w-full ml-auto mr-auto mb-2 md:mb-3">
       Are you sure you want to deactivate your account? All of your data
       will be permanently removed. This action cannot be undone.
     </p>
 
     <button onClick={(e) => {setDeleteDialog(false); handleDelete(e)}}
-    className=" bg-red-600 p-1 pl-3 pr-3 rounded-md text-lg text-white mr-3">
+    className=" bg-red-600 p-1 pl-3 pr-3 mb-2 rounded-md text-lg text-white mr-3">
       Delete</button>
     <button onClick={() => setDeleteDialog(false)}
     className="bg-gray-400 p-1 pl-3 pr-3 rounded-md text-lg text-white mr-3">Cancel</button>

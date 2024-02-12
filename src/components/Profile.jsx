@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "./Loading";
 import ErrorPage from "./ErrorPage";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState();
@@ -35,13 +37,18 @@ const Profile = () => {
          rounded-lg drop-shadow-md p-1 pb-8 lg:p-3 font-Rubik"
         >
           <img
-            className=" ml-auto mr-auto w-32 h-32 rounded-full object-cover"
+            className="mt-3 mb-3 ml-auto mr-auto w-24 h-24 md:w-32 md:h-32 rounded-full object-cover"
             src={`https://faithhub-backend.fly.dev/${userInfo.profile_picture}`}
           />
-          <h2 className=" text-xl font-bold">
+          <h2 className=" text-2xl font-bold">
             {`${userInfo.first_name} ${userInfo.last_name}`}
           </h2>
-          <p>{userInfo.location}</p>
+          <p>
+          <FontAwesomeIcon icon={faLocationDot} className="text-gray-500
+           mr-1"/>
+          {userInfo.location}</p>
+          <p className="italic">{userInfo.bio}</p>
+      
         </div>
       </div>
     );
