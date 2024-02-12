@@ -145,7 +145,7 @@ const ProfileSettings = () => {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
+      await fetch(
         `https://faithhub-backend.fly.dev/profile/${id}/delete`,
         {
           method: "DELETE",

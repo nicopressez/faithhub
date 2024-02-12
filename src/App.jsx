@@ -2,24 +2,20 @@ import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "./reducers/auth";
+import { loginSuccess, logoutSuccess } from "./reducers/auth";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const auth = useSelector((state) => state.auth);
-
-  const { isLoggedIn } = auth;
-
   // Token refresh or redirect if no token
   useEffect(() => {
     if (localStorage.getItem("token")){
       const fetchToken = async () => {
-      const currentToken = localStorage.getItem("token")
+      try{
+        const currentToken = localStorage.getItem("token")
       const response = await fetch("https://faithhub-backend.fly.dev/auth/token", {
         method: "GET",
         headers: {
@@ -31,12 +27,18 @@ function App() {
       const decodedToken = jwtDecode(result.token)
       dispatch(loginSuccess(decodedToken.user))
     }
+  catch(err) {
+  // Invalid token, log out and clear token
+    localStorage.clear();
+    dispatch(logoutSuccess());
+  }
+  }  
   fetchToken()
   }
    if (!localStorage.getItem("token")){
     navigate("/auth")
    }
-  }, [dispatch, navigate, isLoggedIn]);
+  }, [dispatch, navigate]);
 
   return (
     <>
