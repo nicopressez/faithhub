@@ -4,12 +4,12 @@ import {
   updateRequest,
   updateFailed,
   updateSuccess,
-} from "../reducers/settings";
-import uploadImg from "../assets/upload.png";
+} from "../../reducers/settings";
+import uploadImg from "../../assets/upload.png";
 import { useEffect, useState } from "react";
-import ErrorPage from "./ErrorPage";
-import { logoutSuccess, tokenRefresh } from "../reducers/auth";
-import Loading from "./Loading";
+import ErrorPage from "../ErrorPage";
+import { logoutSuccess, tokenRefresh } from "../../reducers/auth";
+import Loading from "../Loading";
 import { Dialog } from '@headlessui/react'
 
 

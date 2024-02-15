@@ -109,7 +109,7 @@ const Header = () => {
                 {({ active }) => (
                   <a
                     className={`${active && "bg-gray-200"} pl-2`}
-                    href={`/profile/${user._id}/settings`}
+                    href={`/profile/${user._id}/settings/info`}
                   >
                     <FontAwesomeIcon icon={faGear} className="w-4 h-4 pr-2" />
                     Account settings

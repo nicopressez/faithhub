@@ -3,8 +3,10 @@ import App from "./App";
 import Auth from "./components/Auth";
 import Homepage from "./components/Homepage";
 import Profile from "./components/Profile";
-import ProfileSettings from "./components/ProfileSettings";
+import SettingsInfo from "./components/ProfileSettings/SettingsInfo";
 import ErrorPage from "./components/ErrorPage";
+import Preferences from "./components/ProfileSettings/Preferences";
+import Settings from "./components/ProfileSettings/Settings";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -25,7 +27,17 @@ const Router = () => {
           children: [
             {
               path: "/profile/:id/settings",
-              element: <ProfileSettings />,
+              element: <Settings />,
+              children: [
+                {
+                  path: "/profile/:id/settings/info",
+                  element: <SettingsInfo />,
+                },
+                {
+                  path: "/profile/:id/settings/preferences",
+                  element: <Preferences /> 
+                },
+              ]
             },
             {
               path: "/profile/:id",
