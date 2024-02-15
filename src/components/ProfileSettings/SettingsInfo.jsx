@@ -167,7 +167,6 @@ const ProfileSettings = () => {
     }
   };
 
-// TODO : Add confirm delete button
   const handleDelete = async (e) => {
     e.preventDefault();
     try {

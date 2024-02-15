@@ -1,6 +1,8 @@
 const Preferences = () => {
     return (
-        <h1>preferences</h1>
+        <div className="bg-white h-screen w-1/4">
+
+        </div>
     )
 }
 
