@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import Loading from "../Loading";
+import { tokenRefresh } from "../../reducers/auth";
 
 const Preferences = () => {
 
@@ -8,8 +9,31 @@ const Preferences = () => {
     const [submitToggle, setSubmitToggle] = useState(false)
 
     const auth = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
 
     const { user } = auth;
+
+    const handleCheckAll = (e) => {
+        e.preventDefault();
+        const form = e.target.form
+        for (let i = 0; i < form.elements.length; i++) {
+         const element = form.elements[i]
+         if (element.type === 'checkbox'){
+                 element.checked = true;
+             }
+        }
+    }
+
+    const handleClearAll = (e) => {
+        e.preventDefault()
+        const form = e.target.form
+        for (let i = 0; i < form.elements.length; i++) {
+         const element = form.elements[i]
+         if (element.type === 'checkbox'){
+                 element.checked = false;
+             }
+        }
+    }
 
     const checkChange = (e) => {
         // If the current form is different from initial one, toggle
@@ -27,6 +51,7 @@ const Preferences = () => {
 
     const handleSubmit = async(e) => {
         e.preventDefault()
+        setUpdated(false)
         const preferences = [];
         const token = localStorage.getItem("token")
         // Iterate through form and populate preferences
@@ -44,7 +69,10 @@ const Preferences = () => {
                 },
                 body: JSON.stringify(preferences),
             })
-            console.log(await response.json())
+            const result = await response.json()
+            // Update token and user info
+            localStorage.setItem("token", result.token)
+            dispatch(tokenRefresh(result.user))
             setUpdated(true);
         } catch(err) {
             // TODO: Add error handling
@@ -63,6 +91,8 @@ const Preferences = () => {
             <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
             <p className="text-center mb-2 italic">
             Customize your feed with posts tailored to your interests.
+            <br></br>
+            Change what you&apos;ll see on your homepage.
             </p>
             <form onSubmit={handleSubmit} 
             onChange={checkChange}
@@ -72,15 +102,17 @@ const Preferences = () => {
                 >Preferences updated successfully!</h3>}
                 <div className="grid grid-cols-2">
 
-                 <div className=" flex flex-col justify-center ml-[30%]">
+                 <div className=" flex flex-col justify-center ml-[30%] 
+                  font-bold gap-1">
                   <label htmlFor="prayer">Prayer requests</label>
                   <label htmlFor="discussion">Community discussions</label>
                   <label htmlFor="testimony">Testimonies</label>
                  </div>
 
-                 <div className=" flex flex-col gap-3 justify-center ml-[40%]">
+                 <div className=" flex flex-col gap-3 justify-center ml-[68%]">
                    <input type="checkbox" id="prayer"
                      name="Prayer Request" 
+                     className=" w-4 h-4"
                      defaultChecked={
                         user.preferences.find((pref) => pref === "Prayer Request") 
                         ? true
@@ -88,6 +120,7 @@ const Preferences = () => {
                      }/>
                    <input type="checkbox" id="discussion"
                      name="Discussion"
+                     className=" w-4 h-4"
                      defaultChecked={
                         user.preferences.find((pref) => pref === "Discussion") 
                         ? true
@@ -95,6 +128,7 @@ const Preferences = () => {
                      } />
                    <input type="checkbox" id="testimony"
                      name="Testimony"
+                     className=" w-4 h-4"
                      defaultChecked={
                         user.preferences.find((pref) => pref === "Testimony") 
                         ? true
@@ -105,10 +139,17 @@ const Preferences = () => {
 
                 </div>
 
+                <button type="button" onClick={handleClearAll}>Clear all</button>
+                <button type="button" onClick={handleCheckAll}>Check all</button>
+
+                <hr className="w-3/4 ml-auto mr-auto mt-3"></hr>
+
                 {submitToggle &&
-                    <input type="submit" value="Confirm"/>}
+                    <input type="submit" value="Confirm"
+                    className=" bg-cyan-400 text-white
+        p-1 pl-6 pr-6 rounded-md text-xl mt-3 block ml-auto mr-auto hover:cursor-pointer"/>}
             </form>
-            <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
+
 
          </div>
      </div>
