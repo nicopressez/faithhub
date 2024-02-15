@@ -1,10 +1,29 @@
+import { useState } from "react";
 import { useSelector } from "react-redux"
+import Loading from "../Loading";
 
 const Preferences = () => {
+
+    const [updated, setUpdated] = useState(false)
+    const [submitToggle, setSubmitToggle] = useState(false)
 
     const auth = useSelector((state) => state.auth)
 
     const { user } = auth;
+
+    const checkChange = (e) => {
+        // If the current form is different from initial one, toggle
+        // submit button
+        const form = e.target.form
+       for (let i = 0; i < form.elements.length; i++) {
+        const element = form.elements[i]
+        if (element.defaultChecked !== element.checked){
+            setSubmitToggle(true);
+            return;
+        }
+        setSubmitToggle(false)
+       }
+    }
 
     const handleSubmit = async(e) => {
         e.preventDefault()
@@ -26,6 +45,7 @@ const Preferences = () => {
                 body: JSON.stringify(preferences),
             })
             console.log(await response.json())
+            setUpdated(true);
         } catch(err) {
             // TODO: Add error handling
             console.log(err)
@@ -44,7 +64,12 @@ const Preferences = () => {
             <p className="text-center mb-2 italic">
             Customize your feed with posts tailored to your interests.
             </p>
-            <form onSubmit={handleSubmit} className="flex flex-col">
+            <form onSubmit={handleSubmit} 
+            onChange={checkChange}
+            className="flex flex-col">
+                {updated && 
+                <h3 className="text-center text-cyan-500 text-lg"
+                >Preferences updated successfully!</h3>}
                 <div className="grid grid-cols-2">
 
                  <div className=" flex flex-col justify-center ml-[30%]">
@@ -80,13 +105,18 @@ const Preferences = () => {
 
                 </div>
 
-                <input type="submit" value="Confirm"/>
+                {submitToggle &&
+                    <input type="submit" value="Confirm"/>}
             </form>
             <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
 
          </div>
      </div>
     )
+
+    return (
+        <Loading />
+      )
 }
 
 export default Preferences
