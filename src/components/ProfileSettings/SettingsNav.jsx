@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 import { logoutSuccess } from "../../reducers/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,11 +33,11 @@ const SettingsNav = () => {
                   backgroundColor: isActive ? "#F3F4F6" : "",
                 };
               }}
-              className={" pl-10 p-2 hover:bg-gray-100"}
+              className={" pl-10 p-2 hover:bg-[#FAFAFA]"}
             >
                 <FontAwesomeIcon
                     icon={faUser}
-                    className="w-4 h-4 pr-2 text-gray-500"
+                    className="w-4 h-4 pr-2 text-gray-600"
                 />
                 Account info
             </NavLink>
@@ -48,17 +48,17 @@ const SettingsNav = () => {
                   backgroundColor: isActive ? "#F3F4F6" : "",
                 };
               }}
-              className={" pl-10 p-2 hover:bg-gray-100"}>
+              className={" pl-10 p-2 hover:bg-[#FAFAFA]"}>
                 <FontAwesomeIcon
                     icon={faGear}
-                    className="w-4 h-4 pr-2 text-gray-500"
+                    className="w-4 h-4 pr-2 text-gray-600"
                 />
                 Preferences
             </NavLink>
             <div className="flex-grow"></div>
             <button
-                className=" text-red-500 text-left mb-5
-                 mb hover:bg-gray-100"
+                className=" text-red-600 text-left mb-5
+                  hover:bg-[#FAFAFA] p-2"
                 onClick={handleLogout}
                 >
                 <FontAwesomeIcon
