@@ -1,6 +1,4 @@
 import { NavLink } from "react-router-dom"
-import { useDispatch } from "react-redux";
-import { logoutSuccess } from "../../reducers/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays,
          faUsers,
@@ -13,7 +11,7 @@ const Nav = () => {
 
     return (
         <div className="bg-white h-[91%] w-1/6 fixed font-Rubik,
-        ml-5 mr-2 mt-[4.3rem] shadow-lg rounded-lg pt-5
+        ml-5 mr-2 mt-[4.3rem] shadow-xl rounded-lg pt-5
         flex flex-col gap-2 text-lg">
             <NavLink 
             to={"/home"}

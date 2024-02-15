@@ -190,7 +190,7 @@ const ProfileSettings = () => {
   if (userInfo && user && user._id === id)
     return (
   <>
-      <div className={`bg-gray-100 w-screen h-screen pt-[3.5rem] ${deleteDialog ?
+      <div className={`bg-gray-100 w-screen h-screen pt-[0.5rem] ${deleteDialog ?
        " blur-sm": null}`}>
         <div
           className=" 
