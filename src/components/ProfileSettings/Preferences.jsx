@@ -6,9 +6,30 @@ const Preferences = () => {
 
     const { user } = auth;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault()
-        console.log(user)
+        const preferences = [];
+        const token = localStorage.getItem("token")
+        // Iterate through form and populate preferences
+        Array.prototype.forEach.call(e.target.elements, (element) => {
+            if (element.checked) {
+                preferences.push(element.name)
+            }
+        })
+        try {
+            const response = await fetch(`https://faithhub-backend.fly.dev/profile/${user._id}/preferences`,{
+                method: "PATCH",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(preferences),
+            })
+            console.log(await response.json())
+        } catch(err) {
+            // TODO: Add error handling
+            console.log(err)
+        }
     }
 
     if (user) return (

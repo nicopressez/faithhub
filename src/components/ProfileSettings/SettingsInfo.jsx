@@ -362,7 +362,6 @@ const ProfileSettings = () => {
 </>
     );
 
-// If trying to access someone else's settings, show 404 page
  if(errorPage) return <ErrorPage />;
 
  return (
