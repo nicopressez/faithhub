@@ -197,7 +197,7 @@ const ProfileSettings = () => {
         ml-auto mr-auto mt-8 md:mt-20 bg-white md:w-2/4
          rounded-lg drop-shadow-md p-1 pb-8 md:p-3 md:pl-10 md:pr-10 font-Rubik "
          >
-          <h2 className="text-2xl font-bold mb-2 text-center"> Settings </h2>
+          <h2 className="text-2xl font-bold mb-2 text-center"> Account </h2>
           <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
           <form onSubmit={handleUpdate} className="flex flex-col ">
             <label

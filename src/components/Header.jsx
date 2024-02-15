@@ -97,7 +97,7 @@ const Header = () => {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    className={`${active && "bg-gray-200"} pl-2`}
+                    className={`${active && "bg-gray-100"} pl-2`}
                     href={`/profile/${user._id}`}
                   >
                     <FontAwesomeIcon icon={faUser} className="h-4 w-4 pr-2" />
@@ -108,7 +108,7 @@ const Header = () => {
               <Menu.Item>
                 {({ active }) => (
                   <a
-                    className={`${active && "bg-gray-200"} pl-2`}
+                    className={`${active && "bg-gray-100"} pl-2`}
                     href={`/profile/${user._id}/settings/info`}
                   >
                     <FontAwesomeIcon icon={faGear} className="w-4 h-4 pr-2" />
@@ -119,7 +119,7 @@ const Header = () => {
               <Menu.Item>
                 {({ active }) => (
                   <button
-                    className={`${active && "bg-gray-200"} text-red-500 pl-2 text-left`}
+                    className={`${active && "bg-gray-100"} text-red-500 pl-2 text-left`}
                     onClick={handleLogout}
                   >
                     <FontAwesomeIcon
