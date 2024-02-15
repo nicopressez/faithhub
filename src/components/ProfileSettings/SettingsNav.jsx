@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 import { logoutSuccess } from "../../reducers/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

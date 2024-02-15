@@ -1,12 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import Auth from "./components/Auth";
-import Homepage from "./components/Homepage";
+import Homepage from "./components/Main/Homepage";
 import Profile from "./components/Profile";
 import SettingsInfo from "./components/ProfileSettings/SettingsInfo";
 import ErrorPage from "./components/ErrorPage";
 import Preferences from "./components/ProfileSettings/Preferences";
 import Settings from "./components/ProfileSettings/Settings";
+import MainPage from "./components/Main/MainPage";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -16,7 +17,13 @@ const Router = () => {
       children: [
         {
           path: "/home",
-          element: <Homepage />,
+          element: <MainPage />,
+          children: [
+            {
+              index:true,
+              element: <Homepage />
+            }
+          ]
         },
         {
           path: "/auth",
