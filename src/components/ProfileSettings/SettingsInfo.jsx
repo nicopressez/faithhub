@@ -187,7 +187,7 @@ const ProfileSettings = () => {
     
   };
 
-  if (userInfo && user && user._id === id)
+  if (userInfo && user)
     return (
   <>
       <div className={`bg-gray-100 w-screen h-screen pt-[0.5rem] ${deleteDialog ?
@@ -363,7 +363,7 @@ const ProfileSettings = () => {
     );
 
 // If trying to access someone else's settings, show 404 page
- if(user && user._id !== id || errorPage) return <ErrorPage />;
+ if(errorPage) return <ErrorPage />;
 
  return (
   <Loading />
