@@ -8,7 +8,8 @@ import { Link } from "react-router-dom/dist";
 
 const Posts = () => {
 
-    const [allPosts, setAllPosts] = useState()
+    const [allPosts, setAllPosts] = useState([])
+    const [likedPosts, setLikedPosts] = useState()
     const auth = useSelector((state) => state.auth)
 
     const dispatch = useDispatch()
@@ -39,8 +40,51 @@ const Posts = () => {
         fetchPosts()
     },[dispatch])
 
+
+    useEffect(() => {
+        const postsUserLiked = [];
+        // Go through all posts likes and look for match with user id
+        allPosts.map(post => {
+            for (let i = 0; i < post.likes.length; i++) {
+                if (post.likes[i] === user._id){
+                    postsUserLiked.push(post._id)
+                }
+            }
+        })
+        setLikedPosts(postsUserLiked)
+    },[allPosts, user])
+
+    const handleLike = async(id) => {
+        try{
+            const response = await fetch(`https://faithhub-backend.fly.dev/post/${id}/like`, {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+        const result = await response.json()
+        // Refresh token
+        localStorage.setItem("token", result.token)
+
+        // Add/remove the post from likes state
+        console.log(result)
+        if (result.message === 'Like added'){
+            const updatedLikes = [...likedPosts, id]
+            setLikedPosts(updatedLikes)
+        }
+        if (result.message === 'Like removed'){
+            const updatedLikes = likedPosts.filter(postId => postId !== id )
+            setLikedPosts(updatedLikes)
+        }
+        console.log(likedPosts)
+    } catch(err) {
+        // TODO: Add error handling
+        console.log(err)
+    }
+    }
+
    
-    if (allPosts) return (
+    if (user && allPosts[0] && likedPosts) return (
     allPosts.map(post =>
         (
             <div key={post._id} className=" 
@@ -69,6 +113,7 @@ const Posts = () => {
                     {post.comments.length} comments</p>
                 <p className="">
                 <FontAwesomeIcon icon={faThumbsUp} 
+                onClick={() => handleLike(post._id)}
                 className="mr-1 text-cyan-400 w-5 h-5 hover:text-cyan-500
                 hover:cursor-pointer active:text-cyan-600"
                 />
