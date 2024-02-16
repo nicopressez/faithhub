@@ -10,9 +10,7 @@ import { useEffect, useState } from "react";
 import ErrorPage from "../ErrorPage";
 import { logoutSuccess, tokenRefresh } from "../../reducers/auth";
 import Loading from "../Loading";
-import { Dialog } from '@headlessui/react'
-
-
+import { Dialog } from "@headlessui/react";
 
 const ProfileSettings = () => {
   const { id } = useParams();
@@ -22,14 +20,14 @@ const ProfileSettings = () => {
   const { isLoading, errors, success } = settings;
 
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [currentPic, setCurrentPic] = useState();
   const [userInfo, setUserInfo] = useState();
   const [settingChange, setSettingChange] = useState([]);
   const [errorPage, setErrorPage] = useState(false);
-  const [deleteDialog, setDeleteDialog] = useState(false)
-  const [navVisible] = useOutletContext()
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [navVisible, isSmallDevice] = useOutletContext();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -40,41 +38,42 @@ const ProfileSettings = () => {
         const result = await response.json();
         setUserInfo(result.user);
       } catch (err) {
-        setErrorPage(true)
+        setErrorPage(true);
       }
     };
-    fetchUserInfo()
+    fetchUserInfo();
   }, [id]);
 
   useEffect(() => {
     if (userInfo && userInfo.profile_picture) {
-      setCurrentPic(`https://faithhub-backend.fly.dev/${userInfo.profile_picture}`);
+      setCurrentPic(
+        `https://faithhub-backend.fly.dev/${userInfo.profile_picture}`,
+      );
     }
-  }, [userInfo])
+  }, [userInfo]);
 
   const onPicChange = (e) => {
     setCurrentPic(URL.createObjectURL(e.target.files[0]));
   };
 
-// Toggle confirm settings button on change
-  const handleChange = (e) =>  {
-    e.preventDefault()
-    const { value, name} = e.target;
+  // Toggle confirm settings button on change
+  const handleChange = (e) => {
+    e.preventDefault();
+    const { value, name } = e.target;
     // The value is back to the original, remove from settingChange
-    if (userInfo[name] === value){
-      if (settingChange.find(setting => setting === name))
-      { 
-      const updated = settingChange.filter(setting => setting !== name)
-      setSettingChange(updated)
+    if (userInfo[name] === value) {
+      if (settingChange.find((setting) => setting === name)) {
+        const updated = settingChange.filter((setting) => setting !== name);
+        setSettingChange(updated);
       }
       return;
     }
     // Value isnt the same as original, add to settingChange
-    if(!settingChange.find(setting => setting === name)){
-    const addedChange = settingChange.concat(name)
-    setSettingChange(addedChange)
+    if (!settingChange.find((setting) => setting === name)) {
+      const addedChange = settingChange.concat(name);
+      setSettingChange(addedChange);
     }
-  }
+  };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
@@ -157,217 +156,239 @@ const ProfileSettings = () => {
           body: formData,
         },
       );
-      const result = await response.json()
+      const result = await response.json();
       // Update user info and token
-      dispatch(tokenRefresh(result.user))
-      localStorage.setItem("token", result.token)
+      dispatch(tokenRefresh(result.user));
+      localStorage.setItem("token", result.token);
       dispatch(updateSuccess());
-
     } catch (err) {
-      setErrorPage(true)
+      setErrorPage(true);
     }
   };
 
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      await fetch(
-        `https://faithhub-backend.fly.dev/profile/${id}/delete`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      await fetch(`https://faithhub-backend.fly.dev/profile/${id}/delete`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+      });
       dispatch(logoutSuccess());
       navigate("/auth");
     } catch (err) {
-      setErrorPage(true)
+      setErrorPage(true);
     }
-    
   };
 
   if (userInfo && user)
     return (
-  <>
-      <div className={`bg-gray-100 w-screen h-screen pt-[0.5rem] ${deleteDialog ?
-       " blur-sm": null} ${navVisible ? "brightness-75 blur-sm" : null}`}>
+      <>
         <div
-          className=" 
+          className={`bg-gray-100 w-screen h-screen pt-[0.5rem] ${
+            deleteDialog ? " blur-sm" : null
+          }
+        ${navVisible && isSmallDevice ? "brightness-75 blur-sm" : null}`}
+        >
+          <div
+            className=" 
         ml-auto mr-auto mt-[22%] md:mt-20 bg-white md:w-2/4
          rounded-lg drop-shadow-md p-1 pb-8 md:p-3 md:pl-10 md:pr-10 font-Rubik "
-         >
-          <h2 className="text-2xl font-bold mb-2 text-center"> Account </h2>
-          <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
-          <form onSubmit={handleUpdate} className="flex flex-col ">
-            <label
-              htmlFor="profile_picture"
-              className="relative group w-20 h-20 lg:w-32 lg:h-32 ml-auto mr-auto rounded-full"
-            >
-              <img
-                src={uploadImg}
-                className="hidden w-16 absolute left-[50%] -translate-x-1/2 top-[20%] group-hover:block z-10
+          >
+            <h2 className="text-2xl font-bold mb-2 text-center"> Account </h2>
+            <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
+            <form onSubmit={handleUpdate} className="flex flex-col ">
+              <label
+                htmlFor="profile_picture"
+                className="relative group w-20 h-20 lg:w-32 lg:h-32 ml-auto mr-auto rounded-full"
+              >
+                <img
+                  src={uploadImg}
+                  className="hidden w-16 absolute left-[50%] -translate-x-1/2 top-[20%] group-hover:block z-10
                 "
-              ></img>
-              <img
-                src={currentPic}
-                className="group-hover:brightness-90 rounded-full object-cover  w-20 h-20 md:w-32 md:h-32
+                ></img>
+                <img
+                  src={currentPic}
+                  className="group-hover:brightness-90 rounded-full object-cover  w-20 h-20 md:w-32 md:h-32
                 ml-auto mr-auto"
-              ></img>
-            </label>
+                ></img>
+              </label>
 
-            <input
-              id="profile_picture"
-              name="profile_picture"
-              type="file"
-              onChange={(e) => {handleChange(e);
-              onPicChange(e)}}
-              className="
+              <input
+                id="profile_picture"
+                name="profile_picture"
+                type="file"
+                onChange={(e) => {
+                  handleChange(e);
+                  onPicChange(e);
+                }}
+                className="
                  w-0 h-0 absolute"
-            ></input>
+              ></input>
 
-            {Object.keys(errors).map(
-              (field, index) =>
-                errors[field] !== null && (
-                  <div key={index} className="text-red-600 text-center
-                  text-lg font-bold mt-2">
-                    {errors[field]}
-                  </div>
-                ),
-            )}
-            {success && 
-            <h3 className=" text-cyan-500 text-center
-            text-lg font-bold mt-2">Profile updated successfully!</h3>}
-            <div className="grid grid-cols-2 mt-3">
-              <div className="flex flex-col font-bold md:ml-10">
-                <label htmlFor="username" className="text-lg mb-2 p-1">
-                  Username:{" "}
-                </label>
-                <label htmlFor="first_name" className="text-lg mb-2 p-1">
-                  First name:{" "}
-                </label>
-                <label htmlFor="last_name" className="text-lg mb-2 p-1">
-                  Last name:{" "}
-                </label>
-                <label htmlFor="bio" className="text-lg mb-2 p-1">
-                  Bio:{" "}
-                </label>
-                <label htmlFor="location" className="text-lg mb-2 p-1">
-                  Location:{" "}
-                </label>
-              </div>
+              {Object.keys(errors).map(
+                (field, index) =>
+                  errors[field] !== null && (
+                    <div
+                      key={index}
+                      className="text-red-600 text-center
+                  text-lg font-bold mt-2"
+                    >
+                      {errors[field]}
+                    </div>
+                  ),
+              )}
+              {success && (
+                <h3
+                  className=" text-cyan-500 text-center
+            text-lg font-bold mt-2"
+                >
+                  Profile updated successfully!
+                </h3>
+              )}
+              <div className="grid grid-cols-2 mt-3">
+                <div className="flex flex-col font-bold md:ml-10">
+                  <label htmlFor="username" className="text-lg mb-2 p-1">
+                    Username:{" "}
+                  </label>
+                  <label htmlFor="first_name" className="text-lg mb-2 p-1">
+                    First name:{" "}
+                  </label>
+                  <label htmlFor="last_name" className="text-lg mb-2 p-1">
+                    Last name:{" "}
+                  </label>
+                  <label htmlFor="bio" className="text-lg mb-2 p-1">
+                    Bio:{" "}
+                  </label>
+                  <label htmlFor="location" className="text-lg mb-2 p-1">
+                    Location:{" "}
+                  </label>
+                </div>
 
-              <div className="flex flex-col text-lg text-gray-800">
-                <input
-                  name="username"
-                  type="text"
-                  defaultValue={userInfo.username}
-                  id="username"
-                  onChange={handleChange}
-                  className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                <div className="flex flex-col text-lg text-gray-800">
+                  <input
+                    name="username"
+                    type="text"
+                    defaultValue={userInfo.username}
+                    id="username"
+                    onChange={handleChange}
+                    className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
-                  placeholder="Required"
-                ></input>
-
-                <input
-                  name="first_name"
-                  type="text"
-                  defaultValue={userInfo.first_name}
-                  id="first_name"
-                  onChange={handleChange}
-                  className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
-                  ${isLoading ? "brightness-95" : null}`}
-                  placeholder="Required"
-                ></input>
-
-                <input
-                  name="last_name"
-                  type="text"
-                  defaultValue={userInfo.last_name}
-                  id="last_name"
-                  onChange={handleChange}
-                  className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
-                  ${isLoading ? "brightness-95" : null}`}
-                  placeholder="Required"
-                ></input>
-
-                <input
-                  name="bio"
-                  type="text"
-                  defaultValue={userInfo.bio}
-                  placeholder="Optional"
-                  id="bio"
-                  onChange={handleChange}
-                  className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
-                  ${isLoading ? "brightness-95" : null}`}
-                ></input>
+                    placeholder="Required"
+                  ></input>
 
                   <input
-                  name="location"
-                  type="text"
-                  defaultValue={userInfo.location}
-                  id="location"
-                  onChange={handleChange}
-                  placeholder="Optional"
-                  className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                    name="first_name"
+                    type="text"
+                    defaultValue={userInfo.first_name}
+                    id="first_name"
+                    onChange={handleChange}
+                    className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
                   ${isLoading ? "brightness-95" : null}`}
-                ></input>
+                    placeholder="Required"
+                  ></input>
+
+                  <input
+                    name="last_name"
+                    type="text"
+                    defaultValue={userInfo.last_name}
+                    id="last_name"
+                    onChange={handleChange}
+                    className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
+                    placeholder="Required"
+                  ></input>
+
+                  <input
+                    name="bio"
+                    type="text"
+                    defaultValue={userInfo.bio}
+                    placeholder="Optional"
+                    id="bio"
+                    onChange={handleChange}
+                    className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
+                  ></input>
+
+                  <input
+                    name="location"
+                    type="text"
+                    defaultValue={userInfo.location}
+                    id="location"
+                    onChange={handleChange}
+                    placeholder="Optional"
+                    className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
+                  ></input>
+                </div>
               </div>
-            </div>
-            <hr className="w-3/4 ml-auto mr-auto"></hr>
-            <button
-              type="button"
-              className="bg-red-600 text-white p-1 pl-6 pr-6 rounded-md 
+              <hr className="w-3/4 ml-auto mr-auto"></hr>
+              <button
+                type="button"
+                className="bg-red-600 text-white p-1 pl-6 pr-6 rounded-md 
         text-xl mt-5 block ml-auto mr-auto"
-              onClick={() => setDeleteDialog(true)}
-            >
-              Delete account
-            </button>
+                onClick={() => setDeleteDialog(true)}
+              >
+                Delete account
+              </button>
 
-            
-            {settingChange[0] &&
-              <input
-              type="Submit"
-              value="Confirm settings"
-              className=" bg-cyan-400 text-white
+              {settingChange[0] && (
+                <input
+                  type="Submit"
+                  value="Confirm settings"
+                  className=" bg-cyan-400 text-white
         p-1 pl-6 pr-6 rounded-md text-xl mt-3 block ml-auto mr-auto hover:cursor-pointer"
-            ></input>}
-            
-          </form>
+                ></input>
+              )}
+            </form>
+          </div>
         </div>
-    
-      </div>
-      <Dialog open={deleteDialog} onClose={() => setDeleteDialog(false)}
-      className="absolute top-[25%] md:top-[30%] -translate-x-1/2 left-1/2 bg-white w-full md:w-1/3
-      rounded-lg drop-shadow-md p-1  font-Rubik text-center">
-  <Dialog.Panel>
-    <Dialog.Title className="font-bold  text-xl
-    mt-2 mb-2">Deactivate account</Dialog.Title>
-    <Dialog.Description className="font-bold mb-2">
-      This will permanently deactivate your account
-    </Dialog.Description>
+        <Dialog
+          open={deleteDialog}
+          onClose={() => setDeleteDialog(false)}
+          className="absolute top-[25%] md:top-[30%] -translate-x-1/2 left-1/2 bg-white w-full md:w-1/3
+      rounded-lg drop-shadow-md p-1  font-Rubik text-center"
+        >
+          <Dialog.Panel>
+            <Dialog.Title
+              className="font-bold  text-xl
+    mt-2 mb-2"
+            >
+              Deactivate account
+            </Dialog.Title>
+            <Dialog.Description className="font-bold mb-2">
+              This will permanently deactivate your account
+            </Dialog.Description>
 
-    <p className=" w-full ml-auto mr-auto mb-2 md:mb-3">
-      Are you sure you want to deactivate your account? All of your data
-      will be permanently removed. This action cannot be undone.
-    </p>
+            <p className=" w-full ml-auto mr-auto mb-2 md:mb-3">
+              Are you sure you want to deactivate your account? All of your data
+              will be permanently removed. This action cannot be undone.
+            </p>
 
-    <button onClick={(e) => {setDeleteDialog(false); handleDelete(e)}}
-    className=" bg-red-600 p-1 pl-3 pr-3 mb-2 rounded-md text-lg text-white mr-3">
-      Delete</button>
-    <button onClick={() => setDeleteDialog(false)}
-    className="bg-gray-400 p-1 pl-3 pr-3 rounded-md text-lg text-white mr-3">Cancel</button>
-  </Dialog.Panel>
-</Dialog>
-</>
+            <button
+              onClick={(e) => {
+                setDeleteDialog(false);
+                handleDelete(e);
+              }}
+              className=" bg-red-600 p-1 pl-3 pr-3 mb-2 rounded-md text-lg text-white mr-3"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => setDeleteDialog(false)}
+              className="bg-gray-400 p-1 pl-3 pr-3 rounded-md text-lg text-white mr-3"
+            >
+              Cancel
+            </button>
+          </Dialog.Panel>
+        </Dialog>
+      </>
     );
 
- if(errorPage) return <ErrorPage />;
+  if (errorPage) return <ErrorPage />;
 
- return (
-  <Loading />
-)
+  return <Loading />;
 };
 
 export default ProfileSettings;

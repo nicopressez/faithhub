@@ -7,7 +7,7 @@ import {
   faRightFromBracket,
   faUser,
   faMagnifyingGlass,
-  faBars
+  faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Transition } from "@headlessui/react";
 import { logoutSuccess } from "../reducers/auth";
@@ -18,13 +18,13 @@ import { toggleNavBar, hideNavBar } from "../reducers/sidenav";
 const Header = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { user } = auth;
 
   const handleLogout = () => {
-        dispatch(logoutSuccess());
-        navigate("/auth")
+    dispatch(logoutSuccess());
+    navigate("/auth");
   };
 
   if (!localStorage.getItem("token"))
@@ -48,11 +48,17 @@ const Header = () => {
         className="bg-white font-Rubik h-[3.5rem] drop-shadow 
     fixed top-0 w-screen z-50 flex flex-row items-center "
       >
-        <FontAwesomeIcon icon={faBars} className="ml-3 h-5 w-5
+        <FontAwesomeIcon
+          icon={faBars}
+          className="ml-3 h-5 w-5
          text-gray-600 visible md:hidden"
-         onClick={() => dispatch(toggleNavBar())}/>
-        <Link to={"/home"} className="flex"
-         onClick={() => dispatch(hideNavBar())}>
+          onClick={() => dispatch(toggleNavBar())}
+        />
+        <Link
+          to={"/home"}
+          className="flex"
+          onClick={() => dispatch(hideNavBar())}
+        >
           <h1
             className="text-lg ml-2  text-cyan-400 font-extrabold tracking-wide
           lg:text-3xl lg:ml-8 "
@@ -69,8 +75,10 @@ const Header = () => {
           ></input>
         </form>
         <div className="flex-grow"></div>
-        <FontAwesomeIcon icon={faMagnifyingGlass}
-        className="flex md:hidden mr-3 md:mr-6 w-6 h-6 text-cyan-400" />
+        <FontAwesomeIcon
+          icon={faMagnifyingGlass}
+          className="flex md:hidden mr-3 md:mr-6 w-6 h-6 text-cyan-400"
+        />
         <FontAwesomeIcon
           icon={faMessage}
           className=" mr-3 md:mr-6 w-6 h-6 text-cyan-400"
@@ -84,7 +92,10 @@ const Header = () => {
           <Menu.Button>
             <img
               className="w-9 h-9 mr-2 md:mr-6 md:w-11 md:h-11 rounded-full object-cover"
-              src={user && `https://faithhub-backend.fly.dev/${user.profile_picture}`}
+              src={
+                user &&
+                `https://faithhub-backend.fly.dev/${user.profile_picture}`
+              }
             />
           </Menu.Button>
           <Transition
@@ -106,8 +117,11 @@ const Header = () => {
                     className={`${active && "bg-gray-100"} pl-2`}
                     href={`/profile/${user._id}`}
                   >
-                    <FontAwesomeIcon icon={faUser} className="h-4 w-4 pr-2" 
-                    onClick={() => dispatch(hideNavBar())}/>
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      className="h-4 w-4 pr-2"
+                      onClick={() => dispatch(hideNavBar())}
+                    />
                     Profile
                   </a>
                 )}
@@ -118,8 +132,11 @@ const Header = () => {
                     className={`${active && "bg-gray-100"} pl-2`}
                     href={`/profile/${user._id}/settings/info`}
                   >
-                    <FontAwesomeIcon icon={faGear} className="w-4 h-4 pr-2" 
-                    onClick={() => dispatch(hideNavBar())}/>
+                    <FontAwesomeIcon
+                      icon={faGear}
+                      className="w-4 h-4 pr-2"
+                      onClick={() => dispatch(hideNavBar())}
+                    />
                     Account settings
                   </a>
                 )}

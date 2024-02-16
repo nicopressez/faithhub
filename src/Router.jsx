@@ -20,10 +20,10 @@ const Router = () => {
           element: <MainPage />,
           children: [
             {
-              index:true,
-              element: <Homepage />
-            }
-          ]
+              index: true,
+              element: <Homepage />,
+            },
+          ],
         },
         {
           path: "/auth",
@@ -42,9 +42,9 @@ const Router = () => {
                 },
                 {
                   path: "/profile/:id/settings/preferences",
-                  element: <Preferences /> 
+                  element: <Preferences />,
                 },
-              ]
+              ],
             },
             {
               path: "/profile/:id",
@@ -56,8 +56,8 @@ const Router = () => {
     },
     {
       path: "*",
-      element: <ErrorPage />
-    }
+      element: <ErrorPage />,
+    },
   ]);
   return <RouterProvider router={router} />;
 };

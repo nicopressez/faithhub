@@ -9,6 +9,6 @@ export const store = configureStore({
     auth: authReducer,
     signup: signupReducer,
     settings: settingsReducer,
-    sideNav: sideNavReducer
+    sideNav: sideNavReducer,
   },
 });

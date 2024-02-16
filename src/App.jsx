@@ -12,32 +12,34 @@ function App() {
 
   // Token refresh or redirect if no token
   useEffect(() => {
-    if (localStorage.getItem("token")){
+    if (localStorage.getItem("token")) {
       const fetchToken = async () => {
-      try{
-        const currentToken = localStorage.getItem("token")
-      const response = await fetch("https://faithhub-backend.fly.dev/auth/token", {
-        method: "GET",
-        headers: {
-          "Authorization": `Bearer ${currentToken}`
+        try {
+          const currentToken = localStorage.getItem("token");
+          const response = await fetch(
+            "https://faithhub-backend.fly.dev/auth/token",
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${currentToken}`,
+              },
+            },
+          );
+          const result = await response.json();
+          localStorage.setItem("token", result.token);
+          const decodedToken = jwtDecode(result.token);
+          dispatch(loginSuccess(decodedToken.user));
+        } catch (err) {
+          // Invalid token, log out and clear token
+          localStorage.clear();
+          dispatch(logoutSuccess());
         }
-      })
-      const result = await response.json()
-      localStorage.setItem("token", result.token)
-      const decodedToken = jwtDecode(result.token)
-      dispatch(loginSuccess(decodedToken.user))
+      };
+      fetchToken();
     }
-  catch(err) {
-  // Invalid token, log out and clear token
-    localStorage.clear();
-    dispatch(logoutSuccess());
-  }
-  }  
-  fetchToken()
-  }
-   if (!localStorage.getItem("token")){
-    navigate("/auth")
-   }
+    if (!localStorage.getItem("token")) {
+      navigate("/auth");
+    }
   }, [dispatch, navigate]);
 
   return (

@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState();
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
@@ -17,13 +17,12 @@ const Profile = () => {
           `https://faithhub-backend.fly.dev/profile/${id}`,
         );
         const result = await response.json();
-        if (result.status !== 200 ) {
-          setError(true)
+        if (result.status !== 200) {
+          setError(true);
         }
         setUserInfo(result.user);
-
       } catch (err) {
-        setError(true)
+        setError(true);
       }
     };
     fetchUserInfo();
@@ -44,23 +43,21 @@ const Profile = () => {
             {`${userInfo.first_name} ${userInfo.last_name}`}
           </h2>
           <p>
-          <FontAwesomeIcon icon={faLocationDot} className="text-gray-500
-           mr-1"/>
-          {userInfo.location}</p>
+            <FontAwesomeIcon
+              icon={faLocationDot}
+              className="text-gray-500
+           mr-1"
+            />
+            {userInfo.location}
+          </p>
           <p className="italic">{userInfo.bio}</p>
-      
         </div>
       </div>
     );
 
-      if(error) return (
-        <ErrorPage />
-        )
-      
+  if (error) return <ErrorPage />;
 
-    return (
-      <Loading />
-    )
+  return <Loading />;
 };
 
 export default Profile;
