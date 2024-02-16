@@ -84,15 +84,14 @@ const Preferences = () => {
         <div className="bg-gray-100 w-screen h-screen pt-[0.5rem]">
         <div
           className=" 
-        ml-auto mr-auto mt-8 md:mt-20 bg-white md:w-2/4
-         rounded-lg drop-shadow-md p-1 pb-8 md:p-3 md:pl-10 md:pr-10 font-Rubik "
+        ml-auto mr-auto mt-[22%] md:mt-20 bg-white md:w-2/4
+         rounded-lg drop-shadow-md p-1 pb-3 md:pb-5 md:p-3 md:pl-10 md:pr-10 font-Rubik "
          >
             <h2 className="text-2xl font-bold text-center"> Preferences </h2>
             <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
-            <p className="text-center mb-2 italic">
+            <p className="text-center mb-2 italic text-sm">
             Customize your feed with posts tailored to your interests.
             <br></br>
-            Change what you&apos;ll see on your homepage.
             </p>
             <form onSubmit={handleSubmit} 
             onChange={checkChange}
@@ -102,14 +101,14 @@ const Preferences = () => {
                 >Preferences updated successfully!</h3>}
                 <div className="grid grid-cols-2">
 
-                 <div className=" flex flex-col justify-center ml-[30%] 
-                  font-bold gap-1">
+                 <div className=" flex flex-col justify-center text-sm md:text-base ml-[10%] md:ml-[30%] 
+                  font-bold gap-2 md:gap-1">
                   <label htmlFor="prayer">Prayer requests</label>
                   <label htmlFor="discussion">Community discussions</label>
                   <label htmlFor="testimony">Testimonies</label>
                  </div>
 
-                 <div className=" flex flex-col gap-3 justify-center ml-[68%]">
+                 <div className=" flex flex-col gap-5 md:gap-3 justify-center ml-[80%] md:ml-[68%]">
                    <input type="checkbox" id="prayer"
                      name="Prayer Request" 
                      className=" w-4 h-4  accent-cyan-400"
@@ -128,7 +127,7 @@ const Preferences = () => {
                      } />
                    <input type="checkbox" id="testimony"
                      name="Testimony"
-                     className=" w-4 h-4 accent-cyan-400 text-white "
+                     className=" w-4 h-4 accent-cyan-400 "
                      defaultChecked={
                         user.preferences.find((pref) => pref === "Testimony") 
                         ? true
