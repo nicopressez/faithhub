@@ -112,7 +112,7 @@ const Preferences = () => {
                  <div className=" flex flex-col gap-3 justify-center ml-[68%]">
                    <input type="checkbox" id="prayer"
                      name="Prayer Request" 
-                     className=" w-4 h-4"
+                     className=" w-4 h-4  accent-cyan-400"
                      defaultChecked={
                         user.preferences.find((pref) => pref === "Prayer Request") 
                         ? true
@@ -120,7 +120,7 @@ const Preferences = () => {
                      }/>
                    <input type="checkbox" id="discussion"
                      name="Discussion"
-                     className=" w-4 h-4"
+                     className=" w-4 h-4 accent-cyan-400"
                      defaultChecked={
                         user.preferences.find((pref) => pref === "Discussion") 
                         ? true
@@ -128,7 +128,7 @@ const Preferences = () => {
                      } />
                    <input type="checkbox" id="testimony"
                      name="Testimony"
-                     className=" w-4 h-4"
+                     className=" w-4 h-4 accent-cyan-400 text-white "
                      defaultChecked={
                         user.preferences.find((pref) => pref === "Testimony") 
                         ? true
@@ -139,8 +139,16 @@ const Preferences = () => {
 
                 </div>
 
-                <button type="button" onClick={handleClearAll}>Clear all</button>
-                <button type="button" onClick={handleCheckAll}>Check all</button>
+                <div className="flex flex-row justify-center gap-4 mt-3">
+                <button type="button" 
+                onClick={(e) => {handleClearAll(e); checkChange(e)}}
+                className=" bg-gray-400 text-white w-1/4 rounded-md">
+                    Clear all</button>
+                <button type="button" 
+                onClick={(e) => {handleCheckAll(e); checkChange(e)}}
+                className=" bg-gray-400 text-white w-1/4 rounded-md">
+                    Check all</button>
+                </div>
 
                 <hr className="w-3/4 ml-auto mr-auto mt-3"></hr>
 
