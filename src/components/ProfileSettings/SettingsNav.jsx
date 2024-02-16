@@ -23,7 +23,7 @@ const SettingsNav = () => {
   };
 
     if (user) return (
-        <div className="bg-white h-[91%] w-1/6 fixed font-Rubik,
+        <div className="bg-white h-[91%] w-[15%] fixed font-Rubik,
         ml-5 mr-2 mt-[4.3rem] shadow-xl rounded-lg pt-5
         flex flex-col gap-2 text-lg">
             <NavLink 
@@ -33,7 +33,7 @@ const SettingsNav = () => {
                   backgroundColor: isActive ? "#F3F4F6" : "",
                 };
               }}
-              className={" pl-10 p-2 hover:bg-[#FAFAFA]"}
+              className={" pl-8 p-2 hover:bg-[#FAFAFA]"}
             >
                 <FontAwesomeIcon
                     icon={faUser}
@@ -48,7 +48,7 @@ const SettingsNav = () => {
                   backgroundColor: isActive ? "#F3F4F6" : "",
                 };
               }}
-              className={" pl-10 p-2 hover:bg-[#FAFAFA]"}>
+              className={" pl-8 p-2 hover:bg-[#FAFAFA]"}>
                 <FontAwesomeIcon
                     icon={faGear}
                     className="w-4 h-4 pr-2 text-gray-600"
@@ -63,7 +63,7 @@ const SettingsNav = () => {
                 >
                 <FontAwesomeIcon
                     icon={faRightFromBracket}
-                    className="w-4 h-4 pr-2 pl-10"
+                    className="w-4 h-4 pr-2 pl-8"
                 />
                 Log out
             </button>
