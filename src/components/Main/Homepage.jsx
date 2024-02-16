@@ -1,4 +1,5 @@
 import { useOutletContext } from "react-router-dom";
+import Posts from "./Posts";
 
 const Homepage = () => {
   const [navVisible, isSmallDevice] = useOutletContext();
@@ -7,7 +8,9 @@ const Homepage = () => {
     <div
       className={`bg-gray-100 w-screen h-screen pt-[0.5rem]
         ${navVisible && isSmallDevice ? "brightness-75 blur-sm" : null}`}
-    ></div>
+    >
+      <Posts />
+    </div>
   );
 };
 
