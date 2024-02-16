@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import Loading from "../Loading";
 import { tokenRefresh } from "../../reducers/auth";
+import { useOutletContext } from "react-router-dom";
 
 const Preferences = () => {
 
@@ -10,8 +11,9 @@ const Preferences = () => {
 
     const auth = useSelector((state) => state.auth)
     const dispatch = useDispatch()
-
     const { user } = auth;
+
+    const [navVisible] = useOutletContext()
 
     const handleCheckAll = (e) => {
         e.preventDefault();
@@ -81,7 +83,8 @@ const Preferences = () => {
     }
 
     if (user) return (
-        <div className="bg-gray-100 w-screen h-screen pt-[0.5rem]">
+        <div className={`bg-gray-100 w-screen h-screen pt-[0.5rem]
+        ${navVisible ? "brightness-75 blur-sm" : null}`}>
         <div
           className=" 
         ml-auto mr-auto mt-[22%] md:mt-20 bg-white md:w-2/4

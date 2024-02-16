@@ -4,7 +4,7 @@ import { faCalendarDays,
          faUsers,
          faChurch,
          faHouse } from "@fortawesome/free-solid-svg-icons";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useMediaQuery } from "@uidotdev/usehooks";
 
 
@@ -12,7 +12,6 @@ import { useMediaQuery } from "@uidotdev/usehooks";
 
 const Nav = () => {
 
-  const dispatch = useDispatch()
   const sideNav = useSelector((state) => state.sideNav)
 
 

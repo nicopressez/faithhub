@@ -11,8 +11,11 @@ export const sideNavSlice = createSlice({
         toggleNavBar(state){
             state.navVisible = !state.navVisible
         },
+        hideNavBar(state){
+            state.navVisible = false
+        },
     }
 })
 
-export const { toggleNavBar } = sideNavSlice.actions
+export const { toggleNavBar, hideNavBar } = sideNavSlice.actions
 export default sideNavSlice.reducer

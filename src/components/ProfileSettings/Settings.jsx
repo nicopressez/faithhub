@@ -9,11 +9,15 @@ const ProfileSettings = () => {
     const { id } = useParams()
 
     const auth = useSelector((state) => state.auth)
+    const sideNav = useSelector((state) => state.sideNav)
+
     const { user } = auth
+    const { navVisible } = sideNav
+
     if (user && user._id === id) return (
         <>
         <SettingsNav />
-        <Outlet />
+        <Outlet context={[navVisible]}/>
         </>
     )
 

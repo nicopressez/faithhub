@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useOutletContext } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateRequest,
@@ -29,6 +29,7 @@ const ProfileSettings = () => {
   const [settingChange, setSettingChange] = useState([]);
   const [errorPage, setErrorPage] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false)
+  const [navVisible] = useOutletContext()
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -191,7 +192,7 @@ const ProfileSettings = () => {
     return (
   <>
       <div className={`bg-gray-100 w-screen h-screen pt-[0.5rem] ${deleteDialog ?
-       " blur-sm": null}`}>
+       " blur-sm": null} ${navVisible ? "brightness-75 blur-sm" : null}`}>
         <div
           className=" 
         ml-auto mr-auto mt-[22%] md:mt-20 bg-white md:w-2/4

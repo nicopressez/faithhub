@@ -13,11 +13,10 @@ import { Menu, Transition } from "@headlessui/react";
 import { logoutSuccess } from "../reducers/auth";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { toggleNavBar } from "../reducers/sidenav";
+import { toggleNavBar, hideNavBar } from "../reducers/sidenav";
 
 const Header = () => {
   const auth = useSelector((state) => state.auth);
-  const sideNav = useSelector((state) => state.sideNav)
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
@@ -52,7 +51,8 @@ const Header = () => {
         <FontAwesomeIcon icon={faBars} className="ml-3 h-5 w-5
          text-gray-600 visible md:hidden"
          onClick={() => dispatch(toggleNavBar())}/>
-        <Link to={"/home"} className="flex">
+        <Link to={"/home"} className="flex"
+         onClick={() => dispatch(hideNavBar())}>
           <h1
             className="text-lg ml-2  text-cyan-400 font-extrabold tracking-wide
           lg:text-3xl lg:ml-8 "
@@ -106,7 +106,8 @@ const Header = () => {
                     className={`${active && "bg-gray-100"} pl-2`}
                     href={`/profile/${user._id}`}
                   >
-                    <FontAwesomeIcon icon={faUser} className="h-4 w-4 pr-2" />
+                    <FontAwesomeIcon icon={faUser} className="h-4 w-4 pr-2" 
+                    onClick={() => dispatch(hideNavBar())}/>
                     Profile
                   </a>
                 )}
@@ -117,7 +118,8 @@ const Header = () => {
                     className={`${active && "bg-gray-100"} pl-2`}
                     href={`/profile/${user._id}/settings/info`}
                   >
-                    <FontAwesomeIcon icon={faGear} className="w-4 h-4 pr-2" />
+                    <FontAwesomeIcon icon={faGear} className="w-4 h-4 pr-2" 
+                    onClick={() => dispatch(hideNavBar())}/>
                     Account settings
                   </a>
                 )}
@@ -131,6 +133,7 @@ const Header = () => {
                     <FontAwesomeIcon
                       icon={faRightFromBracket}
                       className="w-4 h-4 pr-2"
+                      onClick={() => dispatch(hideNavBar())}
                     />
                     Log out
                   </button>
