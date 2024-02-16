@@ -4,12 +4,31 @@ import { faCalendarDays,
          faUsers,
          faChurch,
          faHouse } from "@fortawesome/free-solid-svg-icons";
+import { useSelector, useDispatch } from "react-redux";
+import { useMediaQuery } from "@uidotdev/usehooks";
+
 
 
 
 const Nav = () => {
 
-    return (
+  const dispatch = useDispatch()
+  const sideNav = useSelector((state) => state.sideNav)
+
+
+// Get device sizes to adjust the navbar logic for phones
+ const isSmallDevice = useMediaQuery(
+  "only screen and (max-width : 768px)");
+  const isMediumDevice = useMediaQuery(
+    "only screen and (min-width : 769px) and (max-width : 992px)"
+  )
+
+
+  const { navVisible } = sideNav
+
+    if ((isSmallDevice || isMediumDevice) && navVisible
+     || !isSmallDevice && !isMediumDevice ) 
+     return (
         <div className="h-[38rem] p-2 mt-[3.5rem] gap-1
         bg-white md:h-[91%] md:w-[15%] fixed font-Rubik,
         md:ml-5 md:mr-2 md:mt-[4.3rem] shadow-xl rounded-lg md:pt-5

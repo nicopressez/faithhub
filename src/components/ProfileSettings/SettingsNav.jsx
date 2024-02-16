@@ -6,23 +6,32 @@ import { faRightFromBracket,
          faGear,
          faUser } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 
 
 const SettingsNav = () => {
 
     const auth = useSelector((state) => state.auth);
+    const sideNav = useSelector((state) => state.sideNav)
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
     const { user } = auth;
+    const { navVisible } = sideNav
+
+    // Get device size to adjust the navbar logic for phones
+ const isSmallDevice = useMediaQuery(
+  "only screen and (max-width : 768px)");
 
     const handleLogout = () => {
         dispatch(logoutSuccess());
         navigate("/auth")
   };
 
-    if (user) return (
+    if (isSmallDevice && user && navVisible
+    || !isSmallDevice  && user) 
+    return (
         <div className="h-[38rem] p-2 mt-[3.5rem] gap-1
         bg-white md:h-[91%] md:w-[15%] fixed font-Rubik
         md:ml-5 md:mr-2 md:mt-[4.3rem] shadow-xl md:rounded-lg md:pt-5

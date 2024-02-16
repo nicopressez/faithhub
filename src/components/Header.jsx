@@ -6,15 +6,18 @@ import {
   faGear,
   faRightFromBracket,
   faUser,
-  faMagnifyingGlass
+  faMagnifyingGlass,
+  faBars
 } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Transition } from "@headlessui/react";
 import { logoutSuccess } from "../reducers/auth";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { toggleNavBar } from "../reducers/sidenav";
 
 const Header = () => {
   const auth = useSelector((state) => state.auth);
+  const sideNav = useSelector((state) => state.sideNav)
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
@@ -33,7 +36,7 @@ const Header = () => {
       >
         <h1
           className=" text-cyan-400 font-bold tracking-wide
-         text-2xl lg:text-4xl text-center pt-3 lg:pt-[0.4rem]"
+         text-2xl md:text-4xl text-center pt-3 md:pt-[0.4rem]"
         >
           FaithHub
         </h1>
@@ -46,9 +49,12 @@ const Header = () => {
         className="bg-white font-Rubik h-[3.5rem] drop-shadow 
     fixed top-0 w-screen z-50 flex flex-row items-center "
       >
+        <FontAwesomeIcon icon={faBars} className="ml-3 h-5 w-5
+         text-gray-600 visible md:hidden"
+         onClick={() => dispatch(toggleNavBar())}/>
         <Link to={"/home"} className="flex">
           <h1
-            className=" text-xl ml-3  text-cyan-400 font-extrabold tracking-wide
+            className="text-lg ml-2  text-cyan-400 font-extrabold tracking-wide
           lg:text-3xl lg:ml-8 "
           >
             FaithHub
@@ -64,10 +70,10 @@ const Header = () => {
         </form>
         <div className="flex-grow"></div>
         <FontAwesomeIcon icon={faMagnifyingGlass}
-        className="flex md:hidden mr-4 md:mr-6 w-6 h-6 text-cyan-400" />
+        className="flex md:hidden mr-3 md:mr-6 w-6 h-6 text-cyan-400" />
         <FontAwesomeIcon
           icon={faMessage}
-          className=" mr-4 md:mr-6 w-6 h-6 text-cyan-400"
+          className=" mr-3 md:mr-6 w-6 h-6 text-cyan-400"
         />
         <FontAwesomeIcon
           icon={faBell}
@@ -77,7 +83,7 @@ const Header = () => {
         <Menu as="div" className="relative">
           <Menu.Button>
             <img
-              className="w-9 h-9 mr-4 md:mr-6 md:w-11 md:h-11 rounded-full object-cover"
+              className="w-9 h-9 mr-2 md:mr-6 md:w-11 md:h-11 rounded-full object-cover"
               src={user && `https://faithhub-backend.fly.dev/${user.profile_picture}`}
             />
           </Menu.Button>
