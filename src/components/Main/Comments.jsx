@@ -101,9 +101,10 @@ const Comments = ({ postid }) => {
 
 // Return top 2 comments
 if (user && topComments[0] && !showAll) 
-return topComments.map( comment => 
-    (
-    <div key={comment._id} className="relative mb-5">
+return (
+  <div>
+{topComments.map( comment => 
+    (<div key={comment._id} className="relative mb-5">
         <div className="bg-gray-50 rounded-lg p-2">
         <Link to={`/profile/${comment.author._id}`}>
           <div>
@@ -135,20 +136,22 @@ return topComments.map( comment =>
           <span className="text-sm">{comment.likes.length}</span>
         </div>
         </div>
-        {topComments[1] && 
-        <button className="absolute left-1/2 -translate-x-1/2 mt-1
+        
+    </div>)
+)}
+{topComments[1] && 
+        <button className="relative left-1/2 -translate-x-1/2 mt-1
         hover:underline text-cyan-400 hover:text-cyan-500"
         onClick={handleShowAll}>
             Show all
         </button>}
-        
-    </div>)
+</div>
 )
-
 if (user && allComments && showAll)
-return allComments.map( comment => 
+return (<div>
+{allComments.map( comment => 
     (
-    <div key={comment._id} className="relative">
+    <div key={comment._id} className="relative mb-5">
         <div className="bg-gray-50 rounded-lg p-2">
         <Link to={`/profile/${comment.author._id}`}>
           <div>
@@ -181,11 +184,13 @@ return allComments.map( comment =>
         </div>
 
         </div>
-        <button className="absolute left-1/2 -translate-x-1/2 mt-1
+    </div>)
+)}
+<button className="relative left-1/2 -translate-x-1/2 
         hover:underline text-cyan-400 hover:text-cyan-500"
         onClick={() => setShowAll(false)}>
             Show less</button>
-    </div>)
+</div>
 )
 
 if(errors) return (
