@@ -11,17 +11,20 @@ const TopComments = ({ postid }) => {
     const auth = useSelector((state) => state.auth);
     const { user } = auth;
 
-    const [topComments, setComments] = useState([])
+    const [topComments, setTopComments] = useState([])
+    const [allComments, setAllComments] = useState([])
+    const [showAll, setShowAll] = useState(false)
     const [likedComments, setLikedComments] = useState()
+    const [errors, setErrors] = useState(false)
 
     useEffect(() => {
         const fetchTopComments = async() => {
           try{
             const response = await fetch(`https://faithhub-backend.fly.dev/post/${postid}/topcomments`)
             const data = await response.json()
-            setComments(data.comments)
+            setTopComments(data.comments)
           } catch(err) {
-            console.log(err)
+            setErrors(true)
           }
         }
         fetchTopComments()
@@ -56,7 +59,7 @@ const TopComments = ({ postid }) => {
           // Refresh token
           localStorage.setItem("token", result.token);
     
-          // Add/remove the post from liked
+          // Add/remove the comment from liked
         if (result.message === "Like added") {
           const updatedLikes = [...likedComments, id];
           setLikedComments(updatedLikes);
@@ -67,7 +70,7 @@ const TopComments = ({ postid }) => {
         }
     
           // Update likes count
-          setComments(allComments => allComments.map(comment => {
+          setTopComments(allComments => allComments.map(comment => {
             if (comment._id === id) {
               return {
                 ...comment,
@@ -80,17 +83,28 @@ const TopComments = ({ postid }) => {
           }))
     
         } catch (err) {
-          // TODO: Add error handling
-          console.log(err);
+          setErrors(true)
         }
       };
 
+      const handleShowAll = async(e) => {
+        e.preventDefault()
+        try {
+            const response = await fetch(`https://faithhub-backend.fly.dev/post/${postid}/comments`)
+            const data = await response.json()
+            setAllComments(data.comments)
+            setShowAll(true)
+        } catch(err) {
+            setErrors(true)
+        }
+      }
+
 // Return top 2 comments
-if (user && topComments[0]) 
+if (user && topComments[0] && !showAll) 
 return topComments.map( comment => 
     (
-    <div key={comment._id} className="bg-gray-50 rounded-lg p-2">
-        <div>
+    <div key={comment._id} className="relative">
+        <div className="bg-gray-50 rounded-lg p-2">
         <Link to={`/profile/${comment.author._id}`}>
           <div>
             <img
@@ -121,7 +135,61 @@ return topComments.map( comment =>
           <span className="text-sm">{comment.likes.length}</span>
         </div>
         </div>
+        {topComments[1] && 
+        <button className="absolute left-1/2 -translate-x-1/2 mt-1
+        hover:underline text-cyan-400 hover:text-cyan-500"
+        onClick={handleShowAll}>
+            Show all
+        </button>}
+        
     </div>)
+)
+
+if (user && allComments && showAll)
+return allComments.map( comment => 
+    (
+    <div key={comment._id} className="relative">
+        <div className="bg-gray-50 rounded-lg p-2">
+        <Link to={`/profile/${comment.author._id}`}>
+          <div>
+            <img
+              className=" float-left
+                     w-9 h-9 mr-2 md:mr-3 md:w-8 md:h-8 rounded-full object-cover"
+              src={`https://faithhub-backend.fly.dev/${comment.author.profile_picture}`}
+            />
+            <p className=" text-gray-800">
+              {comment.author.first_name} {comment.author.last_name}
+            </p>
+          </div>
+        </Link>
+        <p className="mb-1">{comment.content}</p>
+        <Moment fromNow className=" text-sm  italic" date={comment.date}></Moment>
+        <div className="float-right">
+          <FontAwesomeIcon
+            icon={faThumbsUp}
+            onClick={(e) => handleLike(e,comment._id)}
+            className={`
+                mr-1  w-4 h-4 hover:text-cyan-500
+                hover:cursor-pointer active:text-cyan-600
+                ${
+                  likedComments.some((id) => comment._id === id)
+                    ? "text-cyan-600"
+                    : "text-cyan-400"
+                }`}
+          />
+          <span className="text-sm">{comment.likes.length}</span>
+        </div>
+
+        </div>
+        <button className="absolute left-1/2 -translate-x-1/2 mt-1
+        hover:underline text-cyan-400 hover:text-cyan-500"
+        onClick={() => setShowAll(false)}>
+            Show less</button>
+    </div>)
+)
+
+if(errors) return (
+    <p className="text-center text-gray-300 italic">There was an error loading comments</p>
 )
 
 return (
