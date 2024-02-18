@@ -5,6 +5,7 @@ import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom/dist";
+import TopComments from "./TopComments";
 
 const Posts = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -144,6 +145,7 @@ const Posts = () => {
                 }`}
           />
           <span>{post.likes.length}</span>
+          <TopComments postid={post._id}/>
         </div>
       </div>
     ));
