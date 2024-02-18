@@ -113,7 +113,7 @@ const Posts = () => {
           <div>
             <img
               className=" float-left
-                     w-9 h-9 mr-2 md:mr-6 md:w-11 md:h-11 rounded-full object-cover"
+                     w-9 h-9 mr-2 md:mr-4 md:w-11 md:h-11 rounded-full object-cover"
               src={`https://faithhub-backend.fly.dev/${post.author.profile_picture}`}
             />
             <p className="float-right">{post.type}</p>
@@ -123,13 +123,14 @@ const Posts = () => {
           </div>
         </Link>
         <Moment fromNow className="  italic" date={post.date}></Moment>
-        <hr className="mt-1 mb-1 w-[90%] ml-auto mr-auto"></hr>
+        
         <p className="mb-4 mt-2">{post.content}</p>
         <p
           className="float-right text-cyan-400 hover:text-cyan-500
                 hover:underline"
         >
-          {post.comments.length} comments
+          {post.comments.length} 
+          {post.comments.length == 1 ? " comment" : " comments"}
         </p>
         <div>
           <FontAwesomeIcon
@@ -145,7 +146,8 @@ const Posts = () => {
                 }`}
           />
           <span>{post.likes.length}</span>
-          <div>
+          <hr className="mt-2 w-[90%] ml-auto mr-auto"></hr>
+          <div className="p-4">
           <TopComments postid={post._id}/>
           </div>
         </div>

@@ -11,7 +11,7 @@ const TopComments = ({ postid }) => {
     const auth = useSelector((state) => state.auth);
     const { user } = auth;
 
-    const [comments, setComments] = useState([])
+    const [topComments, setComments] = useState([])
     const [likedComments, setLikedComments] = useState()
 
     useEffect(() => {
@@ -20,7 +20,6 @@ const TopComments = ({ postid }) => {
             const response = await fetch(`https://faithhub-backend.fly.dev/post/${postid}/topcomments`)
             const data = await response.json()
             setComments(data.comments)
-            console.log(data)
           } catch(err) {
             console.log(err)
           }
@@ -31,7 +30,7 @@ const TopComments = ({ postid }) => {
     useEffect(() => {
         const commentsUserLiked = [];
         // Go through all posts likes and look for match with user id
-        comments.map((comment) => {
+        topComments.map((comment) => {
           for (let i = 0; i < comment.likes.length; i++) {
             if (comment.likes[i] === user._id) {
               commentsUserLiked.push(comment._id);
@@ -39,7 +38,7 @@ const TopComments = ({ postid }) => {
           }
         });
         setLikedComments(commentsUserLiked);
-      }, [comments, user]);
+      }, [topComments, user]);
     
       const handleLike = async (e,id) => {
         try {
@@ -86,33 +85,32 @@ const TopComments = ({ postid }) => {
         }
       };
 
-// Return comments
-if (user && comments[0]) 
-return comments.map( comment => 
+// Return top 2 comments
+if (user && topComments[0]) 
+return topComments.map( comment => 
     (
-    <div key={comment._id}>
+    <div key={comment._id} className="bg-gray-50 rounded-lg p-2">
         <div>
         <Link to={`/profile/${comment.author._id}`}>
           <div>
             <img
               className=" float-left
-                     w-9 h-9 mr-2 md:mr-6 md:w-11 md:h-11 rounded-full object-cover"
+                     w-9 h-9 mr-2 md:mr-3 md:w-8 md:h-8 rounded-full object-cover"
               src={`https://faithhub-backend.fly.dev/${comment.author.profile_picture}`}
             />
-            <p className="font-bold">
+            <p className=" text-gray-800">
               {comment.author.first_name} {comment.author.last_name}
             </p>
           </div>
         </Link>
-        <Moment fromNow className="  italic" date={comment.date}></Moment>
-        <hr className="mt-1 mb-1 w-[90%] ml-auto mr-auto"></hr>
-        <p className="mb-4 mt-2">{comment.content}</p>
-        <div>
+        <p className="mb-1">{comment.content}</p>
+        <Moment fromNow className=" text-sm  italic" date={comment.date}></Moment>
+        <div className="float-right">
           <FontAwesomeIcon
             icon={faThumbsUp}
             onClick={(e) => handleLike(e,comment._id)}
             className={`
-                mr-1  w-5 h-5 hover:text-cyan-500
+                mr-1  w-4 h-4 hover:text-cyan-500
                 hover:cursor-pointer active:text-cyan-600
                 ${
                   likedComments.some((id) => comment._id === id)
@@ -120,13 +118,15 @@ return comments.map( comment =>
                     : "text-cyan-400"
                 }`}
           />
-          <span>{comment.likes.length}</span>
+          <span className="text-sm">{comment.likes.length}</span>
         </div>
         </div>
     </div>)
 )
 
-// TODO: Add return if no comments yet
+return (
+    <p className="text-center text-gray-300 italic">No comments yet</p>
+)
     }
 
 
