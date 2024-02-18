@@ -9,7 +9,6 @@ import { Link } from "react-router-dom/dist";
 const Posts = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState();
-  const [toggledLikes, setToggledLikes] = useState([]);
   const auth = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
@@ -56,7 +55,7 @@ const Posts = () => {
     setLikedPosts(postsUserLiked);
   }, [allPosts, user]);
 
-  const handleLike = async (id) => {
+  const handleLike = async (e,id) => {
     try {
       const response = await fetch(
         `https://faithhub-backend.fly.dev/post/${id}/like`,
@@ -68,22 +67,33 @@ const Posts = () => {
         },
       );
       const result = await response.json();
+      
       // Refresh token
-      console.log(result);
       localStorage.setItem("token", result.token);
-      // Add/remove the post from likes state
-      if (result.message === "Like added") {
-        const updatedLikes = [...likedPosts, id];
-        setLikedPosts(updatedLikes);
-      }
-      if (result.message === "Like removed") {
-        const updatedLikes = likedPosts.filter((postId) => postId !== id);
-        setLikedPosts(updatedLikes);
-      }
-      setToggledLikes((prevToggledLikes) => [
-        ...prevToggledLikes,
-        { id, action: result.message },
-      ]);
+
+      // Add/remove the post from liked
+    if (result.message === "Like added") {
+      const updatedLikes = [...likedPosts, id];
+      setLikedPosts(updatedLikes);
+    }
+    if (result.message === "Like removed") {
+      const updatedLikes = likedPosts.filter((postId) => postId !== id);
+      setLikedPosts(updatedLikes);
+    }
+
+      // Update likes count
+      setAllPosts(allPosts => allPosts.map(post => {
+        if (post._id === id) {
+          return {
+            ...post,
+            likes: result.message === "Like added" 
+            ?[...post.likes, user._id] 
+            : post.likes.filter(id => id!== user._id)
+          }
+        }
+        return post
+      }))
+
     } catch (err) {
       // TODO: Add error handling
       console.log(err);
@@ -91,7 +101,7 @@ const Posts = () => {
   };
 
   if (user && allPosts[0] && likedPosts)
-    return allPosts.map((post) => (
+ return allPosts.map((post) => (
       <div
         key={post._id}
         className=" 
@@ -120,10 +130,10 @@ const Posts = () => {
         >
           {post.comments.length} comments
         </p>
-        <p className="">
+        <div>
           <FontAwesomeIcon
             icon={faThumbsUp}
-            onClick={() => handleLike(post._id)}
+            onClick={(e) => handleLike(e,post._id)}
             className={`
                 mr-1  w-5 h-5 hover:text-cyan-500
                 hover:cursor-pointer active:text-cyan-600
@@ -133,16 +143,8 @@ const Posts = () => {
                     : "text-cyan-400"
                 }`}
           />
-          {toggledLikes.some((item) => item.id === post._id)
-            ? toggledLikes.find((item) => item.id === post._id).action ===
-              "Like removed"
-              ? post.likes.length - 1
-              : toggledLikes.find((item) => item.id === post._id).action ===
-                  "Like added"
-                ? post.likes.length + 1
-                : ""
-            : post.likes.length}
-        </p>
+          <span>{post.likes.length}</span>
+        </div>
       </div>
     ));
 };
