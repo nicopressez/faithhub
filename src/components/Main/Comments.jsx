@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 
-const TopComments = ({ postid }) => {
+const Comments = ({ postid }) => {
 
     const auth = useSelector((state) => state.auth);
     const { user } = auth;
@@ -118,7 +118,7 @@ return topComments.map( comment =>
           </div>
         </Link>
         <p className="mb-1">{comment.content}</p>
-        <Moment fromNow className=" text-sm  italic" date={comment.date}></Moment>
+        <Moment fromNow className="text-gray-500 text-sm  italic" date={comment.date}></Moment>
         <div className="float-right">
           <FontAwesomeIcon
             icon={faThumbsUp}
@@ -198,8 +198,8 @@ return (
     }
 
 
-TopComments.propTypes = {
+Comments.propTypes = {
     postid: PropTypes.string,
 }
 
-export default TopComments
+export default Comments

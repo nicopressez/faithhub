@@ -5,7 +5,8 @@ import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom/dist";
-import TopComments from "./TopComments";
+import Comments from "./Comments";
+import NewComment from "./NewComment";
 
 const Posts = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -106,8 +107,8 @@ const Posts = () => {
       <div
         key={post._id}
         className=" 
-            ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-2/5
-             rounded-lg drop-shadow-md p-1 pb-8 lg:p-3 font-Rubik"
+            ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-[45%]
+             rounded-lg drop-shadow-md p-1 pb-8 lg:p-5 font-Rubik"
       >
         <Link to={`/profile/${post.author._id}`}>
           <div>
@@ -148,7 +149,8 @@ const Posts = () => {
           <span>{post.likes.length}</span>
           <hr className="mt-2 w-[90%] ml-auto mr-auto"></hr>
           <div className="p-4">
-          <TopComments postid={post._id}/>
+          <Comments postid={post._id}/>
+          <NewComment postid={post._id}/>
           </div>
         </div>
       </div>
