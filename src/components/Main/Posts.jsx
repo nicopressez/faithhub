@@ -148,7 +148,7 @@ const Posts = () => {
           />
           <span>{post.likes.length}</span>
           <hr className="mt-2 w-[90%] ml-auto mr-auto"></hr>
-          <div className="p-4">
+          <div className="pl-4 pr-4 pt-4">
           <Comments postid={post._id}/>
           <NewComment postid={post._id}/>
           </div>

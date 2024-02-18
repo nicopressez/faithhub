@@ -103,7 +103,7 @@ const Comments = ({ postid }) => {
 if (user && topComments[0] && !showAll) 
 return topComments.map( comment => 
     (
-    <div key={comment._id} className="relative">
+    <div key={comment._id} className="relative mb-5">
         <div className="bg-gray-50 rounded-lg p-2">
         <Link to={`/profile/${comment.author._id}`}>
           <div>
