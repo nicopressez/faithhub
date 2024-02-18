@@ -145,7 +145,9 @@ const Posts = () => {
                 }`}
           />
           <span>{post.likes.length}</span>
+          <div>
           <TopComments postid={post._id}/>
+          </div>
         </div>
       </div>
     ));
