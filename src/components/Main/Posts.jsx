@@ -13,6 +13,8 @@ const Posts = () => {
   const [likedPosts, setLikedPosts] = useState();
   const auth = useSelector((state) => state.auth);
 
+  const [newComments, setNewComments] = useState([])
+
   const dispatch = useDispatch();
 
   const { user } = auth;
@@ -149,8 +151,8 @@ const Posts = () => {
           <span>{post.likes.length}</span>
           <hr className="mt-2 w-[90%] ml-auto mr-auto"></hr>
           <div className="pl-4 pr-4 pt-4">
-          <Comments postid={post._id}/>
-          <NewComment postid={post._id}/>
+          <Comments postid={post._id} newComments={newComments}/>
+          <NewComment postid={post._id} setNewComments={setNewComments}/>
           </div>
         </div>
       </div>

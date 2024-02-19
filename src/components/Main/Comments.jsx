@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 
-const Comments = ({ postid }) => {
+const Comments = ({ postid, newComments }) => {
 
     const auth = useSelector((state) => state.auth);
     const { user } = auth;
@@ -148,7 +148,47 @@ return (
         
     </div>)
 )}
-{allComments.length > 1 && !showAll &&
+{//Display new comments after creation
+newComments[0] && user &&
+  newComments.map(comment => 
+    (<div key={comment._id} className="relative mb-5">
+        <div className="bg-gray-50 rounded-lg p-2 ml-1">
+        <Link to={`/profile/${comment.author._id}`}>
+          <div className="absolute left-0 top-0 bg-cyan-400 h-full w-1
+          rounded-full"></div>
+          <div>
+            <img
+              className=" float-left
+                     w-9 h-9 mr-2 md:mr-3 md:w-8 md:h-8 rounded-full object-cover"
+              src={`https://faithhub-backend.fly.dev/${user.profile_picture}`}
+            />
+            <p className=" text-gray-800">
+              {user.first_name} {user.last_name}
+            </p>
+          </div>
+        </Link>
+        <p className="mb-1">{comment.content}</p>
+        <Moment fromNow className="text-gray-500 text-sm  italic" date={comment.date}></Moment>
+        <div className="float-right">
+          <FontAwesomeIcon
+            icon={faThumbsUp}
+            onClick={(e) => handleLike(e,comment._id)}
+            className={`
+                mr-1  w-4 h-4 hover:text-cyan-500
+                hover:cursor-pointer active:text-cyan-600
+                ${
+                  likedComments.some((id) => comment._id === id)
+                    ? "text-cyan-600"
+                    : "text-cyan-400"
+                }`}
+          />
+          <span className="text-sm">{comment.likes.length}</span>
+        </div>
+        </div>
+        
+    </div>))}
+{
+allComments.length > 1 && !showAll &&
         <button className="relative left-1/2 -translate-x-1/2
         hover:underline text-cyan-400 hover:text-cyan-500"
         onClick={handleShowAll}>
@@ -178,6 +218,7 @@ return (
 
 Comments.propTypes = {
     postid: PropTypes.string,
+    newComments: PropTypes.array
 }
 
 export default Comments

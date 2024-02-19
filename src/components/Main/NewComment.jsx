@@ -6,7 +6,7 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { tokenRefresh } from "../../reducers/auth";
 
 
-const NewComment = ({ postid }) => {
+const NewComment = ({ postid, setNewComments }) => {
 
     const [comment, setComment] = useState("")
 
@@ -37,6 +37,8 @@ const NewComment = ({ postid }) => {
                 body: JSON.stringify(content)
             })
             const result = await response.json()
+            // TODO: Push new comment to state
+            setNewComments(prevComments => [...prevComments, result.comment])
             console.log(result)
         } catch (err) {
             // TODO :Error page
@@ -78,6 +80,7 @@ const NewComment = ({ postid }) => {
 
 NewComment.propTypes = {
     postid: PropTypes.string,
+    setNewComments: PropTypes.func
 }
 
 export default NewComment
