@@ -3,7 +3,6 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { tokenRefresh } from "../../reducers/auth";
 
 
 const NewComment = ({ postid, setNewComments }) => {
@@ -37,8 +36,8 @@ const NewComment = ({ postid, setNewComments }) => {
                 body: JSON.stringify(content)
             })
             const result = await response.json()
-            // TODO: Push new comment to state
             setNewComments(prevComments => [...prevComments, result.comment])
+            setComment("")
             console.log(result)
         } catch (err) {
             // TODO :Error page
