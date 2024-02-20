@@ -8,12 +8,16 @@ import {
   faEllipsisVertical,
   faPenToSquare,
   faTrash,
-  faPaperPlane
+  faPaperPlane,
 } from "@fortawesome/free-solid-svg-icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Transition, Menu } from "@headlessui/react";
+import { tokenRefresh } from "../../reducers/auth";
+import { jwtDecode } from "jwt-decode";
 
 const Comments = ({ postid, newComments, setNewComments }) => {
+  const dispatch = useDispatch();
+
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
 
@@ -22,9 +26,8 @@ const Comments = ({ postid, newComments, setNewComments }) => {
   const [likedComments, setLikedComments] = useState();
   const [errors, setErrors] = useState(false);
 
-  const [editing, setEditing] = useState()
-  const [editedComment, setEditedComment] = useState("")
-
+  const [editing, setEditing] = useState();
+  const [editedComment, setEditedComment] = useState("");
 
   useEffect(() => {
     const fetchTopComments = async () => {
@@ -124,32 +127,65 @@ const Comments = ({ postid, newComments, setNewComments }) => {
     }
   };
 
-  const toggleEdit = (e,comment) => {
+  const toggleEdit = (e, comment) => {
     // Initiate editing form
-    e.preventDefault()
-    setEditing(comment._id)
-    setEditedComment(comment.content)
-  }
+    e.preventDefault();
+    setEditing(comment._id);
+    setEditedComment(comment.content);
+  };
 
   // Update edited comment on form input
   const handleEditChange = (e) => {
-    setEditedComment(e.target.value)
-  }
+    setEditedComment(e.target.value);
+  };
 
   // When reaching a new line on the editing input, go to next line
   const handleInput = (e) => {
-    
     e.target.style.height = "auto";
     e.target.style.height = e.target.scrollHeight + "px";
   };
 
-  const handleEdit = async(e,id) => {
-    e.preventDefault()
-  }
+  const handleEdit = async (e, id) => {
+    e.preventDefault();
+    const content = {
+      content: editedComment,
+    };
+    try {
+      const response = await fetch(
+        `https://faithhub-backend.fly.dev/post/${postid}/comments/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(content),
+        },
+      );
+      const result = await response.json();
+      // Refresh token
+      localStorage.setItem("token", result.token);
+      const decodedJWT = jwtDecode(result.token);
+      dispatch(tokenRefresh(decodedJWT.user));
+      // Edit comment value, set edited to true
+      allComments.map((comment) => {
+        if (comment._id === id) {
+          comment.content = editedComment;
+          comment.edited = true;
+        }
+        return comment;
+      });
+      // Disable form
+      setEditing();
+    } catch (err) {
+      // TODO: Add error handling
+      console.log(err);
+    }
+  };
 
-  const handleDelete = async(e, id) => {
-    e.preventDefault()
-  }
+  const handleDelete = async (e, id) => {
+    e.preventDefault();
+  };
 
   if (errors)
     return (
@@ -213,7 +249,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                                 <button
                                   className={`${active && "bg-gray-100"} pl-2 text-left
                               text-gray-700`}
-                                onClick={(e) => toggleEdit(e,comment)}
+                                  onClick={(e) => toggleEdit(e, comment)}
                                 >
                                   <FontAwesomeIcon
                                     icon={faPenToSquare}
@@ -227,7 +263,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                               {({ active }) => (
                                 <button
                                   className={`${active && "bg-gray-100"} text-red-500 pl-2 text-left`}
-                                  onClick={(e) => handleDelete(e,comment._id)}
+                                  onClick={(e) => handleDelete(e, comment._id)}
                                 >
                                   <FontAwesomeIcon
                                     icon={faTrash}
@@ -242,41 +278,45 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                       </Menu>
                     )
                   }
-                  <Link
-                    to={`/profile/${comment.author._id}`}
-
-              
-                  >
+                  <Link to={`/profile/${comment.author._id}`}>
                     {comment.author.first_name} {comment.author.last_name}
                   </Link>
+                  <p className="text-gray-400 italic inline ml-3 text-sm">
+                    {comment.edited && "Edited"}
+                  </p>
                 </div>
-                {editing === comment._id ? 
-                <form onSubmit={(e) => handleEdit(e, comment._id)}
-                className="mt-1 relative">
-                  <textarea name="content"
-                  className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
+                {editing === comment._id ? (
+                  <form
+                    onSubmit={(e) => handleEdit(e, comment._id)}
+                    className="mt-1 relative"
+                  >
+                    <textarea
+                      name="content"
+                      className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
                   overflow-visible resize-none pr-8 text-gray-600"
-                  placeholder="Your comment must be 4 characters long"
-                  value={editedComment}
-                  onChange={handleEditChange}
-                  onInput={handleInput}
-                  rows="1"
-                  cols="60">
-                  </textarea>
-                  {editedComment.length > 4 && (
-            <button
-              type="submit"
-              className="absolute bottom-[0%]
+                      placeholder="Your comment must be 4 characters long"
+                      value={editedComment}
+                      onChange={handleEditChange}
+                      onInput={handleInput}
+                      rows="1"
+                      cols="60"
+                    ></textarea>
+                    {editedComment.length > 4 && (
+                      <button
+                        type="submit"
+                        className="absolute bottom-[0%]
                  -translate-y-1/2 cursor-pointer right-[19%]"
-            >
-              <FontAwesomeIcon
-                icon={faPaperPlane}
-                className="text-cyan-400 hover:text-cyan-500"
-              />
-            </button>
-          )}
-                </form> :
-                <p className="mb-1">{comment.content}</p>}
+                      >
+                        <FontAwesomeIcon
+                          icon={faPaperPlane}
+                          className="text-cyan-400 hover:text-cyan-500"
+                        />
+                      </button>
+                    )}
+                  </form>
+                ) : (
+                  <p className="mb-1">{comment.content}</p>
+                )}
                 <Moment
                   fromNow
                   className="text-gray-500 text-sm  italic"
