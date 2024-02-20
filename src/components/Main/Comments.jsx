@@ -3,7 +3,12 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
-import { faThumbsUp, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import {
+  faThumbsUp,
+  faEllipsisVertical,
+  faPenToSquare,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { Transition, Menu } from "@headlessui/react";
 
@@ -139,64 +144,77 @@ const Comments = ({ postid, newComments, setNewComments }) => {
           {allComments.map((comment) => (
             <div key={comment._id} className="relative mb-5">
               <div className="bg-gray-50 rounded-lg p-2">
-                  <div>
+                <div>
                   <Link to={`/profile/${comment.author._id}`}>
                     <img
                       className=" float-left
                      w-9 h-9 mr-2 md:mr-3 md:w-8 md:h-8 rounded-full object-cover"
                       src={`https://faithhub-backend.fly.dev/${comment.author.profile_picture}`}
                     />
-                    </Link>
-                    {// Edit/delete menu
-                    user._id === comment.author._id &&
-                    <Menu as="div" className="float-right">
-                    <Menu.Button>
-                    <FontAwesomeIcon className="mt-1 mr-1 h-4
+                  </Link>
+                  {
+                    // Edit/delete menu
+                    user._id === comment.author._id && (
+                      <Menu as="div" className="relative float-right">
+                        <Menu.Button>
+                          <FontAwesomeIcon
+                            className="mt-1 mr-1 h-4
                        text-gray-400"
-                    icon={faEllipsisVertical} />
-                    </Menu.Button>
-                    <Transition
-                      enter="transition duration-200 ease-out"
-                      enterFrom="transform scale-y-0 opacity-0"
-                      enterTo="transform scale-y-100 opacity-100"
-                      leave="transition duration-200 ease-out"
-                      leaveFrom="transform scale-y-100 opacity-100"
-                      leaveTo="transform scale-y-100 opacity-0"
-                    >
-                      <Menu.Items
-                        className="absolute mt-2 mr-2 right-0 w-52 md:w-64 flex
-                 flex-col bg-white gap-1 drop-shadow-xl rounded-lg text-lg 
+                            icon={faEllipsisVertical}
+                          />
+                        </Menu.Button>
+                        <Transition
+                          enter="transition duration-200 ease-out"
+                          enterFrom="transform scale-y-0 opacity-0"
+                          enterTo="transform scale-y-100 opacity-100"
+                          leave="transition duration-200 ease-out"
+                          leaveFrom="transform scale-y-100 opacity-100"
+                          leaveTo="transform scale-y-100 opacity-0"
+                        >
+                          <Menu.Items
+                            className="absolute -bottom-9 left-5 w-36 md:w-28 flex
+                 flex-col bg-white gap-1 drop-shadow-xl rounded-lg
                    pt-2 pb-2 justify-center"
-                      >
-                        <Menu.Item>
-                          {({ active }) => (
-                            <a
-                              className={`${active && "bg-gray-100"} pl-2`}
-                              href={`/profile/${user._id}`}
-                            >
-                              Edit
-                            </a>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <button
-                              className={`${active && "bg-gray-100"} text-red-500 pl-2 text-left`}
-                            >
-                              Delete
-                            </button>
-                          )}
-                        </Menu.Item>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
-                      }
-                    <Link to={`/profile/${comment.author._id}`}
-                    className=" text-gray-800">
-                      {comment.author.first_name} {comment.author.last_name}
-                    </Link>
-          
-                  </div>
+                          >
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={`${active && "bg-gray-100"} pl-2 text-left
+                              text-gray-700`}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faPenToSquare}
+                                    className="pr-2 "
+                                  />
+                                  Edit
+                                </button>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={`${active && "bg-gray-100"} text-red-500 pl-2 text-left`}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faTrash}
+                                    className="pr-2"
+                                  />
+                                  Delete
+                                </button>
+                              )}
+                            </Menu.Item>
+                          </Menu.Items>
+                        </Transition>
+                      </Menu>
+                    )
+                  }
+                  <Link
+                    to={`/profile/${comment.author._id}`}
+                    className=" text-gray-800"
+                  >
+                    {comment.author.first_name} {comment.author.last_name}
+                  </Link>
+                </div>
                 <p className="mb-1">{comment.content}</p>
                 <Moment
                   fromNow
