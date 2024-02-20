@@ -13,7 +13,7 @@ const Posts = () => {
   const [likedPosts, setLikedPosts] = useState();
   const auth = useSelector((state) => state.auth);
 
-  const [newComments, setNewComments] = useState([])
+  const [newComments, setNewComments] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -59,7 +59,7 @@ const Posts = () => {
     setLikedPosts(postsUserLiked);
   }, [allPosts, user]);
 
-  const handleLike = async (e,id) => {
+  const handleLike = async (e, id) => {
     try {
       const response = await fetch(
         `https://faithhub-backend.fly.dev/post/${id}/like`,
@@ -71,33 +71,35 @@ const Posts = () => {
         },
       );
       const result = await response.json();
-      
+
       // Refresh token
       localStorage.setItem("token", result.token);
 
       // Add/remove the post from liked
-    if (result.message === "Like added") {
-      const updatedLikes = [...likedPosts, id];
-      setLikedPosts(updatedLikes);
-    }
-    if (result.message === "Like removed") {
-      const updatedLikes = likedPosts.filter((postId) => postId !== id);
-      setLikedPosts(updatedLikes);
-    }
+      if (result.message === "Like added") {
+        const updatedLikes = [...likedPosts, id];
+        setLikedPosts(updatedLikes);
+      }
+      if (result.message === "Like removed") {
+        const updatedLikes = likedPosts.filter((postId) => postId !== id);
+        setLikedPosts(updatedLikes);
+      }
 
       // Update likes count
-      setAllPosts(allPosts => allPosts.map(post => {
-        if (post._id === id) {
-          return {
-            ...post,
-            likes: result.message === "Like added" 
-            ?[...post.likes, user._id] 
-            : post.likes.filter(id => id!== user._id)
+      setAllPosts((allPosts) =>
+        allPosts.map((post) => {
+          if (post._id === id) {
+            return {
+              ...post,
+              likes:
+                result.message === "Like added"
+                  ? [...post.likes, user._id]
+                  : post.likes.filter((id) => id !== user._id),
+            };
           }
-        }
-        return post
-      }))
-
+          return post;
+        }),
+      );
     } catch (err) {
       // TODO: Add error handling
       console.log(err);
@@ -105,7 +107,7 @@ const Posts = () => {
   };
 
   if (user && allPosts[0] && likedPosts)
- return allPosts.map((post) => (
+    return allPosts.map((post) => (
       <div
         key={post._id}
         className=" 
@@ -126,19 +128,19 @@ const Posts = () => {
           </div>
         </Link>
         <Moment fromNow className="  italic" date={post.date}></Moment>
-        
+
         <p className="mb-4 mt-2">{post.content}</p>
         <p
           className="float-right text-cyan-400 hover:text-cyan-500
                 hover:underline"
         >
-          {post.comments.length} 
+          {post.comments.length}
           {post.comments.length == 1 ? " comment" : " comments"}
         </p>
         <div>
           <FontAwesomeIcon
             icon={faThumbsUp}
-            onClick={(e) => handleLike(e,post._id)}
+            onClick={(e) => handleLike(e, post._id)}
             className={`
                 mr-1  w-5 h-5 hover:text-cyan-500
                 hover:cursor-pointer active:text-cyan-600
@@ -151,9 +153,12 @@ const Posts = () => {
           <span>{post.likes.length}</span>
           <hr className="mt-2 w-[90%] ml-auto mr-auto"></hr>
           <div className="pl-4 pr-4 pt-4">
-          <Comments postid={post._id} newComments={newComments}
-          setNewComments={setNewComments}/>
-          <NewComment postid={post._id} setNewComments={setNewComments}/>
+            <Comments
+              postid={post._id}
+              newComments={newComments}
+              setNewComments={setNewComments}
+            />
+            <NewComment postid={post._id} setNewComments={setNewComments} />
           </div>
         </div>
       </div>
