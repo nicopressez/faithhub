@@ -7,7 +7,7 @@ import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { Transition } from "@headlessui/react";
 
-const Comments = ({ postid, newComments }) => {
+const Comments = ({ postid, newComments, setNewComments }) => {
 
     const auth = useSelector((state) => state.auth);
     const { user } = auth;
@@ -154,7 +154,7 @@ return (
     <Transition
       show={user !== null}
       enter="transition duration-1000 ease-out"
-      enterFrom="opacity-0 transform -translate-y-8"
+      enterFrom="opacity-0 transform -translate-y-100"
       enterTo="opacity-100 transform translate-y-0"
     >
       {newComments.map(comment => (
@@ -198,7 +198,8 @@ return (
 allComments.length > 1 && !showAll &&
         <button className="relative left-1/2 -translate-x-1/2
         hover:underline text-cyan-400 hover:text-cyan-500"
-        onClick={handleShowAll}>
+        onClick={(e) => {handleShowAll(e)
+          setNewComments([]);}}>
             Show all
         </button>}
 
@@ -207,7 +208,9 @@ allComments.length > 1 && !showAll &&
         hover:underline text-cyan-400 hover:text-cyan-500"
         onClick={() => {
           setAllComments(allComments.slice(0,2));
-          setShowAll(false)}}>
+          setShowAll(false);
+          setNewComments([]);
+          }}>
             Show less
         </button>}
 </div>
@@ -225,7 +228,8 @@ return (
 
 Comments.propTypes = {
     postid: PropTypes.string,
-    newComments: PropTypes.array
+    newComments: PropTypes.array,
+    setNewComments: PropTypes.func
 }
 
 export default Comments
