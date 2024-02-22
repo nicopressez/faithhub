@@ -121,9 +121,14 @@ const Posts = () => {
                      w-9 h-9 mr-2 md:mr-4 md:w-11 md:h-11 rounded-full object-cover"
               src={`https://faithhub-backend.fly.dev/${post.author.profile_picture}`}
             />
+
             <p className="float-right">{post.type}</p>
             <p className="font-bold">
-              {post.author.first_name} {post.author.last_name}
+              {post.author._id === user._id && !post.anonymous
+                ? `You`
+                : post.anonymous
+                  ? "Anonymous"
+                  : `${post.author.first_name} ${post.author.last_name}`}
             </p>
           </div>
         </Link>
