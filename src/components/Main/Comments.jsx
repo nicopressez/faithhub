@@ -24,7 +24,11 @@ const Comments = ({ postid, newComments, setNewComments }) => {
   const [allComments, setAllComments] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const [likedComments, setLikedComments] = useState();
+
+  // Error handling
   const [errors, setErrors] = useState(false);
+  const [editingError, setEditingError] = useState(false)
+  const [deletingError, setDeletingError] = useState(false)
 
   const [editing, setEditing] = useState();
   const [editedComment, setEditedComment] = useState("");
@@ -57,7 +61,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
     setLikedComments(commentsUserLiked);
   }, [allComments, user]);
 
-  const handleLike = async (e, id) => {
+  const handleLike = async (e, id, isNew) => {
     try {
       const response = await fetch(
         `https://faithhub-backend.fly.dev/post/${postid}/comments/${id}/like`,
@@ -100,6 +104,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
       );
     } catch (err) {
       setErrors(true);
+      console.log(err)
     }
   };
 
@@ -178,8 +183,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
       // Disable form
       setEditing();
     } catch (err) {
-      // TODO: Add error handling
-      console.log(err);
+      setEditingError(true)
     }
   };
 
@@ -201,17 +205,30 @@ const Comments = ({ postid, newComments, setNewComments }) => {
       const updatedComments = allComments.filter(comment => comment._id !== id)
       setAllComments(updatedComments)
     } catch(err) {
-      // TODO: Add error handling
-      console.log(err)
+      setDeletingError(true)
     }
   };
 
   if (errors)
     return (
       <p className="text-center text-gray-300 italic">
-        There was an error loading comments
+        There was an error loading comments. Please try again.
       </p>
     );
+
+  if (deletingError) 
+    return (
+    <p className="text-center text-gray-300 italic">
+      We couldn&apos;t delete this comment, please try again later.
+    </p>
+    )
+
+  if (editingError) 
+   return (
+    <p className="text-center text-gray-300 italic">
+    We couldn&apos;t edit this comment, please try again later.
+     </p>
+  )
 
   if (!allComments[0])
     return <p className="text-center text-gray-300 italic">No comments yet</p>;
