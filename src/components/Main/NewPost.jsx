@@ -1,17 +1,20 @@
 import { useSelector } from "react-redux"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
 
 const NewPost = () => {
 
     const [post, setPost] = useState("")
+    const [type, setType] = useState("Discussion")
 
     const auth = useSelector(state => state.auth)
     const { user } = auth
 
     const handleChange = (e) => {
         setPost(e.target.value)
+    }
+
+    const handleType = (e) => {
+        setType(e.target.value)
     }
 
     const handleSubmit = async(e) => {
@@ -59,21 +62,63 @@ const NewPost = () => {
             </button>
           )}
         <hr className="mt-2 text-center"></hr>
-        <div className="grid grid-cols-4 mt-2">
-        <label htmlFor="discussion"> Discussion
-        <input onChange={() => console.log("check")} type="radio" className="w-0 h-0" name="discussion
-        " id="discussion"></input>
+        <div className="grid grid-cols-3 gap-5 mt-3">
+
+        <label htmlFor="discussion"
+         className={` border-cyan-400 border-4 rounded-full
+         text-center  transition-all duration-500 hover:cursor-pointer
+        ${type === "Discussion" ? "bg-cyan-400" : ""}
+        ${type !== "Discussion" ? "hover:bg-gray-100" : ""}`}>
+             Discussion 
+        <input  
+        onChange={handleType}
+        type="radio" 
+        defaultChecked={true}
+        id="discussion"
+        name="type"
+        value="Discussion"
+        className=" w-0 h-0"></input>
         </label>
-        <label htmlFor="prayer"> Prayer Request
-        <input onChange={() => console.log("check")} type="radio" className="w-0 h-0" name="discussion
-        " id="prayer"></input>
+        
+        <label htmlFor="prayer"
+         className={` border-cyan-400 border-4 rounded-full
+         text-center transition-all duration-500 hover:cursor-pointer
+        ${type === "Prayer Request" ? "bg-cyan-400" : ""}
+        ${type !== "Prayer Request" ? "hover:bg-gray-100" : ""}
+        `}> 
+        Prayer Request
+        <input 
+        onChange={handleType}
+        value="Prayer Request"
+        type="radio" 
+        id="prayer"
+        name="type"
+        className="w-0 h-0"
+        ></input>
         </label>
-        <button>Testimony</button>
-        <button>Post</button>
+
+        <label htmlFor="testimony"
+         className={` border-cyan-400 border-4 rounded-full
+         text-center  transition-all duration-500 hover:cursor-pointer
+        ${type === "Testimony" ? "bg-cyan-400" : ""}
+        ${type !== "Testimony" ? "hover:bg-gray-100" : ""}`}>
+        Testimony
+        <input 
+        onChange={handleType}
+        type="radio"  
+        id="testimony"
+        name="type"  
+        value="Testimony"
+        className="w-0 h-0"
+        >
+
+        </input>
+        </label>
+        
         </div>
         </form>
         
-      </div>
+      </div >
              </div>
     )
 }
