@@ -3,6 +3,7 @@ import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
 import { Transition } from "@headlessui/react"
+import { Link } from "react-router-dom"
 
 const NewPost = () => {
 
@@ -22,6 +23,24 @@ const NewPost = () => {
 
     const handleSubmit = async(e) => {
         e.preventDefault()
+        const data = {
+            content: post,
+            type
+        }
+        try {
+            const response = await fetch(`https://faithhub-backend.fly.dev/post`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            const result = await response.json()
+            console.log(result)
+        } catch(err) {
+            console.log(err)
+        }
     }
 
 // When reaching a new line on the editing input, go to next line
@@ -30,19 +49,21 @@ const NewPost = () => {
     e.target.style.height = e.target.scrollHeight + "px";
   };
     
-    return (
+    if (user) return (
         <div
         className=" 
             ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-[45%] min-h-48
              rounded-lg drop-shadow-md p-1 pb-8 lg:pl-[2%] lg:p-2 lg:pt-5 font-Rubik">
         <div className="flex  flex-row mt-3 justify-center relative
         items-center">
+        <Link to={`/profile/${user._id}`}>
         <img
           className="absolute left-[0.5%] top-0 w-9 h-9 mr-2 md:mr-5 md:w-12 md:h-12 rounded-full object-cover"
           src={
             user && `https://faithhub-backend.fly.dev/${user.profile_picture}`
           }
         />
+        </Link>
         <form className="relative" onSubmit={handleSubmit}>
           <textarea
             className="bg-gray-200 rounded-full pl-4 pt-3 pb-2 
