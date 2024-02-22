@@ -1,5 +1,8 @@
 import { useSelector } from "react-redux"
 import { useState } from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons"
+import { Transition } from "@headlessui/react"
 
 const NewPost = () => {
 
@@ -35,7 +38,7 @@ const NewPost = () => {
         <div className="flex  flex-row mt-3 justify-center
         items-center">
         <img
-          className=" mb-12 w-9 h-9 mr-2 md:mr-5 md:w-12 md:h-12 rounded-full object-cover"
+          className=" mb-32 w-9 h-9 mr-2 md:mr-5 md:w-12 md:h-12 rounded-full object-cover"
           src={
             user && `https://faithhub-backend.fly.dev/${user.profile_picture}`
           }
@@ -66,7 +69,7 @@ const NewPost = () => {
 
         <label htmlFor="discussion"
          className={` border-cyan-400 border-4 rounded-full
-         text-center  transition-all duration-500 hover:cursor-pointer
+         text-center  transition-all duration-300 hover:cursor-pointer
         ${type === "Discussion" ? "bg-cyan-400" : ""}
         ${type !== "Discussion" ? "hover:bg-gray-100" : ""}`}>
              Discussion 
@@ -81,8 +84,8 @@ const NewPost = () => {
         </label>
         
         <label htmlFor="prayer"
-         className={` border-cyan-400 border-4 rounded-full
-         text-center transition-all duration-500 hover:cursor-pointer
+         className={` border-cyan-400 border-4 rounded-full 
+         text-center transition-all duration-300 hover:cursor-pointer
         ${type === "Prayer Request" ? "bg-cyan-400" : ""}
         ${type !== "Prayer Request" ? "hover:bg-gray-100" : ""}
         `}> 
@@ -99,7 +102,7 @@ const NewPost = () => {
 
         <label htmlFor="testimony"
          className={` border-cyan-400 border-4 rounded-full
-         text-center  transition-all duration-500 hover:cursor-pointer
+         text-center  transition-all duration-300 hover:cursor-pointer
         ${type === "Testimony" ? "bg-cyan-400" : ""}
         ${type !== "Testimony" ? "hover:bg-gray-100" : ""}`}>
         Testimony
@@ -111,10 +114,45 @@ const NewPost = () => {
         value="Testimony"
         className="w-0 h-0"
         >
-
         </input>
         </label>
+        </div>
+        <div className="mt-3">
+
+        <Transition as="label" htmlFor="anonymous"
+        show={type === "Prayer Request"}
+        enter="transition duration-200 ease-out"
+        enterFrom="transform scale-y-0 opacity-0"
+        enterTo="transform scale-y-100 opacity-100"
+        leave="transition duration-200 ease-out"
+        leaveFrom="transform scale-y-100 opacity-100"
+        leaveTo="transform scale-y-0 opacity-0">
+        Anonymous request
+        <input type="checkbox" className="ml-1" value="anonymous" id="anonymous"></input>
+        </Transition>
+
+        <Transition className={"float-right"}
+        show={post.length > 10}
+        enter="transition duration-200 ease-out"
+        enterFrom="transform scale-y-0 opacity-0"
+        enterTo="transform scale-y-100 opacity-100"
+        leave="transition duration-200 ease-out"
+        leaveFrom="transform scale-y-100 opacity-100"
+        leaveTo="transform scale-y-0 opacity-0">
+        <button type="submit" 
+        className="text-center bg-gray-200 p-1 pl-6 pr-8 rounded-full
+        relative group hover:bg-cyan-400 transition-all duration-200"
+        >Post
+        <FontAwesomeIcon
+                icon={faArrowRight}
+                className="text-cyan-400 text-right absolute right-2 top-1/2
+                 -translate-y-1/2 font-bold w-4 h-4 group-hover:text-black
+                 transition-all duration-200"
+              />
+        </button>
+        </Transition>
         
+              
         </div>
         </form>
         
