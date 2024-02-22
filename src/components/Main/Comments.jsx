@@ -33,6 +33,8 @@ const Comments = ({ postid, newComments, setNewComments }) => {
   const [editingError, setEditingError] = useState(false)
   const [deletingError, setDeletingError] = useState(false)
 
+  
+
   useEffect(() => {
     const fetchTopComments = async () => {
       try {
@@ -515,11 +517,11 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                 ) : (
                   <p className="mb-1">{comment.content}</p>
                 )}
-                <Moment
-                  fromNow
+                <p
                   className="text-gray-500 text-sm italic"
-                  date={comment.date}
-                ></Moment>
+                >
+                  just now
+                </p>
                 
               </div>
             </div>

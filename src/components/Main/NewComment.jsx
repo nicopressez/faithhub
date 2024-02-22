@@ -49,15 +49,16 @@ const NewComment = ({ postid, setNewComments }) => {
     return (
       <div className="flex  flex-row justify-center items-center mt-3">
         <img
-          className="w-9 h-9 mr-2 md:mr-2 md:w-10 md:h-10 rounded-full object-cover"
+          className="mb-1 w-9 h-9 mr-2 md:mr-2 md:w-10 md:h-10 rounded-full object-cover"
           src={
             user && `https://faithhub-backend.fly.dev/${user.profile_picture}`
           }
         />
         <form className="relative" onSubmit={handleSubmit}>
           <textarea
-            className="bg-gray-200 rounded-full  pl-2 pb-2 pt-2
-                 overflow-visible resize-none pr-8"
+            className="bg-gray-200 rounded-full  pl-4 pb-2 pt-2
+                 overflow-visible resize-none pr-8
+                 h-auto"
             placeholder="Write a comment..."
             value={comment}
             onChange={handleChange}
@@ -69,8 +70,9 @@ const NewComment = ({ postid, setNewComments }) => {
           {comment.length > 4 && (
             <button
               type="submit"
-              className="absolute bottom-[0%]
-                 -translate-y-1/2 cursor-pointer right-3"
+              className="absolute bottom-[5%]
+                 -translate-y-1/2 cursor-pointer right-5 
+                 "
             >
               <FontAwesomeIcon
                 icon={faPaperPlane}
