@@ -199,7 +199,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
     }
   };
 
-  const handleDelete = async (e, id) => {
+  const handleDelete = async (e, id, isNew = false) => {
     e.preventDefault();
     try {
       const response = await fetch(`https://faithhub-backend.fly.dev/post/${postid}/comments/${id}`, {
@@ -214,8 +214,13 @@ const Comments = ({ postid, newComments, setNewComments }) => {
       const decodedJWT = jwtDecode(result.token);
       dispatch(tokenRefresh(decodedJWT.user));
       // Remove deleted comment from array
-      const updatedComments = allComments.filter(comment => comment._id !== id)
+      if (isNew) {
+        const updatedComments = newComments.filter(comment => comment._id !== id)
+        setNewComments(updatedComments)
+      } else {
+        const updatedComments = allComments.filter(comment => comment._id !== id)
       setAllComments(updatedComments)
+    }
     } catch(err) {
       setDeletingError(true)
     }
@@ -451,7 +456,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                               {({ active }) => (
                                 <button
                                   className={`${active && "bg-gray-100"} text-red-500 pl-2 text-left`}
-                                  onClick={(e) => handleDelete(e, comment._id)}
+                                  onClick={(e) => handleDelete(e, comment._id, true)}
                                 >
                                   <FontAwesomeIcon
                                     icon={faTrash}
