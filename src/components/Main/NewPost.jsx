@@ -33,12 +33,12 @@ const NewPost = () => {
     return (
         <div
         className=" 
-            ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-[45%]
-             rounded-lg drop-shadow-md p-1 pb-8 lg:p-2 font-Rubik">
-        <div className="flex  flex-row mt-3 justify-center
+            ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-[45%] min-h-48
+             rounded-lg drop-shadow-md p-1 pb-8 lg:pl-[2%] lg:p-2 lg:pt-5 font-Rubik">
+        <div className="flex  flex-row mt-3 justify-center relative
         items-center">
         <img
-          className=" mb-32 w-9 h-9 mr-2 md:mr-5 md:w-12 md:h-12 rounded-full object-cover"
+          className="absolute left-[0.5%] top-0 w-9 h-9 mr-2 md:mr-5 md:w-12 md:h-12 rounded-full object-cover"
           src={
             user && `https://faithhub-backend.fly.dev/${user.profile_picture}`
           }
@@ -120,6 +120,7 @@ const NewPost = () => {
         <div className="mt-3">
 
         <Transition as="label" htmlFor="anonymous"
+        className="absolute left-1/2 -translate-x-1/2"
         show={type === "Prayer Request"}
         enter="transition duration-200 ease-out"
         enterFrom="transform scale-y-0 opacity-0"
@@ -127,7 +128,7 @@ const NewPost = () => {
         leave="transition duration-200 ease-out"
         leaveFrom="transform scale-y-100 opacity-100"
         leaveTo="transform scale-y-0 opacity-0">
-        Anonymous request
+        Anonymous
         <input type="checkbox" className="ml-1" value="anonymous" id="anonymous"></input>
         </Transition>
 
@@ -140,7 +141,7 @@ const NewPost = () => {
         leaveFrom="transform scale-y-100 opacity-100"
         leaveTo="transform scale-y-0 opacity-0">
         <button type="submit" 
-        className="text-center bg-gray-200 p-1 pl-6 pr-8 rounded-full
+        className="text-center bg-gray-200 p-1 pl-4 pr-8 rounded-full
         relative group hover:bg-cyan-400 transition-all duration-200"
         >Post
         <FontAwesomeIcon
