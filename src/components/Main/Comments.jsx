@@ -185,6 +185,25 @@ const Comments = ({ postid, newComments, setNewComments }) => {
 
   const handleDelete = async (e, id) => {
     e.preventDefault();
+    try {
+      const response = await fetch(`https://faithhub-backend.fly.dev/post/${postid}/comments/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      const result = await response.json()
+      // Refresh token
+      localStorage.setItem("token", result.token);
+      const decodedJWT = jwtDecode(result.token);
+      dispatch(tokenRefresh(decodedJWT.user));
+      // Remove deleted comment from array
+      const updatedComments = allComments.filter(comment => comment._id !== id)
+      setAllComments(updatedComments)
+    } catch(err) {
+      // TODO: Add error handling
+      console.log(err)
+    }
   };
 
   if (errors)
