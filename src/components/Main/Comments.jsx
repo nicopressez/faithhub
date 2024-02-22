@@ -331,8 +331,12 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                       </Menu>
                     )
                   }
-                  <Link to={`/profile/${comment.author._id}`}>
-                    {comment.author.first_name} {comment.author.last_name}
+                  <Link to={`/profile/${comment.author._id}`}
+                  className="text-gray-800">
+                    {comment.author._id === user._id 
+                    ? "You" 
+                    : 
+                    `${comment.author.first_name} ${comment.author.last_name}`}
                   </Link>
                   <p className="text-gray-400 italic inline ml-3 text-sm">
                     {comment.edited && "Edited"}
@@ -471,7 +475,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                       </Menu>
                     <Link to={`/profile/${user._id}`}
                     className="text-gray-800">
-                      {user.first_name} {user.last_name}
+                      You
                     </Link>
 
                     <p className="text-gray-400 italic inline ml-3 text-sm">
