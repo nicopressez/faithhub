@@ -37,9 +37,10 @@ const NewComment = ({ postid, setNewComments }) => {
         },
       );
       const result = await response.json();
-      setNewComments((prevComments) => [...prevComments, result.comment]);
+      const newComment = {...result.comment,postid }
+      console.log(newComment)
+      setNewComments((prevComments) => [...prevComments, newComment]);
       setComment("");
-      console.log(result);
     } catch (err) {
       // TODO :Error page
       console.log(err);

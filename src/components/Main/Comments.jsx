@@ -415,7 +415,8 @@ const Comments = ({ postid, newComments, setNewComments }) => {
           leaveFrom="transform scale-y-100 opacity-100"
           leaveTo="transform scale-y-100 opacity-0"
         >
-          {newComments.map((comment) => (
+          {newComments.map((comment) => {
+          if (comment.postid === postid) return(
             <div key={comment._id} className="relative mb-5">
               <div className="bg-gray-50 rounded-lg p-2 ml-1">
                 <Link to={`/profile/${user._id}`}>
@@ -521,7 +522,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                 <p className="text-gray-500 text-sm italic">just now</p>
               </div>
             </div>
-          ))}
+          )})}
         </Transition>
 
         {allComments.length > 1 && !showAll && (
