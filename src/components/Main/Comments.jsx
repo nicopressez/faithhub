@@ -14,8 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Transition, Menu } from "@headlessui/react";
 import { tokenRefresh } from "../../reducers/auth";
 import { jwtDecode } from "jwt-decode";
-import he from 'he';
-
+import he from "he";
 
 const Comments = ({ postid, newComments, setNewComments }) => {
   const dispatch = useDispatch();
@@ -418,113 +417,120 @@ const Comments = ({ postid, newComments, setNewComments }) => {
           leaveTo="transform scale-y-100 opacity-0"
         >
           {newComments.map((comment) => {
-          if (comment.postid === postid) return(
-            <div key={comment._id} className="relative mb-5">
-              <div className="bg-gray-50 rounded-lg p-2 ml-1">
-                <Link to={`/profile/${user._id}`}>
-                  <div className="absolute left-0 top-0 bg-cyan-400 h-full w-1 rounded-full"></div>
-                  <div>
-                    <img
-                      className="float-left w-9 h-9 mr-2 md:mr-3 md:w-8 md:h-8 rounded-full object-cover"
-                      src={`https://faithhub-backend.fly.dev/${user.profile_picture}`}
-                    />
-                  </div>
-                </Link>
+            if (comment.postid === postid)
+              return (
+                <div key={comment._id} className="relative mb-5">
+                  <div className="bg-gray-50 rounded-lg p-2 ml-1">
+                    <Link to={`/profile/${user._id}`}>
+                      <div className="absolute left-0 top-0 bg-cyan-400 h-full w-1 rounded-full"></div>
+                      <div>
+                        <img
+                          className="float-left w-9 h-9 mr-2 md:mr-3 md:w-8 md:h-8 rounded-full object-cover"
+                          src={`https://faithhub-backend.fly.dev/${user.profile_picture}`}
+                        />
+                      </div>
+                    </Link>
 
-                <Menu as="div" className="relative float-right">
-                  <Menu.Button>
-                    <FontAwesomeIcon
-                      className="mt-1 mr-1 h-4
+                    <Menu as="div" className="relative float-right">
+                      <Menu.Button>
+                        <FontAwesomeIcon
+                          className="mt-1 mr-1 h-4
                        text-gray-400"
-                      icon={faEllipsisVertical}
-                    />
-                  </Menu.Button>
-                  <Transition
-                    enter="transition duration-200 ease-out"
-                    enterFrom="transform scale-y-0 opacity-0"
-                    enterTo="transform scale-y-100 opacity-100"
-                    leave="transition duration-200 ease-out"
-                    leaveFrom="transform scale-y-100 opacity-100"
-                    leaveTo="transform scale-y-100 opacity-0"
-                  >
-                    <Menu.Items
-                      className="absolute -bottom-9 left-5 w-36 md:w-28 flex
+                          icon={faEllipsisVertical}
+                        />
+                      </Menu.Button>
+                      <Transition
+                        enter="transition duration-200 ease-out"
+                        enterFrom="transform scale-y-0 opacity-0"
+                        enterTo="transform scale-y-100 opacity-100"
+                        leave="transition duration-200 ease-out"
+                        leaveFrom="transform scale-y-100 opacity-100"
+                        leaveTo="transform scale-y-100 opacity-0"
+                      >
+                        <Menu.Items
+                          className="absolute -bottom-9 left-5 w-36 md:w-28 flex
                  flex-col bg-white gap-1 drop-shadow-xl rounded-lg
                    pt-2 pb-2 justify-center"
-                    >
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            className={`${active && "bg-gray-100"} pl-2 text-left
+                        >
+                          <Menu.Item>
+                            {({ active }) => (
+                              <button
+                                className={`${active && "bg-gray-100"} pl-2 text-left
                               text-gray-700`}
-                            onClick={(e) => toggleEdit(e, comment)}
+                                onClick={(e) => toggleEdit(e, comment)}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faPenToSquare}
+                                  className="pr-2 "
+                                />
+                                Edit
+                              </button>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <button
+                                className={`${active && "bg-gray-100"} text-red-500 pl-2 text-left`}
+                                onClick={(e) =>
+                                  handleDelete(e, comment._id, true)
+                                }
+                              >
+                                <FontAwesomeIcon
+                                  icon={faTrash}
+                                  className="pr-2"
+                                />
+                                Delete
+                              </button>
+                            )}
+                          </Menu.Item>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                    <Link to={`/profile/${user._id}`} className="text-gray-800">
+                      You
+                    </Link>
+
+                    <p className="text-gray-400 italic inline ml-3 text-sm">
+                      {comment.edited && "Edited"}
+                    </p>
+
+                    {editing === comment._id ? (
+                      <form
+                        onSubmit={(e) => handleEdit(e, comment._id, true)}
+                        className="mt-1 relative"
+                      >
+                        <textarea
+                          name="content"
+                          className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
+                  overflow-visible resize-none pr-8 text-gray-600"
+                          placeholder="Your comment must be 4 characters long"
+                          value={editedComment}
+                          onChange={handleEditChange}
+                          onInput={handleInput}
+                          rows="1"
+                          cols="60"
+                        ></textarea>
+                        {editedComment.length > 4 && (
+                          <button
+                            type="submit"
+                            className="absolute bottom-[0%]
+                 -translate-y-1/2 cursor-pointer right-[19%]"
                           >
                             <FontAwesomeIcon
-                              icon={faPenToSquare}
-                              className="pr-2 "
+                              icon={faPaperPlane}
+                              className="text-cyan-400 hover:text-cyan-500"
                             />
-                            Edit
                           </button>
                         )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            className={`${active && "bg-gray-100"} text-red-500 pl-2 text-left`}
-                            onClick={(e) => handleDelete(e, comment._id, true)}
-                          >
-                            <FontAwesomeIcon icon={faTrash} className="pr-2" />
-                            Delete
-                          </button>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-                <Link to={`/profile/${user._id}`} className="text-gray-800">
-                  You
-                </Link>
-
-                <p className="text-gray-400 italic inline ml-3 text-sm">
-                  {comment.edited && "Edited"}
-                </p>
-
-                {editing === comment._id ? (
-                  <form
-                    onSubmit={(e) => handleEdit(e, comment._id, true)}
-                    className="mt-1 relative"
-                  >
-                    <textarea
-                      name="content"
-                      className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
-                  overflow-visible resize-none pr-8 text-gray-600"
-                      placeholder="Your comment must be 4 characters long"
-                      value={editedComment}
-                      onChange={handleEditChange}
-                      onInput={handleInput}
-                      rows="1"
-                      cols="60"
-                    ></textarea>
-                    {editedComment.length > 4 && (
-                      <button
-                        type="submit"
-                        className="absolute bottom-[0%]
-                 -translate-y-1/2 cursor-pointer right-[19%]"
-                      >
-                        <FontAwesomeIcon
-                          icon={faPaperPlane}
-                          className="text-cyan-400 hover:text-cyan-500"
-                        />
-                      </button>
+                      </form>
+                    ) : (
+                      <p className="mb-1">{he.decode(comment.content)}</p>
                     )}
-                  </form>
-                ) : (
-                  <p className="mb-1">{he.decode(comment.content)}</p>
-                )}
-                <p className="text-gray-500 text-sm italic">just now</p>
-              </div>
-            </div>
-          )})}
+                    <p className="text-gray-500 text-sm italic">just now</p>
+                  </div>
+                </div>
+              );
+          })}
         </Transition>
 
         {allComments.length > 1 && !showAll && (
