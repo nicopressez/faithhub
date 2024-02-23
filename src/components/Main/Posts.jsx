@@ -16,6 +16,7 @@ import NewComment from "./NewComment";
 import defaultImg from "../../assets/defaultProfile.png";
 import he from "he";
 import { Menu, Transition } from "@headlessui/react";
+import { jwtDecode } from "jwt-decode";
 
 const Posts = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -122,12 +123,18 @@ const Posts = () => {
   const toggleEdit = (e, post) => {
     e.preventDefault();
     setEditing(post._id);
-    setEditedPost(post.content);
+    setEditedPost({
+      content: post.content,
+      type: post.type
+    });
   };
 
   // Update edited comment on form input
   const handleEditChange = (e) => {
-    setEditedPost(e.target.value);
+    setEditedPost({
+      content: e.target.value,
+      type: editedPost.type
+    });
   };
 
   // When reaching a new line on the editing input, go to next line
@@ -136,8 +143,45 @@ const Posts = () => {
     e.target.style.height = e.target.scrollHeight + "px";
   };
 
-  const handleEdit = (e, id) => {
+  const handleTypeEdit = (e) => {
+    editedPost.type = e.target.value
+  }
+
+  const handleEdit = async(e, id) => {
     e.preventDefault();
+    const data = {
+      content: editedPost.content,
+      type: editedPost.type
+    }
+    try {
+      const response = await fetch(`https://faithhub-backend.fly.dev/post/${id}`, {
+        method: "PATCH",
+        headers:{
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      const result = await response.json()
+      // Refresh token
+      localStorage.setItem("token", result.token);
+      const decodedJWT = jwtDecode(result.token);
+      dispatch(tokenRefresh(decodedJWT.user));
+      // Update post info
+      allPosts.map(post => {
+        if(post._id === id) {
+          post.edited = true,
+          post.content = editedPost.content 
+          post.type = editedPost.type
+        }
+        return post
+      })
+      // Toggle form back to post
+      setEditing()
+    } catch(err) {
+      // TODO: Add error handling
+      console.log(err)
+    }
   };
 
   const handleDelete = async (e, id) => {
@@ -222,7 +266,28 @@ const Posts = () => {
             </Menu>
           )
         }
-        <p className="float-right mr-3">{post.type}</p>
+        {editing === post._id 
+        ? 
+        <select className="float-right mr-3"
+         onChange={handleTypeEdit}>
+        <option 
+        selected={post.type === "Discussion" ? true : false}
+        value="Discussion">
+          Discussion
+        </option>
+        <option 
+        selected={post.type === "Prayer Request" ? true : false}
+        value="Prayer Request">
+          Prayer Request
+        </option>
+        <option 
+        selected={post.type === "Testimony" ? true : false}
+        value="Testimony">
+          Testimony
+        </option>
+      </select>
+        : 
+        <p className="float-right mr-3">{post.type}</p>}
         <p className="font-bold">
           {post.author._id === user._id && !post.anonymous ? (
             <Link to={`/profile/${post.author._id}`}>You</Link>
@@ -242,18 +307,19 @@ const Posts = () => {
             onSubmit={(e) => handleEdit(e, post._id)}
             className="mt-1 relative"
           >
+          
             <textarea
               name="content"
               className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
                   overflow-visible resize-none pr-8 text-gray-600"
               placeholder="Your comment must be 4 characters long"
-              value={editedPost}
+              value={he.decode(editedPost.content)}
               onChange={handleEditChange}
               onInput={handleInput}
               rows="1"
               cols="60"
             ></textarea>
-            {editedPost.length > 4 && (
+            {editedPost.content.length > 4 && (
               <button
                 type="submit"
                 className="absolute bottom-[0%]
