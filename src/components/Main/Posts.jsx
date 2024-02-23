@@ -17,9 +17,10 @@ import defaultImg from "../../assets/defaultProfile.png";
 import he from "he";
 import { Menu, Transition } from "@headlessui/react";
 import { jwtDecode } from "jwt-decode";
+import { PropTypes } from "prop-types";
 
-const Posts = () => {
-  const [allPosts, setAllPosts] = useState([]);
+
+const Posts = ({ allPosts, setAllPosts }) => {
   const [likedPosts, setLikedPosts] = useState();
   const auth = useSelector((state) => state.auth);
 
@@ -49,15 +50,13 @@ const Posts = () => {
         // Refresh token & user info
         localStorage.setItem("token", responseData.token);
         dispatch(tokenRefresh(responseData.user));
-
-        console.log(responseData); // Log the response data
       } catch (err) {
         // TODO: Add error handling
         console.log(err);
       }
     };
     fetchPosts();
-  }, [dispatch]);
+  }, [dispatch, setAllPosts]);
 
   useEffect(() => {
     const postsUserLiked = [];
@@ -208,14 +207,20 @@ const Posts = () => {
     }
   };
 
-  if (user && allPosts[0] && likedPosts)
+  if (user && likedPosts)
     return allPosts.map((post) => (
+      <Transition key={post._id}
+      enter="transition duration-500"
+      enterFrom="opacity-0 transform -translate-y-10"
+      enterTo="opacity-100 transform translate-y-0"
+      appear={true}
+      show={allPosts.length > 0}>
       <div
-        key={post._id}
         className=" 
             ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-[45%]
              rounded-lg drop-shadow-md p-1 pb-8 lg:p-5 font-Rubik"
       >
+        
         {post.anonymous ? (
           <img
             className=" float-left
@@ -231,6 +236,7 @@ const Posts = () => {
             />
           </Link>
         )}
+        
         {
           // Edit/delete menu
           user._id === post.author._id && (
@@ -286,6 +292,7 @@ const Posts = () => {
             </Menu>
           )
         }
+        
         {editing === post._id 
         ? 
         <select className="float-right mr-3"
@@ -318,6 +325,12 @@ const Posts = () => {
               {post.author.first_name} {post.author.last_name}
             </Link>
           )}
+                    {
+                    post.edited && 
+                    <p className="text-gray-400 italic inline ml-3 text-sm font-normal">
+                      Edited
+                      </p>
+                      }
         </p>
 
         <Moment fromNow className="  italic" date={post.date}></Moment>
@@ -387,7 +400,13 @@ const Posts = () => {
           </div>
         </div>
       </div>
+      </Transition>
     ));
 };
+
+Posts.propTypes = {
+  allPosts: PropTypes.array,
+  setAllPosts: PropTypes.func
+}
 
 export default Posts;

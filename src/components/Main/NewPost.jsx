@@ -1,11 +1,15 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Transition } from "@headlessui/react";
 import { Link } from "react-router-dom";
+import { PropTypes } from "prop-types";
+import { tokenRefresh } from "../../reducers/auth";
 
-const NewPost = () => {
+const NewPost = ({setAllPosts}) => {
+
+  const dispatch = useDispatch()
   const [post, setPost] = useState("");
   const [type, setType] = useState("Discussion");
 
@@ -37,8 +41,16 @@ const NewPost = () => {
         body: JSON.stringify(data),
       });
       const result = await response.json();
-      console.log(result);
+      // Refresh token
+      localStorage.setItem("token", result.token);
+      dispatch(tokenRefresh(result.user));
+      // Add post to array
+      setAllPosts(prevPosts => [result.post, ...prevPosts])
+      // Reset post form
+      setPost("")
+      setType("Discussion")
     } catch (err) {
+      // TODO: Add error handling
       console.log(err);
     }
   };
@@ -51,6 +63,12 @@ const NewPost = () => {
 
   if (user)
     return (
+      <Transition
+      enter="transition-opacity duration-300"
+      enterFrom="opacity-0"
+      enterTo="pacity-100"
+      show={true}
+      appear={true}>
       <div
         className=" 
             ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-[45%] min-h-48
@@ -197,7 +215,12 @@ const NewPost = () => {
           </form>
         </div>
       </div>
+      </Transition>
     );
 };
+
+NewPost.propTypes = {
+  setAllPosts: PropTypes.func
+}
 
 export default NewPost;

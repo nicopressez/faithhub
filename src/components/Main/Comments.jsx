@@ -409,12 +409,10 @@ const Comments = ({ postid, newComments, setNewComments }) => {
         </Transition>
         <Transition
           show={newComments.length > 0}
-          enter="transition duration-200 ease-out"
-          enterFrom="transform scale-y-0 opacity-0"
-          enterTo="transform scale-y-100 opacity-100"
-          leave="transition duration-200 ease-out"
-          leaveFrom="transform scale-y-100 opacity-100"
-          leaveTo="transform scale-y-100 opacity-0"
+          appear={true}
+          enter="transition duration-300 ease-out"
+          enterFrom="opacity-0 transform -translate-y-10"
+          enterTo="opacity-100 transform translate-y-0" 
         >
           {newComments.map((comment) => {
             if (comment.postid === postid)
