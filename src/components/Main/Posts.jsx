@@ -216,7 +216,7 @@ const Posts = ({ allPosts, setAllPosts }) => {
       appear={true}
       show={allPosts.length > 0}>
       <div
-        className=" 
+        className="
             ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-[45%]
              rounded-lg drop-shadow-md p-1 pb-8 lg:p-5 font-Rubik"
       >

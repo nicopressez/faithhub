@@ -24,6 +24,7 @@
     "@reduxjs/toolkit": "^2.1.0",
     "@uidotdev/usehooks": "^2.4.1",
     "emoji-mart": "^5.5.2",
+    "emoji-picker-react": "^4.8.0",
     "he": "^1.2.0",
     "jwt-decode": "^4.0.0",
     "moment": "^2.30.1",

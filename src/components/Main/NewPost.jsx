@@ -1,11 +1,14 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight,
+         faFaceSmile
+         } from "@fortawesome/free-solid-svg-icons";
 import { Transition } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { tokenRefresh } from "../../reducers/auth";
+import EmojiPicker, { Emoji } from "emoji-picker-react";
 
 
 const NewPost = ({setAllPosts}) => {
@@ -15,6 +18,7 @@ const NewPost = ({setAllPosts}) => {
   const dispatch = useDispatch()
   const [post, setPost] = useState("");
   const [type, setType] = useState("Discussion");
+  const [showEmojis, setShowEmojis] = useState(false)
 
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
@@ -72,6 +76,10 @@ const NewPost = ({setAllPosts}) => {
     }
   };
 
+  const toggleEmojis = () => {
+    setShowEmojis(!showEmojis)
+  }
+
   if (user)
     return (
       <Transition
@@ -81,7 +89,7 @@ const NewPost = ({setAllPosts}) => {
       show={true}
       appear={true}>
       <div
-        className=" 
+        className="  relative z-10
             ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-[45%] min-h-48
              rounded-lg drop-shadow-md p-1 pb-8 lg:pl-[2%] lg:p-2 lg:pt-5 font-Rubik"
       >
@@ -99,6 +107,7 @@ const NewPost = ({setAllPosts}) => {
             />
           </Link>
           <form className="relative" onSubmit={handleSubmit}>
+            <div className="relative ">
             <textarea
               ref={textareaRef}
               className="bg-gray-200 rounded-full pl-4 pt-3 pb-2 
@@ -112,6 +121,20 @@ const NewPost = ({setAllPosts}) => {
               cols="70"
               name="content"
             ></textarea>
+            <FontAwesomeIcon icon={faFaceSmile} 
+            onClick={toggleEmojis}
+            className="absolute right-3 top-3 text-gray-400 h-5 hover:text-gray-500 
+            hover:cursor-pointer"
+            />
+            <div
+            className={`${!showEmojis 
+              ? "opacity-0 scale-y-0 origin-top" 
+              : "opacity-100 scale-y-100 origin-top"}
+            absolute top-0 -right-[52%]
+            transition-all duration-200`}>
+            <EmojiPicker />
+            </div>
+            </div>
             {post.length > 4 && (
               <button
                 type="submit"
