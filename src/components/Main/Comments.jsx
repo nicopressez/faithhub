@@ -262,16 +262,24 @@ const Comments = ({ postid, newComments, setNewComments }) => {
     return (
       <div>
         <Transition
-          show={allComments.length > 0}
-          enter="transition duration-200 ease-out"
-          enterFrom="transform scale-y-0 opacity-0"
-          enterTo="transform scale-y-100 opacity-100"
-          leave="transition duration-200 ease-out"
-          leaveFrom="transform scale-y-100 opacity-100"
-          leaveTo="transform scale-y-100 opacity-0"
-        >
+        show={true}
+        appear={true}
+        enter="transition duration-300 ease-out"
+        enterFrom="transform opacity-0 scale-y-0 origin-top"
+        enterTo="transform opacity-100 scale-100 origin-top">
           {allComments.map((comment) => (
-            <div key={comment._id} className="relative mb-5">
+            <Transition
+            key={comment._id}
+            show={allComments.length > 0}
+            appear={true}
+            enter="transition duration-300 ease-out"
+            enterFrom="opacity-0 transform -translate-y-10 "
+            enterTo="opacity-100 transform translate-y-0"
+            leave="transition duration-200 ease-out"
+            leaveFrom="opacity-100 transform translate-y-0"
+            leaveTo="opacity-0 transform -translate-y-20 "
+          >
+            <div className="relative mb-5">
               <div className="bg-gray-50 rounded-lg p-2">
                 <div>
                   <Link to={`/profile/${comment.author._id}`}>
@@ -405,18 +413,22 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                 </div>
               </div>
             </div>
+            </Transition>
+            
           ))}
-        </Transition>
-        <Transition
-          show={newComments.length > 0}
-          appear={true}
-          enter="transition duration-300 ease-out"
-          enterFrom="opacity-0 transform -translate-y-10"
-          enterTo="opacity-100 transform translate-y-0" 
-        >
+          </Transition>
+        
+        
           {newComments.map((comment) => {
             if (comment.postid === postid)
               return (
+                <Transition
+                show={newComments.length > 0}
+                appear={true}
+                enter="transition duration-300 ease-out"
+                enterFrom="opacity-0 transform -translate-y-10"
+                enterTo="opacity-100 transform translate-y-0" 
+              >
                 <div key={comment._id} className="relative mb-5">
                   <div className="bg-gray-50 rounded-lg p-2 ml-1">
                     <Link to={`/profile/${user._id}`}>
@@ -527,9 +539,10 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                     <p className="text-gray-500 text-sm italic">just now</p>
                   </div>
                 </div>
+                </Transition>
               );
           })}
-        </Transition>
+        
 
         {allComments.length > 1 && !showAll && (
           <button

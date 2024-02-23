@@ -2,7 +2,6 @@ import { useOutletContext } from "react-router-dom";
 import Posts from "./Posts";
 import NewPost from "./NewPost";
 import { useState } from "react";
-import { Transition } from "@headlessui/react";
 
 const Homepage = () => {
   const [navVisible, isSmallDevice] = useOutletContext();

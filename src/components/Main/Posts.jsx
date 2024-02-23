@@ -210,7 +210,7 @@ const Posts = ({ allPosts, setAllPosts }) => {
   if (user && likedPosts)
     return allPosts.map((post) => (
       <Transition key={post._id}
-      enter="transition duration-500"
+      enter="transition duration-300"
       enterFrom="opacity-0 transform -translate-y-10"
       enterTo="opacity-100 transform translate-y-0"
       appear={true}
@@ -391,6 +391,7 @@ const Posts = ({ allPosts, setAllPosts }) => {
           <span>{post.likes.length}</span>
           <hr className="mt-2 w-[90%] ml-auto mr-auto"></hr>
           <div className="pl-4 pr-4 pt-4">
+
             <Comments
               postid={post._id}
               newComments={newComments}

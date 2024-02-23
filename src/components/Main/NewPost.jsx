@@ -66,7 +66,7 @@ const NewPost = ({setAllPosts}) => {
       <Transition
       enter="transition-opacity duration-300"
       enterFrom="opacity-0"
-      enterTo="pacity-100"
+      enterTo="opacity-100"
       show={true}
       appear={true}>
       <div
