@@ -172,11 +172,11 @@ const NewPost = ({setAllPosts}) => {
                 className="absolute left-1/2 -translate-x-1/2"
                 show={type === "Prayer Request"}
                 enter="transition duration-200 ease-out"
-                enterFrom="transform scale-y-0 opacity-0"
-                enterTo="transform scale-y-100 opacity-100"
+                enterFrom="opacity-0 transform scale-y-0 origin-top"
+                enterTo="opacity-100 transform scale-y-100 origin-top"
                 leave="transition duration-200 ease-out"
-                leaveFrom="transform scale-y-100 opacity-100"
-                leaveTo="transform scale-y-0 opacity-0"
+                leaveFrom="opacity-100 transform scale-y-100 origin-top"
+                leaveTo="opacity-0 transform scale-y-0 origin-top"
               >
                 Anonymous
                 <input
@@ -190,12 +190,12 @@ const NewPost = ({setAllPosts}) => {
               <Transition
                 className={"float-right"}
                 show={post.length > 10}
-                enter="transition duration-200 ease-out"
-                enterFrom="transform scale-y-0 opacity-0"
-                enterTo="transform scale-y-100 opacity-100"
-                leave="transition duration-200 ease-out"
-                leaveFrom="transform scale-y-100 opacity-100"
-                leaveTo="transform scale-y-0 opacity-0"
+                enter="transition duration-100 ease-out"
+                enterFrom="transform scale-y-0 origin-top opacity-0"
+                enterTo="transform scale-y-100 origin-top opacity-100"
+                leave="transition duration-100 ease-out"
+                leaveFrom="transform scale-y-100 origin-top opacity-100"
+                leaveTo="transform scale-y-0 origin-top opacity-0"
               >
                 <button
                   type="submit"

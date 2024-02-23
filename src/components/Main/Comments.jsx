@@ -255,7 +255,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
       </p>
     );
 
-  if (!allComments[0])
+  if (!allComments[0] && !newComments[0])
     return <p className="text-center text-gray-300 italic">No comments yet</p>;
 
   if (user)
@@ -349,7 +349,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                   }
                   <Link
                     to={`/profile/${comment.author._id}`}
-                    className="text-gray-800"
+                    className="text-gray-800 font-bold"
                   >
                     {comment.author._id === user._id
                       ? "You"
@@ -369,7 +369,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                       className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
                   overflow-visible resize-none pr-8 text-gray-600"
                       placeholder="Your comment must be 4 characters long"
-                      value={editedComment}
+                      value={he.decode(editedComment)}
                       onChange={handleEditChange}
                       onInput={handleInput}
                       rows="1"
@@ -496,7 +496,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                         </Menu.Items>
                       </Transition>
                     </Menu>
-                    <Link to={`/profile/${user._id}`} className="text-gray-800">
+                    <Link to={`/profile/${user._id}`} className="text-gray-800 font-bold">
                       You
                     </Link>
 
