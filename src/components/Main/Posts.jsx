@@ -7,6 +7,7 @@ import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom/dist";
 import Comments from "./Comments";
 import NewComment from "./NewComment";
+import defaultImg from "../../assets/defaultProfile.png"
 
 const Posts = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -114,24 +115,39 @@ const Posts = () => {
             ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-[45%]
              rounded-lg drop-shadow-md p-1 pb-8 lg:p-5 font-Rubik"
       >
-        <Link to={`/profile/${post.author._id}`}>
-          <div>
-            <img
+       
+       {
+       post.anonymous 
+       ?
+       <img
               className=" float-left
                      w-9 h-9 mr-2 md:mr-4 md:w-11 md:h-11 rounded-full object-cover"
-              src={`https://faithhub-backend.fly.dev/${post.author.profile_picture}`}
+              src={defaultImg}
             />
-
+       :
+       <Link to={`/profile/${post.author._id}`}>
+          
+       <img
+         className=" float-left
+                w-9 h-9 mr-2 md:mr-4 md:w-11 md:h-11 rounded-full object-cover"
+         src={`https://faithhub-backend.fly.dev/${post.author.profile_picture}`}
+       />
+       </Link>
+       }
             <p className="float-right">{post.type}</p>
             <p className="font-bold">
               {post.author._id === user._id && !post.anonymous
-                ? `You`
+                ? <Link to={`/profile/${post.author._id}`}>
+                  You 
+                  </Link>
                 : post.anonymous
                   ? "Anonymous"
-                  : `${post.author.first_name} ${post.author.last_name}`}
+                  :<Link to={`/profile/${post.author._id}`}>
+                    {post.author.first_name} {post.author.last_name}
+                    </Link>}
             </p>
-          </div>
-        </Link>
+          
+        
         <Moment fromNow className="  italic" date={post.date}></Moment>
 
         <p className="mb-4 mt-2">{post.content}</p>
