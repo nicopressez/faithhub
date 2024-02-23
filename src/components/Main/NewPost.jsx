@@ -90,7 +90,7 @@ const NewPost = ({setAllPosts}) => {
       appear={true}>
       <div
         className="  relative z-10
-            ml-auto mr-auto mt-20 lg:mt-20 bg-white lg:w-[45%] min-h-48
+            ml-auto mr-auto mt-5 lg:mt-2 bg-white lg:w-[45%] min-h-48
              rounded-lg drop-shadow-md p-1 pb-8 lg:pl-[2%] lg:p-2 lg:pt-5 font-Rubik"
       >
         <div
