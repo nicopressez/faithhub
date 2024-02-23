@@ -8,6 +8,7 @@ import { Link } from "react-router-dom/dist";
 import Comments from "./Comments";
 import NewComment from "./NewComment";
 import defaultImg from "../../assets/defaultProfile.png"
+import he from 'he';
 
 const Posts = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -150,7 +151,7 @@ const Posts = () => {
         
         <Moment fromNow className="  italic" date={post.date}></Moment>
 
-        <p className="mb-4 mt-2">{post.content}</p>
+        <p className="mb-4 mt-2">{he.decode(post.content)}</p>
         <p
           className="float-right text-cyan-400 hover:text-cyan-500
                 hover:underline"

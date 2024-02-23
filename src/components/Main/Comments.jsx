@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Transition, Menu } from "@headlessui/react";
 import { tokenRefresh } from "../../reducers/auth";
 import { jwtDecode } from "jwt-decode";
+import he from 'he';
+
 
 const Comments = ({ postid, newComments, setNewComments }) => {
   const dispatch = useDispatch();
@@ -380,7 +382,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                     )}
                   </form>
                 ) : (
-                  <p className="mb-1">{comment.content}</p>
+                  <p className="mb-1">{he.decode(comment.content)}</p>
                 )}
                 <Moment
                   fromNow
@@ -517,7 +519,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                     )}
                   </form>
                 ) : (
-                  <p className="mb-1">{comment.content}</p>
+                  <p className="mb-1">{he.decode(comment.content)}</p>
                 )}
                 <p className="text-gray-500 text-sm italic">just now</p>
               </div>

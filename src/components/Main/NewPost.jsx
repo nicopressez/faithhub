@@ -25,7 +25,7 @@ const NewPost = () => {
     const data = {
       content: post,
       type,
-      anonymous: e.target.anonymous.checked,
+      anonymous: type === "Prayer Request" ? e.target.anonymous.checked : false
     };
     try {
       const response = await fetch(`https://faithhub-backend.fly.dev/post`, {
