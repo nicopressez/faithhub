@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Transition } from "@headlessui/react";
@@ -7,7 +7,10 @@ import { Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { tokenRefresh } from "../../reducers/auth";
 
+
 const NewPost = ({setAllPosts}) => {
+
+  const textareaRef = useRef(null)
 
   const dispatch = useDispatch()
   const [post, setPost] = useState("");
@@ -49,16 +52,24 @@ const NewPost = ({setAllPosts}) => {
       // Reset post form
       setPost("")
       setType("Discussion")
+      setTimeout(() => {
+        textareaRef.current.style.height = "auto";
+      }, 50);
     } catch (err) {
       // TODO: Add error handling
       console.log(err);
     }
   };
 
-  // When reaching a new line on the editing input, go to next line
+  // Adjust textarea sizing and border radius on input
   const handleInput = (e) => {
     e.target.style.height = "auto";
     e.target.style.height = e.target.scrollHeight + "px";
+    if (e.target.scrollHeight > parseInt(getComputedStyle(e.target).getPropertyValue('height'))) {
+      e.target.style.borderRadius = "0.5rem"; 
+    } else {
+      e.target.style.borderRadius = "2rem";
+    }
   };
 
   if (user)
@@ -89,6 +100,7 @@ const NewPost = ({setAllPosts}) => {
           </Link>
           <form className="relative" onSubmit={handleSubmit}>
             <textarea
+              ref={textareaRef}
               className="bg-gray-200 rounded-full pl-4 pt-3 pb-2 
                  overflow-visible resize-none pr-8
                  h-auto min-h-[3rem]"

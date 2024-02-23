@@ -105,7 +105,6 @@ const Comments = ({ postid, newComments, setNewComments }) => {
       );
     } catch (err) {
       setErrors(true);
-      console.log(err);
     }
   };
 

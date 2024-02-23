@@ -1,18 +1,27 @@
 import { PropTypes } from "prop-types";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 const NewComment = ({ postid, setNewComments }) => {
+
+  const textarea = useRef(null)
+
   const [comment, setComment] = useState("");
 
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
 
+  // Adjust textarea sizing and border radius on input
   const handleInput = (e) => {
     e.target.style.height = "auto";
     e.target.style.height = e.target.scrollHeight + "px";
+    if (e.target.scrollHeight > parseInt(getComputedStyle(e.target).getPropertyValue('height'))) {
+      e.target.style.borderRadius = "0.5rem"; 
+    } else {
+      e.target.style.borderRadius = "2rem";
+    }
   };
 
   const handleChange = (e) => {
@@ -38,9 +47,13 @@ const NewComment = ({ postid, setNewComments }) => {
       );
       const result = await response.json();
       const newComment = { ...result.comment, postid };
-      console.log(newComment);
+      // Add comment to array
       setNewComments((prevComments) => [...prevComments, newComment]);
+      // Reset form
       setComment("");
+      setTimeout(() => {
+        textarea.current.style.height = "auto"
+      }, 50);
     } catch (err) {
       // TODO :Error page
       console.log(err);
@@ -57,6 +70,7 @@ const NewComment = ({ postid, setNewComments }) => {
         />
         <form className="relative" onSubmit={handleSubmit}>
           <textarea
+          ref={textarea}
             className="bg-gray-200 rounded-full  pl-4 pb-2 pt-2
                  overflow-visible resize-none pr-8
                  h-auto"
