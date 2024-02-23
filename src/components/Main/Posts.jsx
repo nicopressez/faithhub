@@ -186,6 +186,26 @@ const Posts = () => {
 
   const handleDelete = async (e, id) => {
     e.preventDefault();
+    try {
+      const response = await fetch(`https://faithhub-backend.fly.dev/post/${id}`,{
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })
+      const result = await response.json()
+      // Refresh token
+      localStorage.setItem("token", result.token);
+      const decodedJWT = jwtDecode(result.token);
+      dispatch(tokenRefresh(decodedJWT.user));
+      // Remove deleted post
+      const updatedPosts = allPosts.filter(post => post._id !== id)
+      setAllPosts(updatedPosts)
+      console.log(result)
+    } catch(err) {
+      // TODO : Add error handling
+      console.log(err)
+    }
   };
 
   if (user && allPosts[0] && likedPosts)
