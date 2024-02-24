@@ -83,7 +83,7 @@ const NewPost = ({setAllPosts}) => {
   if (user)
     return (
       <Transition
-      enter="transition-opacity duration-300"
+      enter="transition-opacity duration-200"
       enterFrom="opacity-0"
       enterTo="opacity-100"
       show={true}

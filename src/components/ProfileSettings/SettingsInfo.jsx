@@ -11,6 +11,7 @@ import ErrorPage from "../ErrorPage";
 import { logoutSuccess, tokenRefresh } from "../../reducers/auth";
 import Loading from "../Loading";
 import { Dialog } from "@headlessui/react";
+import { Transition } from "@headlessui/react";
 
 const ProfileSettings = () => {
   const { id } = useParams();
@@ -191,6 +192,12 @@ const ProfileSettings = () => {
           }
         ${navVisible && isSmallDevice ? "brightness-75 blur-sm" : null}`}
         >
+          <Transition
+        show={true}
+        appear={true}
+        enter="transition duration-300"
+        enterFrom="opacity-0 transform -translate-y-10"
+        enterTo="opacity-100 transform translate-y-0">
           <div
             className=" 
         ml-auto mr-auto mt-[22%] md:mt-20 bg-white md:w-2/4
@@ -343,6 +350,7 @@ const ProfileSettings = () => {
               )}
             </form>
           </div>
+          </Transition>
         </div>
         <Dialog
           open={deleteDialog}

@@ -210,7 +210,7 @@ const Posts = ({ allPosts, setAllPosts }) => {
   if (user && likedPosts)
     return allPosts.map((post) => (
       <Transition key={post._id}
-      enter="transition duration-300"
+      enter="transition duration-200"
       enterFrom="opacity-0 transform -translate-y-10"
       enterTo="opacity-100 transform translate-y-0"
       appear={true}

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../Loading";
 import { tokenRefresh } from "../../reducers/auth";
 import { useOutletContext } from "react-router-dom";
+import { Transition } from "@headlessui/react";
 
 const Preferences = () => {
   const [updated, setUpdated] = useState(false);
@@ -90,6 +91,12 @@ const Preferences = () => {
         className={`bg-gray-100 w-screen h-screen pt-[0.5rem]
         ${navVisible && isSmallDevice ? "brightness-75 blur-sm" : null}`}
       >
+        <Transition
+        show={true}
+        appear={true}
+        enter="transition duration-300"
+        enterFrom="opacity-0 transform -translate-y-10"
+        enterTo="opacity-100 transform translate-y-0">
         <div
           className=" 
         ml-auto mr-auto mt-[22%] md:mt-20 bg-white md:w-2/4
@@ -193,6 +200,7 @@ const Preferences = () => {
             )}
           </form>
         </div>
+        </Transition>
       </div>
     );
 
