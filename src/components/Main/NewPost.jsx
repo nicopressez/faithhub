@@ -31,6 +31,11 @@ const NewPost = ({setAllPosts}) => {
     setType(e.target.value);
   };
 
+  
+  const toggleEmojis = () => {
+    setShowEmojis(!showEmojis)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
@@ -54,6 +59,7 @@ const NewPost = ({setAllPosts}) => {
       // Add post to array
       setAllPosts(prevPosts => [result.post, ...prevPosts])
       // Reset post form
+      setShowEmojis(false)
       setPost("")
       setType("Discussion")
       setTimeout(() => {
@@ -75,10 +81,6 @@ const NewPost = ({setAllPosts}) => {
       e.target.style.borderRadius = "2rem";
     }
   };
-
-  const toggleEmojis = () => {
-    setShowEmojis(!showEmojis)
-  }
 
   if (user)
     return (
@@ -132,7 +134,8 @@ const NewPost = ({setAllPosts}) => {
               : "opacity-100 scale-y-100 origin-top"}
             absolute top-0 -right-[52%]
             transition-all duration-200`}>
-            <EmojiPicker />
+            <EmojiPicker onEmojiClick={
+              (emojiObject) => setPost(prevPost => prevPost + emojiObject.emoji)}/>
             </div>
             </div>
             {post.length > 4 && (

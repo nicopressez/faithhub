@@ -33,11 +33,11 @@ const Homepage = () => {
       enterFrom="opacity-0 transform -translate-y-10" 
       enterTo="opacity-100 transform translate-y-0"
       >
-      <div className="-mb-16 mt-10">
+      <div className="-mb-16 mt-10 font-Rubik">
       <Link to={`/profile/${user._id}/settings/preferences`}
     className="w-[9%] bg-gray-200 ml-[63%] rounded-lg p-1
     text-gray-500 hover:brightness-95 hover:text-gray-600
-    -mb-2 pl-4 pr-5 flex items-center">
+    -mb-2 pl-4 pr-2 flex items-center">
     <FontAwesomeIcon
                       icon={faGear}
                       className="w-3 h-3 pr-1"
