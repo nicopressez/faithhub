@@ -2,13 +2,16 @@ import { PropTypes } from "prop-types";
 import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import React, { lazy, Suspense } from 'react';
+import { faPaperPlane, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
+const EmojiPicker = lazy(() => import('emoji-picker-react'));
 
 const NewComment = ({ postid, setNewComments }) => {
 
   const textarea = useRef(null)
 
   const [comment, setComment] = useState("");
+  const [showEmojis, setShowEmojis] = useState(false)
 
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
@@ -27,6 +30,10 @@ const NewComment = ({ postid, setNewComments }) => {
   const handleChange = (e) => {
     setComment(e.target.value);
   };
+
+  const toggleEmojis = () => {
+    setShowEmojis(!showEmojis)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,6 +76,7 @@ const NewComment = ({ postid, setNewComments }) => {
           }
         />
         <form className="relative" onSubmit={handleSubmit}>
+          <div className="relative">
           <textarea
           ref={textarea}
             className="bg-gray-200 rounded-full  pl-4 pb-2 pt-2
@@ -82,6 +90,23 @@ const NewComment = ({ postid, setNewComments }) => {
             cols="60"
             name="content"
           ></textarea>
+          <FontAwesomeIcon icon={faFaceSmile} 
+            onClick={toggleEmojis}
+            className="absolute right-3 top-3 text-gray-400 h-5 hover:text-gray-500 
+            hover:cursor-pointer"
+            />
+            <div
+            className={`${!showEmojis 
+              ? "opacity-0 scale-y-0 origin-top" 
+              : "opacity-100 scale-y-100 origin-top"}
+            absolute top-0 -right-[52%]
+            transition-all duration-200`}>
+              {showEmojis && 
+              <Suspense fallback={<div>Loading...</div>}>
+                <EmojiPicker />
+              </Suspense>}
+            </div>
+            </div>
           {comment.length > 4 && (
             <button
               type="submit"

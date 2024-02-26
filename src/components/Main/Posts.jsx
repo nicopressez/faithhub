@@ -250,11 +250,11 @@ const Posts = ({ allPosts, setAllPosts }) => {
               </Menu.Button>
               <Transition
                 enter="transition duration-200 ease-out"
-                enterFrom="transform scale-y-0 opacity-0"
-                enterTo="transform scale-y-100 opacity-100"
+                enterFrom="opacity-0 transform scale-y-0 origin-top"
+                enterTo="opacity-100 transform scale-y-100 origin-top "
                 leave="transition duration-200 ease-out"
-                leaveFrom="transform scale-y-100 opacity-100"
-                leaveTo="transform scale-y-100 opacity-0"
+                leaveFrom="opacity-100 transform scale-y-100 origin-top"
+                leaveTo="opacity-0 transform scale-y-0 origin-top"
               >
                 <Menu.Items
                   className="absolute -bottom-9 left-5 w-36 md:w-28 flex

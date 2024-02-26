@@ -8,7 +8,7 @@ import { Transition } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { tokenRefresh } from "../../reducers/auth";
-import EmojiPicker, { Emoji } from "emoji-picker-react";
+import EmojiPicker from "emoji-picker-react";
 
 
 const NewPost = ({setAllPosts}) => {
@@ -34,6 +34,10 @@ const NewPost = ({setAllPosts}) => {
   
   const toggleEmojis = () => {
     setShowEmojis(!showEmojis)
+  }
+
+  const handleEmoji = (emojiObject) => {
+    setPost(prevPost => prevPost + emojiObject.emoji)
   }
 
   const handleSubmit = async (e) => {
@@ -134,8 +138,10 @@ const NewPost = ({setAllPosts}) => {
               : "opacity-100 scale-y-100 origin-top"}
             absolute top-0 -right-[52%]
             transition-all duration-200`}>
-            <EmojiPicker onEmojiClick={
-              (emojiObject) => setPost(prevPost => prevPost + emojiObject.emoji)}/>
+            <EmojiPicker onEmojiClick={(emojiObject) => {
+              handleEmoji(emojiObject)}
+            }
+              />
             </div>
             </div>
             {post.length > 4 && (
