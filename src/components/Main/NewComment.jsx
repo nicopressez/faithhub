@@ -35,6 +35,10 @@ const NewComment = ({ postid, setNewComments }) => {
     setShowEmojis(!showEmojis)
   }
 
+  const handleEmoji = (emojiObject) => {
+    setComment(prevComment => prevComment + emojiObject.emoji)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -80,38 +84,37 @@ const NewComment = ({ postid, setNewComments }) => {
           <textarea
           ref={textarea}
             className="bg-gray-200 rounded-full  pl-4 pb-2 pt-2
-                 overflow-visible resize-none pr-8
+                 overflow-visible resize-none pr-10
                  h-auto"
             placeholder="Write a comment..."
             value={comment}
             onChange={handleChange}
             onInput={handleInput}
             rows="1"
-            cols="60"
+            cols="65"
             name="content"
           ></textarea>
           <FontAwesomeIcon icon={faFaceSmile} 
             onClick={toggleEmojis}
-            className="absolute right-3 top-3 text-gray-400 h-5 hover:text-gray-500 
+            className="absolute right-3 bottom-[1.2rem] text-gray-400 h-5 hover:text-gray-500 
             hover:cursor-pointer"
             />
             <div
             className={`${!showEmojis 
               ? "opacity-0 scale-y-0 origin-bottom" 
               : "opacity-100 scale-y-100 origin-bottom"}
-            absolute bottom-0 -right-[59%]
+            absolute bottom-0 -right-[54%]
             transition-all duration-200 z-50`}>
               {showEmojis && 
               <Suspense fallback={<div>Loading...</div>}>
-                <EmojiPicker />
+                <EmojiPicker onEmojiClick={(emojiObject) => handleEmoji(emojiObject)}/>
               </Suspense>}
             </div>
-            </div>
-          {comment.length > 4 && (
+            {comment.length > 4 && (
             <button
               type="submit"
-              className="absolute bottom-[5%]
-                 -translate-y-1/2 cursor-pointer right-5 
+              className="absolute bottom-4 z-50
+                  cursor-pointer right-10
                  "
             >
               <FontAwesomeIcon
@@ -120,6 +123,8 @@ const NewComment = ({ postid, setNewComments }) => {
               />
             </button>
           )}
+            </div>
+          
         </form>
       </div>
     );
