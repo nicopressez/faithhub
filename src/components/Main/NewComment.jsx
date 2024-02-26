@@ -68,15 +68,15 @@ const NewComment = ({ postid, setNewComments }) => {
   };
   if (user)
     return (
-      <div className="flex  flex-row justify-center items-center mt-3">
+      <div className="relative z-50 flex  flex-row justify-center items-center mt-3">
         <img
           className="mb-1 w-9 h-9 mr-2 md:mr-2 md:w-10 md:h-10 rounded-full object-cover"
           src={
             user && `https://faithhub-backend.fly.dev/${user.profile_picture}`
           }
         />
-        <form className="relative" onSubmit={handleSubmit}>
-          <div className="relative">
+        <form className="relative z-50" onSubmit={handleSubmit}>
+          <div className="relative z-50">
           <textarea
           ref={textarea}
             className="bg-gray-200 rounded-full  pl-4 pb-2 pt-2
@@ -97,10 +97,10 @@ const NewComment = ({ postid, setNewComments }) => {
             />
             <div
             className={`${!showEmojis 
-              ? "opacity-0 scale-y-0 origin-top" 
-              : "opacity-100 scale-y-100 origin-top"}
-            absolute top-0 -right-[52%]
-            transition-all duration-200`}>
+              ? "opacity-0 scale-y-0 origin-bottom" 
+              : "opacity-100 scale-y-100 origin-bottom"}
+            absolute bottom-0 -right-[59%]
+            transition-all duration-200 z-50`}>
               {showEmojis && 
               <Suspense fallback={<div>Loading...</div>}>
                 <EmojiPicker />

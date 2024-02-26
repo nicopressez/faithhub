@@ -216,9 +216,10 @@ const Posts = ({ allPosts, setAllPosts }) => {
       appear={true}
       show={allPosts.length > 0}>
       <div
-        className="
-            ml-auto mr-auto mt-5 lg:mt-20 bg-white lg:w-[45%]
-             rounded-lg drop-shadow-md p-1 pb-8 lg:p-5 font-Rubik"
+        className=
+            {`ml-auto mr-auto mt-5 lg:mt-20 bg-white lg:w-[45%]
+             rounded-lg drop-shadow-md p-1 pb-8 lg:p-5 font-Rubik
+             relative z-0`}
       >
         
         {post.anonymous ? (
@@ -397,7 +398,8 @@ const Posts = ({ allPosts, setAllPosts }) => {
               newComments={newComments}
               setNewComments={setNewComments}
             />
-            <NewComment postid={post._id} setNewComments={setNewComments} />
+            <NewComment postid={post._id} setNewComments={setNewComments} 
+            />
           </div>
         </div>
       </div>
