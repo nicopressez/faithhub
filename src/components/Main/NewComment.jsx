@@ -2,7 +2,7 @@ import { PropTypes } from "prop-types";
 import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import { faPaperPlane, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
 const EmojiPicker = lazy(() => import('emoji-picker-react'));
 

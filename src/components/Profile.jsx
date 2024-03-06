@@ -31,10 +31,10 @@ const Profile = () => {
   }, [id]);
   if (userInfo)
     return (
-      <div className="bg-gray-100 w-screen h-full pt-[3.5rem]">
+      <div className="bg-gray-100 w-screen h-full pt-[0.5rem]">
         <div
           className=" 
-        ml-auto mr-auto mt-20 lg:mt-20 text-center bg-white lg:w-3/5
+        ml-auto mr-auto mt-20 lg:mt-20 text-center bg-white md:w-[55%]
          rounded-lg drop-shadow-md p-1 pb-8 lg:p-3 font-Rubik"
         >
           <img
