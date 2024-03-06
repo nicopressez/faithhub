@@ -11,7 +11,7 @@ import { tokenRefresh } from "../../reducers/auth";
 import EmojiPicker from "emoji-picker-react";
 
 
-const NewPost = ({setAllPosts}) => {
+const NewPost = ({setAllPosts, own}) => {
 
   const textareaRef = useRef(null)
 
@@ -95,9 +95,10 @@ const NewPost = ({setAllPosts}) => {
       show={true}
       appear={true}>
       <div
-        className="  relative z-10
-            ml-auto mr-auto mt-[3.5rem] lg:mt-[4.5rem] bg-white lg:w-[45%] min-h-48
-             rounded-lg drop-shadow-md p-1 pb-8 lg:pl-[2%] lg:p-2 lg:pt-5 font-Rubik"
+        className={`relative z-10
+            ml-auto mr-auto mt-[3.5rem] lg:mt-[4.5rem] bg-white min-h-48
+             rounded-lg drop-shadow-md p-1 pb-8 lg:pl-[2%] lg:p-2 lg:pt-5 font-Rubik+
+             ${own ? 'md:w-[55%]' : 'md:w-[45%]'}`}
       >
         <div
           className="flex  flex-row mt-3 justify-center relative
@@ -264,7 +265,8 @@ const NewPost = ({setAllPosts}) => {
 };
 
 NewPost.propTypes = {
-  setAllPosts: PropTypes.func
+  setAllPosts: PropTypes.func,
+  own: PropTypes.bool
 }
 
 export default NewPost;
