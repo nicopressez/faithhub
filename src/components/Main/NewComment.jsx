@@ -101,9 +101,9 @@ const NewComment = ({ postid, setNewComments }) => {
             />
             <div
             className={`${!showEmojis 
-              ? "opacity-0 scale-y-0 origin-bottom" 
+              ? "opacity-0 scale-y-0 origin-bottom"
               : "opacity-100 scale-y-100 origin-bottom"}
-            absolute bottom-0 -right-[54%]
+            absolute bottom-0 left-[101%]
             transition-all duration-200 z-50`}>
               {showEmojis && 
               <Suspense fallback={<div>Loading...</div>}>

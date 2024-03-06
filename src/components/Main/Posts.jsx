@@ -20,7 +20,7 @@ import { jwtDecode } from "jwt-decode";
 import { PropTypes } from "prop-types";
 
 
-const Posts = ({ allPosts, setAllPosts }) => {
+const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
   const [likedPosts, setLikedPosts] = useState();
   const auth = useSelector((state) => state.auth);
 
@@ -36,6 +36,22 @@ const Posts = ({ allPosts, setAllPosts }) => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        if (own) {
+          const response = await fetch(
+            `https://faithhub-backend.fly.dev/post/user/${profileId}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            },
+          );
+          const responseData = await response.json();
+          setAllPosts(responseData.data);
+          // Refresh token & user info
+          localStorage.setItem("token", responseData.token);
+          dispatch(tokenRefresh(responseData.user));
+        } else {
         const response = await fetch(
           "https://faithhub-backend.fly.dev/post/all",
           {
@@ -50,13 +66,14 @@ const Posts = ({ allPosts, setAllPosts }) => {
         // Refresh token & user info
         localStorage.setItem("token", responseData.token);
         dispatch(tokenRefresh(responseData.user));
+        }
       } catch (err) {
         // TODO: Add error handling
         console.log(err);
       }
     };
     fetchPosts();
-  }, [dispatch, setAllPosts]);
+  }, [dispatch, setAllPosts,profileId,own]);
 
   useEffect(() => {
     const postsUserLiked = [];
@@ -409,7 +426,9 @@ const Posts = ({ allPosts, setAllPosts }) => {
 
 Posts.propTypes = {
   allPosts: PropTypes.array,
-  setAllPosts: PropTypes.func
+  setAllPosts: PropTypes.func,
+  own: PropTypes.bool,
+  profileId: PropTypes.array,
 }
 
 export default Posts;

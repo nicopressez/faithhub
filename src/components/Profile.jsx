@@ -4,11 +4,13 @@ import Loading from "./Loading";
 import ErrorPage from "./ErrorPage";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Posts from "./Main/Posts";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState();
   const [error, setError] = useState(false);
   const { id } = useParams();
+  const [allPosts, setAllPosts] = useState([]);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -29,7 +31,7 @@ const Profile = () => {
   }, [id]);
   if (userInfo)
     return (
-      <div className="bg-gray-100 w-screen h-screen pt-[3.5rem]">
+      <div className="bg-gray-100 w-screen h-full pt-[3.5rem]">
         <div
           className=" 
         ml-auto mr-auto mt-20 lg:mt-20 text-center bg-white lg:w-3/5
@@ -52,6 +54,8 @@ const Profile = () => {
           </p>
           <p className="italic">{userInfo.bio}</p>
         </div>
+      <Posts allPosts={allPosts} setAllPosts={setAllPosts}
+      own={true} profileId={id}/>
       </div>
     );
 
