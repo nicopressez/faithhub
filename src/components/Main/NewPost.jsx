@@ -267,7 +267,7 @@ const NewPost = ({setAllPosts, own}) => {
 
 NewPost.propTypes = {
   setAllPosts: PropTypes.func,
-  own: PropTypes.bool
+  own: PropTypes.bool,
 }
 
 export default NewPost;

@@ -6,12 +6,16 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Posts from "./Main/Posts";
 import NewPost from "./Main/NewPost";
+import { useSelector } from "react-redux";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState();
   const [error, setError] = useState(false);
   const { id } = useParams();
   const [allPosts, setAllPosts] = useState([]);
+
+  const auth = useSelector(state => state.auth)
+  const { user } = auth
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -55,12 +59,18 @@ const Profile = () => {
           </p>
           <p className="italic">{userInfo.bio}</p>
         </div>
+      {user && id === user._id && 
       <NewPost 
       setAllPosts={setAllPosts}
       own={true}
       />
-      <Posts allPosts={allPosts} setAllPosts={setAllPosts}
-      own={true} profileId={id}/>
+      }
+
+      <Posts allPosts={allPosts} 
+      setAllPosts={setAllPosts}
+      own={true} 
+      profileId={id}
+      />
       </div>
     );
 
