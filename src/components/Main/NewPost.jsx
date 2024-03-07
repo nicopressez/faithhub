@@ -106,7 +106,8 @@ const NewPost = ({setAllPosts, own}) => {
         >
           <Link to={`/profile/${user._id}`}>
             <img
-              className="absolute left-[0.5%] top-0 w-9 h-9 mr-2 md:mr-5 md:w-12 md:h-12 rounded-full object-cover"
+              className={`absolute top-0 w-9 h-9 mr-2 md:mr-5 md:w-12 md:h-12 rounded-full object-cover
+              left-[3%]`}
               src={
                 user &&
                 `https://faithhub-backend.fly.dev/${user.profile_picture}`
@@ -125,7 +126,7 @@ const NewPost = ({setAllPosts, own}) => {
               onChange={handleChange}
               onInput={handleInput}
               rows="1"
-              cols={own ? '110' : '70'}
+              cols={own ? '105' : '80'}
               name="content"
             ></textarea>
             <FontAwesomeIcon icon={faFaceSmile} 
@@ -138,7 +139,7 @@ const NewPost = ({setAllPosts, own}) => {
               ? "opacity-0 scale-y-0 origin-top" 
               : "opacity-100 scale-y-100 origin-top"}
             absolute top-0 
-            ${own ? "-right-[41%]" : "-right-[52%]"}
+            ${own ? "-right-[41%]" : "-right-[54%]"}
             transition-all duration-200`}>
             <EmojiPicker onEmojiClick={(emojiObject) => {
               handleEmoji(emojiObject)}

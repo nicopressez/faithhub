@@ -39,11 +39,13 @@ const Profile = () => {
       <div className="bg-gray-100 w-screen h-full pt-[0.5rem]">
         <div
           className=" 
-        ml-auto mr-auto mt-20 lg:mt-20 text-center bg-white md:w-[55%]
-         rounded-lg drop-shadow-md p-1 pb-8 lg:p-3 font-Rubik"
+        ml-auto mr-auto mt-16 lg:mt-16 text-center bg-white md:w-[55%]
+         rounded-lg drop-shadow-md p-1 pb-2 lg:p-1 lg:pb-2 font-Rubik 
+         -mb-8"
         >
           <img
-            className="mt-3 mb-3 ml-auto mr-auto w-24 h-24 md:w-32 md:h-32 rounded-full object-cover"
+            className="border-cyan-400 border-4 p-[0.20rem] mt-3 mb-3 ml-auto mr-auto w-24 h-24 md:w-36 md:h-36 rounded-full object-cover
+             "
             src={`https://faithhub-backend.fly.dev/${userInfo.profile_picture}`}
           />
           <h2 className=" text-xl font-bold">
