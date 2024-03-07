@@ -117,15 +117,15 @@ const NewPost = ({setAllPosts, own}) => {
             <div className="relative ">
             <textarea
               ref={textareaRef}
-              className="bg-gray-200 rounded-full pl-4 pt-3 pb-2 
+              className={`bg-gray-200 rounded-full pl-4 pt-3 pb-2 
                  overflow-visible resize-none pr-8
-                 h-auto min-h-[3rem]"
+                 h-auto min-h-[3rem]`}
               placeholder="What's on your mind..."
               value={post}
               onChange={handleChange}
               onInput={handleInput}
               rows="1"
-              cols="70"
+              cols={own ? '110' : '70'}
               name="content"
             ></textarea>
             <FontAwesomeIcon icon={faFaceSmile} 
@@ -137,7 +137,8 @@ const NewPost = ({setAllPosts, own}) => {
             className={`${!showEmojis 
               ? "opacity-0 scale-y-0 origin-top" 
               : "opacity-100 scale-y-100 origin-top"}
-            absolute top-0 -right-[52%]
+            absolute top-0 
+            ${own ? "-right-[41%]" : "-right-[52%]"}
             transition-all duration-200`}>
             <EmojiPicker onEmojiClick={(emojiObject) => {
               handleEmoji(emojiObject)}
