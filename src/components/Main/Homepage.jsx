@@ -29,7 +29,7 @@ const Homepage = () => {
           enterFrom="opacity-0 transform -translate-y-10"
           enterTo="opacity-100 transform translate-y-0"
         >
-          <div className="flex justify-center md:justify-normal mt-4 md:-mb-16 md:mt-6 font-Rubik relative">
+          <div className="flex justify-center md:justify-normal mt-4 md:-mb-16 md:mt-4 font-Rubik relative">
             <Link
               to={`/profile/${user._id}/settings/preferences`}
               className=" bg-gray-200 md:ml-[63%] rounded-lg p-1

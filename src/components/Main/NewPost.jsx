@@ -101,8 +101,8 @@ const NewPost = ({ setAllPosts, own }) => {
       >
         <div
           className={`relative z-10
-            ml-auto mr-auto mt-[3.5rem] lg:mt-[4.5rem] bg-white min-h-48
-             rounded-lg drop-shadow-md p-1 pb-8  md:p-2 md:pt-5 font-Rubik
+            ml-auto mr-auto mt-[3.5rem] lg:mt-[4.5rem] bg-white min-h-[8rem] md:min-h-52
+             rounded-lg drop-shadow-md p-1 md:p-6 md:pt-5 font-Rubik
              ${own ? "md:w-[55%]" : "md:w-[45%]"}`}
         >
           <div
@@ -133,7 +133,7 @@ const NewPost = ({ setAllPosts, own }) => {
                   onInput={handleInput}
                   rows="1"
                   cols={isSmallDevice ? own ? "30" : "25" 
-                  : own ? "105" : "80"}
+                  : own ? "105" : "75"}
                   name="content"
                 ></textarea>
                 {!isSmallDevice &&
