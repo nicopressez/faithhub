@@ -2,16 +2,15 @@ import { PropTypes } from "prop-types";
 import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense } from "react";
 import { faPaperPlane, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
-const EmojiPicker = lazy(() => import('emoji-picker-react'));
+const EmojiPicker = lazy(() => import("emoji-picker-react"));
 
 const NewComment = ({ postid, setNewComments }) => {
-
-  const textarea = useRef(null)
+  const textarea = useRef(null);
 
   const [comment, setComment] = useState("");
-  const [showEmojis, setShowEmojis] = useState(false)
+  const [showEmojis, setShowEmojis] = useState(false);
 
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
@@ -20,8 +19,11 @@ const NewComment = ({ postid, setNewComments }) => {
   const handleInput = (e) => {
     e.target.style.height = "auto";
     e.target.style.height = e.target.scrollHeight + "px";
-    if (e.target.scrollHeight > parseInt(getComputedStyle(e.target).getPropertyValue('height'))) {
-      e.target.style.borderRadius = "0.5rem"; 
+    if (
+      e.target.scrollHeight >
+      parseInt(getComputedStyle(e.target).getPropertyValue("height"))
+    ) {
+      e.target.style.borderRadius = "0.5rem";
     } else {
       e.target.style.borderRadius = "2rem";
     }
@@ -32,12 +34,12 @@ const NewComment = ({ postid, setNewComments }) => {
   };
 
   const toggleEmojis = () => {
-    setShowEmojis(!showEmojis)
-  }
+    setShowEmojis(!showEmojis);
+  };
 
   const handleEmoji = (emojiObject) => {
-    setComment(prevComment => prevComment + emojiObject.emoji)
-  }
+    setComment((prevComment) => prevComment + emojiObject.emoji);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,7 +65,7 @@ const NewComment = ({ postid, setNewComments }) => {
       // Reset form
       setComment("");
       setTimeout(() => {
-        textarea.current.style.height = "auto"
+        textarea.current.style.height = "auto";
       }, 50);
     } catch (err) {
       // TODO :Error page
@@ -81,50 +83,56 @@ const NewComment = ({ postid, setNewComments }) => {
         />
         <form className="relative z-50" onSubmit={handleSubmit}>
           <div className="relative z-50">
-          <textarea
-          ref={textarea}
-            className="bg-gray-200 rounded-full  pl-4 pb-2 pt-2
+            <textarea
+              ref={textarea}
+              className="bg-gray-200 rounded-full  pl-4 pb-2 pt-2
                  overflow-visible resize-none pr-10
                  h-auto"
-            placeholder="Write a comment..."
-            value={comment}
-            onChange={handleChange}
-            onInput={handleInput}
-            rows="1"
-            cols="65"
-            name="content"
-          ></textarea>
-          <FontAwesomeIcon icon={faFaceSmile} 
-            onClick={toggleEmojis}
-            className="absolute right-3 bottom-[1.2rem] text-gray-400 h-5 hover:text-gray-500 
+              placeholder="Write a comment..."
+              value={comment}
+              onChange={handleChange}
+              onInput={handleInput}
+              rows="1"
+              cols="65"
+              name="content"
+            ></textarea>
+            <FontAwesomeIcon
+              icon={faFaceSmile}
+              onClick={toggleEmojis}
+              className="absolute right-3 bottom-[1.2rem] text-gray-400 h-5 hover:text-gray-500 
             hover:cursor-pointer"
             />
             <div
-            className={`${!showEmojis 
-              ? "opacity-0 scale-y-0 origin-bottom"
-              : "opacity-100 scale-y-100 origin-bottom"}
+              className={`${
+                !showEmojis
+                  ? "opacity-0 scale-y-0 origin-bottom"
+                  : "opacity-100 scale-y-100 origin-bottom"
+              }
             absolute bottom-0 left-[101%]
-            transition-all duration-200 z-50`}>
-              {showEmojis && 
-              <Suspense fallback={<div>Loading...</div>}>
-                <EmojiPicker onEmojiClick={(emojiObject) => handleEmoji(emojiObject)}/>
-              </Suspense>}
+            transition-all duration-200 z-50`}
+            >
+              {showEmojis && (
+                <Suspense fallback={<div>Loading...</div>}>
+                  <EmojiPicker
+                    onEmojiClick={(emojiObject) => handleEmoji(emojiObject)}
+                  />
+                </Suspense>
+              )}
             </div>
             {comment.length > 4 && (
-            <button
-              type="submit"
-              className="absolute bottom-4 z-50
+              <button
+                type="submit"
+                className="absolute bottom-4 z-50
                   cursor-pointer right-10
                  "
-            >
-              <FontAwesomeIcon
-                icon={faPaperPlane}
-                className="text-cyan-400 hover:text-cyan-500"
-              />
-            </button>
-          )}
-            </div>
-          
+              >
+                <FontAwesomeIcon
+                  icon={faPaperPlane}
+                  className="text-cyan-400 hover:text-cyan-500"
+                />
+              </button>
+            )}
+          </div>
         </form>
       </div>
     );

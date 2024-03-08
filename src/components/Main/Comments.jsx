@@ -261,145 +261,148 @@ const Comments = ({ postid, newComments, setNewComments }) => {
     return (
       <div>
         <Transition
-        show={true}
-        appear={true}
-        enter="transition duration-300 ease-out"
-        enterFrom="transform opacity-0 scale-y-0 origin-top"
-        enterTo="transform opacity-100 scale-100 origin-top">
+          show={true}
+          appear={true}
+          enter="transition duration-300 ease-out"
+          enterFrom="transform opacity-0 scale-y-0 origin-top"
+          enterTo="transform opacity-100 scale-100 origin-top"
+        >
           {allComments.map((comment) => (
             <Transition
-            key={comment._id}
-            show={allComments.length > 0}
-            appear={true}
-            enter="transition duration-300 ease-out"
-            enterFrom="opacity-0 transform -translate-y-10 "
-            enterTo="opacity-100 transform translate-y-0"
-            leave="transition duration-200 ease-out"
-            leaveFrom="opacity-100 transform translate-y-0"
-            leaveTo="opacity-0 transform -translate-y-20 "
-          >
-            <div className="relative mb-5">
-              <div className="bg-gray-50 rounded-lg p-2">
-                <div>
-                  <Link to={`/profile/${comment.author._id}`}>
-                    <img
-                      className=" float-left
+              key={comment._id}
+              show={allComments.length > 0}
+              appear={true}
+              enter="transition duration-300 ease-out"
+              enterFrom="opacity-0 transform -translate-y-10 "
+              enterTo="opacity-100 transform translate-y-0"
+              leave="transition duration-200 ease-out"
+              leaveFrom="opacity-100 transform translate-y-0"
+              leaveTo="opacity-0 transform -translate-y-20 "
+            >
+              <div className="relative mb-5">
+                <div className="bg-gray-50 rounded-lg p-2">
+                  <div>
+                    <Link to={`/profile/${comment.author._id}`}>
+                      <img
+                        className=" float-left
                      w-9 h-9 mr-2 md:mr-3 md:w-8 md:h-8 rounded-full object-cover"
-                      src={`https://faithhub-backend.fly.dev/${comment.author.profile_picture}`}
-                    />
-                  </Link>
-                  {
-                    // Edit/delete menu
-                    user._id === comment.author._id && (
-                      <Menu as="div" className="relative float-right">
-                        <Menu.Button>
-                          <FontAwesomeIcon
-                            className="mt-1 mr-1 h-4
+                        src={`https://faithhub-backend.fly.dev/${comment.author.profile_picture}`}
+                      />
+                    </Link>
+                    {
+                      // Edit/delete menu
+                      user._id === comment.author._id && (
+                        <Menu as="div" className="relative float-right">
+                          <Menu.Button>
+                            <FontAwesomeIcon
+                              className="mt-1 mr-1 h-4
                        text-gray-400"
-                            icon={faEllipsisVertical}
-                          />
-                        </Menu.Button>
-                        <Transition
-                          enter="transition duration-200 ease-out"
-                          enterFrom="transform scale-y-0 opacity-0"
-                          enterTo="transform scale-y-100 opacity-100"
-                          leave="transition duration-200 ease-out"
-                          leaveFrom="transform scale-y-100 opacity-100"
-                          leaveTo="transform scale-y-100 opacity-0"
-                        >
-                          <Menu.Items
-                            className="absolute -bottom-9 left-5 w-36 md:w-28 flex
+                              icon={faEllipsisVertical}
+                            />
+                          </Menu.Button>
+                          <Transition
+                            enter="transition duration-200 ease-out"
+                            enterFrom="transform scale-y-0 opacity-0"
+                            enterTo="transform scale-y-100 opacity-100"
+                            leave="transition duration-200 ease-out"
+                            leaveFrom="transform scale-y-100 opacity-100"
+                            leaveTo="transform scale-y-100 opacity-0"
+                          >
+                            <Menu.Items
+                              className="absolute -bottom-9 left-5 w-36 md:w-28 flex
                  flex-col bg-white gap-1 drop-shadow-xl rounded-lg
                    pt-2 pb-2 justify-center"
-                          >
-                            <Menu.Item>
-                              {({ active }) => (
-                                <button
-                                  className={`${active && "bg-gray-100"} pl-2 text-left
+                            >
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <button
+                                    className={`${active && "bg-gray-100"} pl-2 text-left
                               text-gray-700`}
-                                  onClick={(e) => toggleEdit(e, comment)}
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faPenToSquare}
-                                    className="pr-2 "
-                                  />
-                                  Edit
-                                </button>
-                              )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
-                                <button
-                                  className={`${active && "bg-gray-100"} text-red-500 pl-2 text-left`}
-                                  onClick={(e) => handleDelete(e, comment._id)}
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faTrash}
-                                    className="pr-2"
-                                  />
-                                  Delete
-                                </button>
-                              )}
-                            </Menu.Item>
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
-                    )
-                  }
-                  <Link
-                    to={`/profile/${comment.author._id}`}
-                    className="text-gray-800 font-bold"
-                  >
-                    {comment.author._id === user._id
-                      ? "You"
-                      : `${comment.author.first_name} ${comment.author.last_name}`}
-                  </Link>
-                  <p className="text-gray-400 italic inline ml-3 text-sm">
-                    {comment.edited && "Edited"}
-                  </p>
-                </div>
-                {editing === comment._id ? (
-                  <form
-                    onSubmit={(e) => handleEdit(e, comment._id)}
-                    className="mt-1 relative"
-                  >
-                    <textarea
-                      name="content"
-                      className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
+                                    onClick={(e) => toggleEdit(e, comment)}
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faPenToSquare}
+                                      className="pr-2 "
+                                    />
+                                    Edit
+                                  </button>
+                                )}
+                              </Menu.Item>
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <button
+                                    className={`${active && "bg-gray-100"} text-red-500 pl-2 text-left`}
+                                    onClick={(e) =>
+                                      handleDelete(e, comment._id)
+                                    }
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faTrash}
+                                      className="pr-2"
+                                    />
+                                    Delete
+                                  </button>
+                                )}
+                              </Menu.Item>
+                            </Menu.Items>
+                          </Transition>
+                        </Menu>
+                      )
+                    }
+                    <Link
+                      to={`/profile/${comment.author._id}`}
+                      className="text-gray-800 font-bold"
+                    >
+                      {comment.author._id === user._id
+                        ? "You"
+                        : `${comment.author.first_name} ${comment.author.last_name}`}
+                    </Link>
+                    <p className="text-gray-400 italic inline ml-3 text-sm">
+                      {comment.edited && "Edited"}
+                    </p>
+                  </div>
+                  {editing === comment._id ? (
+                    <form
+                      onSubmit={(e) => handleEdit(e, comment._id)}
+                      className="mt-1 relative"
+                    >
+                      <textarea
+                        name="content"
+                        className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
                   overflow-visible resize-none pr-8 text-gray-600"
-                      placeholder="Your comment must be 4 characters long"
-                      value={he.decode(editedComment)}
-                      onChange={handleEditChange}
-                      onInput={handleInput}
-                      rows="1"
-                      cols="60"
-                    ></textarea>
-                    {editedComment.length > 4 && (
-                      <button
-                        type="submit"
-                        className="absolute bottom-[0%]
+                        placeholder="Your comment must be 4 characters long"
+                        value={he.decode(editedComment)}
+                        onChange={handleEditChange}
+                        onInput={handleInput}
+                        rows="1"
+                        cols="60"
+                      ></textarea>
+                      {editedComment.length > 4 && (
+                        <button
+                          type="submit"
+                          className="absolute bottom-[0%]
                  -translate-y-1/2 cursor-pointer right-[19%]"
-                      >
-                        <FontAwesomeIcon
-                          icon={faPaperPlane}
-                          className="text-cyan-400 hover:text-cyan-500"
-                        />
-                      </button>
-                    )}
-                  </form>
-                ) : (
-                  <p className="mb-1">{he.decode(comment.content)}</p>
-                )}
-                <Moment
-                  fromNow
-                  className="text-gray-500 text-sm  italic"
-                  date={comment.date}
-                ></Moment>
-                <div className="float-right">
-                  <FontAwesomeIcon
-                    icon={faThumbsUp}
-                    onClick={(e) => handleLike(e, comment._id, false)}
-                    className={`
+                        >
+                          <FontAwesomeIcon
+                            icon={faPaperPlane}
+                            className="text-cyan-400 hover:text-cyan-500"
+                          />
+                        </button>
+                      )}
+                    </form>
+                  ) : (
+                    <p className="mb-1">{he.decode(comment.content)}</p>
+                  )}
+                  <Moment
+                    fromNow
+                    className="text-gray-500 text-sm  italic"
+                    date={comment.date}
+                  ></Moment>
+                  <div className="float-right">
+                    <FontAwesomeIcon
+                      icon={faThumbsUp}
+                      onClick={(e) => handleLike(e, comment._id, false)}
+                      className={`
                 mr-1  w-4 h-4 hover:text-cyan-500
                 hover:cursor-pointer active:text-cyan-600
                 ${
@@ -407,26 +410,24 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                     ? "text-cyan-600"
                     : "text-cyan-400"
                 }`}
-                  />
-                  <span className="text-sm">{comment.likes.length}</span>
+                    />
+                    <span className="text-sm">{comment.likes.length}</span>
+                  </div>
                 </div>
               </div>
-            </div>
             </Transition>
-            
           ))}
-          </Transition>
-        
-        
-          {newComments.map((comment) => {
-            if (comment.postid === postid)
-              return (
-                <Transition
+        </Transition>
+
+        {newComments.map((comment) => {
+          if (comment.postid === postid)
+            return (
+              <Transition
                 show={newComments.length > 0}
                 appear={true}
                 enter="transition duration-300 ease-out"
                 enterFrom="opacity-0 transform -translate-y-10"
-                enterTo="opacity-100 transform translate-y-0" 
+                enterTo="opacity-100 transform translate-y-0"
               >
                 <div key={comment._id} className="relative mb-5">
                   <div className="bg-gray-50 rounded-lg p-2 ml-1">
@@ -495,7 +496,10 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                         </Menu.Items>
                       </Transition>
                     </Menu>
-                    <Link to={`/profile/${user._id}`} className="text-gray-800 font-bold">
+                    <Link
+                      to={`/profile/${user._id}`}
+                      className="text-gray-800 font-bold"
+                    >
                       You
                     </Link>
 
@@ -538,10 +542,9 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                     <p className="text-gray-500 text-sm italic">just now</p>
                   </div>
                 </div>
-                </Transition>
-              );
-          })}
-        
+              </Transition>
+            );
+        })}
 
         {allComments.length > 1 && !showAll && (
           <button

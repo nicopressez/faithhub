@@ -1,4 +1,6 @@
 const Loading = () => {
-  return <div className="bg-gray-100 w-screen h-full">loading</div>;
+  return (
+    <div className="bg-gray-100 w-screen h-full min-h-screen">loading</div>
+  );
 };
 export default Loading;

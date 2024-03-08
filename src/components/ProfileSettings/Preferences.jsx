@@ -92,114 +92,115 @@ const Preferences = () => {
         ${navVisible && isSmallDevice ? "brightness-75 blur-sm" : null}`}
       >
         <Transition
-        show={true}
-        appear={true}
-        enter="transition duration-300"
-        enterFrom="opacity-0 transform -translate-y-10"
-        enterTo="opacity-100 transform translate-y-0">
-        <div
-          className=" 
+          show={true}
+          appear={true}
+          enter="transition duration-300"
+          enterFrom="opacity-0 transform -translate-y-10"
+          enterTo="opacity-100 transform translate-y-0"
+        >
+          <div
+            className=" 
         ml-auto mr-auto mt-[22%] md:mt-20 bg-white md:w-2/4
          rounded-lg drop-shadow-md p-1 pb-3 md:pb-5 md:p-3 md:pl-10 md:pr-10 font-Rubik "
-        >
-          <h2 className="text-2xl font-bold text-center"> Preferences </h2>
-          <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
-          <p className="text-center mb-2 italic text-sm">
-            Customize your feed with posts tailored to your interests.
-            <br></br>
-          </p>
-          <form
-            onSubmit={handleSubmit}
-            onChange={checkChange}
-            className="flex flex-col"
           >
-            {updated && (
-              <h3 className="text-center text-cyan-500 text-lg">
-                Preferences updated successfully!
-              </h3>
-            )}
-            <div className="grid grid-cols-2">
-              <div
-                className=" flex flex-col justify-center text-sm md:text-base ml-[10%] md:ml-[30%] 
+            <h2 className="text-2xl font-bold text-center"> Preferences </h2>
+            <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
+            <p className="text-center mb-2 italic text-sm">
+              Customize your feed with posts tailored to your interests.
+              <br></br>
+            </p>
+            <form
+              onSubmit={handleSubmit}
+              onChange={checkChange}
+              className="flex flex-col"
+            >
+              {updated && (
+                <h3 className="text-center text-cyan-500 text-lg">
+                  Preferences updated successfully!
+                </h3>
+              )}
+              <div className="grid grid-cols-2">
+                <div
+                  className=" flex flex-col justify-center text-sm md:text-base ml-[10%] md:ml-[30%] 
                   font-bold gap-2 md:gap-1"
-              >
-                <label htmlFor="prayer">Prayer requests</label>
-                <label htmlFor="discussion">Community discussions</label>
-                <label htmlFor="testimony">Testimonies</label>
+                >
+                  <label htmlFor="prayer">Prayer requests</label>
+                  <label htmlFor="discussion">Community discussions</label>
+                  <label htmlFor="testimony">Testimonies</label>
+                </div>
+
+                <div className=" flex flex-col gap-5 md:gap-3 justify-center ml-[80%] md:ml-[68%]">
+                  <input
+                    type="checkbox"
+                    id="prayer"
+                    name="Prayer Request"
+                    className=" w-4 h-4  accent-cyan-400"
+                    defaultChecked={
+                      user.preferences.find((pref) => pref === "Prayer Request")
+                        ? true
+                        : false
+                    }
+                  />
+                  <input
+                    type="checkbox"
+                    id="discussion"
+                    name="Discussion"
+                    className=" w-4 h-4 accent-cyan-400"
+                    defaultChecked={
+                      user.preferences.find((pref) => pref === "Discussion")
+                        ? true
+                        : false
+                    }
+                  />
+                  <input
+                    type="checkbox"
+                    id="testimony"
+                    name="Testimony"
+                    className=" w-4 h-4 accent-cyan-400 "
+                    defaultChecked={
+                      user.preferences.find((pref) => pref === "Testimony")
+                        ? true
+                        : false
+                    }
+                  />
+                </div>
               </div>
 
-              <div className=" flex flex-col gap-5 md:gap-3 justify-center ml-[80%] md:ml-[68%]">
-                <input
-                  type="checkbox"
-                  id="prayer"
-                  name="Prayer Request"
-                  className=" w-4 h-4  accent-cyan-400"
-                  defaultChecked={
-                    user.preferences.find((pref) => pref === "Prayer Request")
-                      ? true
-                      : false
-                  }
-                />
-                <input
-                  type="checkbox"
-                  id="discussion"
-                  name="Discussion"
-                  className=" w-4 h-4 accent-cyan-400"
-                  defaultChecked={
-                    user.preferences.find((pref) => pref === "Discussion")
-                      ? true
-                      : false
-                  }
-                />
-                <input
-                  type="checkbox"
-                  id="testimony"
-                  name="Testimony"
-                  className=" w-4 h-4 accent-cyan-400 "
-                  defaultChecked={
-                    user.preferences.find((pref) => pref === "Testimony")
-                      ? true
-                      : false
-                  }
-                />
+              <div className="flex flex-row justify-center gap-4 mt-3">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    handleClearAll(e);
+                    checkChange(e);
+                  }}
+                  className=" bg-gray-400 text-white w-1/4 rounded-md"
+                >
+                  Clear all
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    handleCheckAll(e);
+                    checkChange(e);
+                  }}
+                  className=" bg-gray-400 text-white w-1/4 rounded-md"
+                >
+                  Check all
+                </button>
               </div>
-            </div>
 
-            <div className="flex flex-row justify-center gap-4 mt-3">
-              <button
-                type="button"
-                onClick={(e) => {
-                  handleClearAll(e);
-                  checkChange(e);
-                }}
-                className=" bg-gray-400 text-white w-1/4 rounded-md"
-              >
-                Clear all
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
-                  handleCheckAll(e);
-                  checkChange(e);
-                }}
-                className=" bg-gray-400 text-white w-1/4 rounded-md"
-              >
-                Check all
-              </button>
-            </div>
+              <hr className="w-3/4 ml-auto mr-auto mt-3"></hr>
 
-            <hr className="w-3/4 ml-auto mr-auto mt-3"></hr>
-
-            {submitToggle && (
-              <input
-                type="submit"
-                value="Confirm"
-                className=" bg-cyan-400 text-white
+              {submitToggle && (
+                <input
+                  type="submit"
+                  value="Confirm"
+                  className=" bg-cyan-400 text-white
         p-1 pl-6 pr-6 rounded-md text-xl mt-3 block ml-auto mr-auto hover:cursor-pointer"
-              />
-            )}
-          </form>
-        </div>
+                />
+              )}
+            </form>
+          </div>
         </Transition>
       </div>
     );

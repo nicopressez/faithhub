@@ -193,163 +193,164 @@ const ProfileSettings = () => {
         ${navVisible && isSmallDevice ? "brightness-75 blur-sm" : null}`}
         >
           <Transition
-        show={true}
-        appear={true}
-        enter="transition duration-300"
-        enterFrom="opacity-0 transform -translate-y-10"
-        enterTo="opacity-100 transform translate-y-0">
-          <div
-            className=" 
+            show={true}
+            appear={true}
+            enter="transition duration-300"
+            enterFrom="opacity-0 transform -translate-y-10"
+            enterTo="opacity-100 transform translate-y-0"
+          >
+            <div
+              className=" 
         ml-auto mr-auto mt-[22%] md:mt-20 bg-white md:w-2/4
          rounded-lg drop-shadow-md p-1 pb-8 md:p-3 md:pl-10 md:pr-10 font-Rubik "
-          >
-            <h2 className="text-2xl font-bold mb-2 text-center"> Account </h2>
-            <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
-            <form onSubmit={handleUpdate} className="flex flex-col ">
-              <label
-                htmlFor="profile_picture"
-                className="relative group w-20 h-20 lg:w-32 lg:h-32 ml-auto mr-auto rounded-full"
-              >
-                <img
-                  src={uploadImg}
-                  className="hidden w-16 absolute left-[50%] -translate-x-1/2 top-[20%] group-hover:block z-10
-                "
-                ></img>
-                <img
-                  src={currentPic}
-                  className="group-hover:brightness-90 rounded-full object-cover  w-20 h-20 md:w-32 md:h-32
-                ml-auto mr-auto"
-                ></img>
-              </label>
-
-              <input
-                id="profile_picture"
-                name="profile_picture"
-                type="file"
-                onChange={(e) => {
-                  handleChange(e);
-                  onPicChange(e);
-                }}
-                className="
-                 w-0 h-0 absolute"
-              ></input>
-
-              {Object.keys(errors).map(
-                (field, index) =>
-                  errors[field] !== null && (
-                    <div
-                      key={index}
-                      className="text-red-600 text-center
-                  text-lg font-bold mt-2"
-                    >
-                      {errors[field]}
-                    </div>
-                  ),
-              )}
-              {success && (
-                <h3
-                  className=" text-cyan-500 text-center
-            text-lg font-bold mt-2"
+            >
+              <h2 className="text-2xl font-bold mb-2 text-center"> Account </h2>
+              <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
+              <form onSubmit={handleUpdate} className="flex flex-col ">
+                <label
+                  htmlFor="profile_picture"
+                  className="relative group w-20 h-20 lg:w-32 lg:h-32 ml-auto mr-auto rounded-full"
                 >
-                  Profile updated successfully!
-                </h3>
-              )}
-              <div className="grid grid-cols-2 mt-3">
-                <div className="flex flex-col font-bold md:ml-10">
-                  <label htmlFor="username" className="text-lg mb-2 p-1">
-                    Username:{" "}
-                  </label>
-                  <label htmlFor="first_name" className="text-lg mb-2 p-1">
-                    First name:{" "}
-                  </label>
-                  <label htmlFor="last_name" className="text-lg mb-2 p-1">
-                    Last name:{" "}
-                  </label>
-                  <label htmlFor="bio" className="text-lg mb-2 p-1">
-                    Bio:{" "}
-                  </label>
-                  <label htmlFor="location" className="text-lg mb-2 p-1">
-                    Location:{" "}
-                  </label>
-                </div>
+                  <img
+                    src={uploadImg}
+                    className="hidden w-16 absolute left-[50%] -translate-x-1/2 top-[20%] group-hover:block z-10
+                "
+                  ></img>
+                  <img
+                    src={currentPic}
+                    className="group-hover:brightness-90 rounded-full object-cover  w-20 h-20 md:w-32 md:h-32
+                ml-auto mr-auto"
+                  ></img>
+                </label>
 
-                <div className="flex flex-col text-lg text-gray-800">
-                  <input
-                    name="username"
-                    type="text"
-                    defaultValue={userInfo.username}
-                    id="username"
-                    onChange={handleChange}
-                    className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
-                  ${isLoading ? "brightness-95" : null}`}
-                    placeholder="Required"
-                  ></input>
-
-                  <input
-                    name="first_name"
-                    type="text"
-                    defaultValue={userInfo.first_name}
-                    id="first_name"
-                    onChange={handleChange}
-                    className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
-                  ${isLoading ? "brightness-95" : null}`}
-                    placeholder="Required"
-                  ></input>
-
-                  <input
-                    name="last_name"
-                    type="text"
-                    defaultValue={userInfo.last_name}
-                    id="last_name"
-                    onChange={handleChange}
-                    className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
-                  ${isLoading ? "brightness-95" : null}`}
-                    placeholder="Required"
-                  ></input>
-
-                  <input
-                    name="bio"
-                    type="text"
-                    defaultValue={userInfo.bio}
-                    placeholder="Optional"
-                    id="bio"
-                    onChange={handleChange}
-                    className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
-                  ${isLoading ? "brightness-95" : null}`}
-                  ></input>
-
-                  <input
-                    name="location"
-                    type="text"
-                    defaultValue={userInfo.location}
-                    id="location"
-                    onChange={handleChange}
-                    placeholder="Optional"
-                    className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
-                  ${isLoading ? "brightness-95" : null}`}
-                  ></input>
-                </div>
-              </div>
-              <hr className="w-3/4 ml-auto mr-auto"></hr>
-              <button
-                type="button"
-                className="bg-red-600 text-white p-1 pl-6 pr-6 rounded-md 
-        text-xl mt-5 block ml-auto mr-auto"
-                onClick={() => setDeleteDialog(true)}
-              >
-                Delete account
-              </button>
-
-              {settingChange[0] && (
                 <input
-                  type="Submit"
-                  value="Confirm settings"
-                  className=" bg-cyan-400 text-white
-        p-1 pl-6 pr-6 rounded-md text-xl mt-3 block ml-auto mr-auto hover:cursor-pointer"
+                  id="profile_picture"
+                  name="profile_picture"
+                  type="file"
+                  onChange={(e) => {
+                    handleChange(e);
+                    onPicChange(e);
+                  }}
+                  className="
+                 w-0 h-0 absolute"
                 ></input>
-              )}
-            </form>
-          </div>
+
+                {Object.keys(errors).map(
+                  (field, index) =>
+                    errors[field] !== null && (
+                      <div
+                        key={index}
+                        className="text-red-600 text-center
+                  text-lg font-bold mt-2"
+                      >
+                        {errors[field]}
+                      </div>
+                    ),
+                )}
+                {success && (
+                  <h3
+                    className=" text-cyan-500 text-center
+            text-lg font-bold mt-2"
+                  >
+                    Profile updated successfully!
+                  </h3>
+                )}
+                <div className="grid grid-cols-2 mt-3">
+                  <div className="flex flex-col font-bold md:ml-10">
+                    <label htmlFor="username" className="text-lg mb-2 p-1">
+                      Username:{" "}
+                    </label>
+                    <label htmlFor="first_name" className="text-lg mb-2 p-1">
+                      First name:{" "}
+                    </label>
+                    <label htmlFor="last_name" className="text-lg mb-2 p-1">
+                      Last name:{" "}
+                    </label>
+                    <label htmlFor="bio" className="text-lg mb-2 p-1">
+                      Bio:{" "}
+                    </label>
+                    <label htmlFor="location" className="text-lg mb-2 p-1">
+                      Location:{" "}
+                    </label>
+                  </div>
+
+                  <div className="flex flex-col text-lg text-gray-800">
+                    <input
+                      name="username"
+                      type="text"
+                      defaultValue={userInfo.username}
+                      id="username"
+                      onChange={handleChange}
+                      className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
+                      placeholder="Required"
+                    ></input>
+
+                    <input
+                      name="first_name"
+                      type="text"
+                      defaultValue={userInfo.first_name}
+                      id="first_name"
+                      onChange={handleChange}
+                      className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
+                      placeholder="Required"
+                    ></input>
+
+                    <input
+                      name="last_name"
+                      type="text"
+                      defaultValue={userInfo.last_name}
+                      id="last_name"
+                      onChange={handleChange}
+                      className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
+                      placeholder="Required"
+                    ></input>
+
+                    <input
+                      name="bio"
+                      type="text"
+                      defaultValue={userInfo.bio}
+                      placeholder="Optional"
+                      id="bio"
+                      onChange={handleChange}
+                      className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
+                    ></input>
+
+                    <input
+                      name="location"
+                      type="text"
+                      defaultValue={userInfo.location}
+                      id="location"
+                      onChange={handleChange}
+                      placeholder="Optional"
+                      className={`bg-gray-100 w-full ml-auto mr-auto rounded-md p-1 pl-4 mb-2
+                  ${isLoading ? "brightness-95" : null}`}
+                    ></input>
+                  </div>
+                </div>
+                <hr className="w-3/4 ml-auto mr-auto"></hr>
+                <button
+                  type="button"
+                  className="bg-red-600 text-white p-1 pl-6 pr-6 rounded-md 
+        text-xl mt-5 block ml-auto mr-auto"
+                  onClick={() => setDeleteDialog(true)}
+                >
+                  Delete account
+                </button>
+
+                {settingChange[0] && (
+                  <input
+                    type="Submit"
+                    value="Confirm settings"
+                    className=" bg-cyan-400 text-white
+        p-1 pl-6 pr-6 rounded-md text-xl mt-3 block ml-auto mr-auto hover:cursor-pointer"
+                  ></input>
+                )}
+              </form>
+            </div>
           </Transition>
         </div>
         <Dialog
