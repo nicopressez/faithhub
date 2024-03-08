@@ -5,8 +5,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { lazy, Suspense } from "react";
 import { faPaperPlane, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
 const EmojiPicker = lazy(() => import("emoji-picker-react"));
+import { useMediaQuery } from "@uidotdev/usehooks";
+
 
 const NewComment = ({ postid, setNewComments }) => {
+
+  // Get device size to adjust design for small screens
+  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+
   const textarea = useRef(null);
 
   const [comment, setComment] = useState("");
@@ -86,22 +92,24 @@ const NewComment = ({ postid, setNewComments }) => {
             <textarea
               ref={textarea}
               className="bg-gray-200 rounded-full  pl-4 pb-2 pt-2
-                 overflow-visible resize-none pr-10
+                 overflow-visible resize-none pr-8
                  h-auto"
               placeholder="Write a comment..."
               value={comment}
               onChange={handleChange}
               onInput={handleInput}
               rows="1"
-              cols="65"
+              cols={isSmallDevice ? "20" : "65"}
               name="content"
             ></textarea>
-            <FontAwesomeIcon
+
+            {!isSmallDevice &&
+              <FontAwesomeIcon
               icon={faFaceSmile}
               onClick={toggleEmojis}
               className="absolute right-3 bottom-[1.2rem] text-gray-400 h-5 hover:text-gray-500 
             hover:cursor-pointer"
-            />
+            />}
             <div
               className={`${
                 !showEmojis
@@ -114,6 +122,7 @@ const NewComment = ({ postid, setNewComments }) => {
               {showEmojis && (
                 <Suspense fallback={<div>Loading...</div>}>
                   <EmojiPicker
+                    height={400}
                     onEmojiClick={(emojiObject) => handleEmoji(emojiObject)}
                   />
                 </Suspense>

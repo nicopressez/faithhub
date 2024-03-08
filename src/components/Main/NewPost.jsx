@@ -7,8 +7,14 @@ import { Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import { tokenRefresh } from "../../reducers/auth";
 import EmojiPicker from "emoji-picker-react";
+import { useMediaQuery } from "@uidotdev/usehooks";
+
 
 const NewPost = ({ setAllPosts, own }) => {
+
+  // Get device size to adjust design for small screens
+  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+
   const textareaRef = useRef(null);
 
   const dispatch = useDispatch();
@@ -96,17 +102,17 @@ const NewPost = ({ setAllPosts, own }) => {
         <div
           className={`relative z-10
             ml-auto mr-auto mt-[3.5rem] lg:mt-[4.5rem] bg-white min-h-48
-             rounded-lg drop-shadow-md p-1 pb-8 lg:pl-[2%] lg:p-2 lg:pt-5 font-Rubik+
+             rounded-lg drop-shadow-md p-1 pb-8  md:p-2 md:pt-5 font-Rubik
              ${own ? "md:w-[55%]" : "md:w-[45%]"}`}
         >
           <div
             className="flex  flex-row mt-3 justify-center relative
-        items-center"
+        "
           >
             <Link to={`/profile/${user._id}`}>
               <img
-                className={`absolute top-0 w-9 h-9 mr-2 md:mr-5 md:w-12 md:h-12 rounded-full object-cover
-              left-[3%]`}
+                className={`w-9 hidden h-9 mr-2 md:mr-3 md:w-12 md:h-12 rounded-full object-cover md:inline
+              `}
                 src={
                   user &&
                   `https://faithhub-backend.fly.dev/${user.profile_picture}`
@@ -117,23 +123,26 @@ const NewPost = ({ setAllPosts, own }) => {
               <div className="relative ">
                 <textarea
                   ref={textareaRef}
-                  className={`bg-gray-200 rounded-full pl-4 pt-3 pb-2 
+                  className={`bg-gray-200 rounded-full pl-4 pt-2 pb-2 
                  overflow-visible resize-none pr-8
-                 h-auto min-h-[3rem]`}
+                 h-auto md:min-h-[3rem] md:pt-3
+                 `}
                   placeholder="What's on your mind..."
                   value={post}
                   onChange={handleChange}
                   onInput={handleInput}
                   rows="1"
-                  cols={own ? "105" : "80"}
+                  cols={isSmallDevice ? own ? "30" : "25" 
+                  : own ? "105" : "80"}
                   name="content"
                 ></textarea>
-                <FontAwesomeIcon
+                {!isSmallDevice &&
+                  <FontAwesomeIcon
                   icon={faFaceSmile}
                   onClick={toggleEmojis}
                   className="absolute right-3 top-3 text-gray-400 h-5 hover:text-gray-500 
             hover:cursor-pointer"
-                />
+                />}
                 <div
                   className={`${
                     !showEmojis
@@ -145,6 +154,7 @@ const NewPost = ({ setAllPosts, own }) => {
             transition-all duration-200`}
                 >
                   <EmojiPicker
+                    height={400}
                     onEmojiClick={(emojiObject) => {
                       handleEmoji(emojiObject);
                     }}
@@ -159,7 +169,7 @@ const NewPost = ({ setAllPosts, own }) => {
                 ></button>
               )}
               <hr className="mt-2 text-center"></hr>
-              <div className="grid grid-cols-3 gap-5 mt-3">
+              <div className="grid grid-cols-3 gap-1 md:gap-5 mt-3">
                 <label
                   htmlFor="discussion"
                   className={` border-cyan-400 border-4 rounded-full
@@ -187,7 +197,7 @@ const NewPost = ({ setAllPosts, own }) => {
         ${type !== "Prayer Request" ? "hover:bg-gray-100" : ""}
         `}
                 >
-                  Prayer Request
+                 {isSmallDevice ? "Prayer" : "Prayer Request"}
                   <input
                     onChange={handleType}
                     value="Prayer Request"
