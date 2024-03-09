@@ -16,13 +16,13 @@ const ProfileSettings = () => {
   const { navVisible } = sideNav;
 
   // Get device sizes to adjust the navbar logic for phones
-  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+  const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
   if (user && user._id === id)
     return (
       <>
         <SettingsNav />
-        <Outlet context={[navVisible, isSmallDevice]} />
+        <Outlet context={[navVisible, isLargeDevice]} />
       </>
     );
 

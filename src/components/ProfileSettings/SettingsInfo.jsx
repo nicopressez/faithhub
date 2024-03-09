@@ -28,7 +28,7 @@ const ProfileSettings = () => {
   const [settingChange, setSettingChange] = useState([]);
   const [errorPage, setErrorPage] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
-  const [navVisible, isSmallDevice] = useOutletContext();
+  const [navVisible, isLargeDevice] = useOutletContext();
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -190,7 +190,7 @@ const ProfileSettings = () => {
           className={`bg-gray-100 w-screen h-screen pt-[0.5rem] ${
             deleteDialog ? " blur-sm" : null
           }
-        ${navVisible && isSmallDevice ? "brightness-75 blur-sm" : null}`}
+        ${navVisible && !isLargeDevice ? "brightness-75 blur-sm" : null}`}
         >
           <Transition
             show={true}

@@ -20,27 +20,24 @@ const SettingsNav = () => {
   const { navVisible } = sideNav;
 
   // Get device size to adjust the navbar logic for phones
-  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+  const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
   const handleLogout = () => {
     dispatch(logoutSuccess());
     navigate("/auth");
   };
-
-  //    if (isSmallDevice && user && navVisible
-  //    || !isSmallDevice  && user)
   if (user)
     return (
       <div
-        className={`h-[38rem] p-2 mt-[3.5rem] gap-1 w-[70%]
-        bg-white md:h-[91%] md:w-[15%] fixed font-Rubik
-        md:ml-5 md:mr-2 md:mt-[4.3rem] shadow-xl md:rounded-lg md:pt-5
-        flex flex-col md:gap-2 md:text-lg z-10 md:p-0
-         ${isSmallDevice ? "transition duration-300 ease-in-out transform" : ""}
+        className={`h-full p-2 mt-[3.5rem] max-w-[25rem] gap-1 w-[70%]
+        bg-white lg:h-[91%] lg:w-[15%] fixed font-Rubik
+        lg:ml-5 lg:mr-2 lg:mt-[4.3rem] shadow-xl lg:rounded-lg lg:pt-5
+        flex flex-col lg:gap-2 text-lg z-10 lg:p-0
+         ${!isLargeDevice ? "transition duration-300 ease-in-out transform" : ""}
          ${
-           isSmallDevice && navVisible
+           !isLargeDevice && navVisible
              ? "translate-x-0"
-             : isSmallDevice
+             : !isLargeDevice
                ? "-translate-x-full"
                : ""
          }

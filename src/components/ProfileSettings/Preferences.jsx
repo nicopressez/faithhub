@@ -13,7 +13,7 @@ const Preferences = () => {
   const dispatch = useDispatch();
   const { user } = auth;
 
-  const [navVisible, isSmallDevice] = useOutletContext();
+  const [navVisible, isLargeDevice] = useOutletContext();
 
   const handleCheckAll = (e) => {
     e.preventDefault();
@@ -89,7 +89,7 @@ const Preferences = () => {
     return (
       <div
         className={`bg-gray-100 w-screen h-screen pt-[0.5rem]
-        ${navVisible && isSmallDevice ? "brightness-75 blur-sm" : null}`}
+        ${navVisible && !isLargeDevice ? "brightness-75 blur-sm" : null}`}
       >
         <Transition
           show={true}
