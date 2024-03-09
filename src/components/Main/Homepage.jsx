@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { Transition } from "@headlessui/react";
 
 const Homepage = () => {
-  const [navVisible, isSmallDevice] = useOutletContext();
+  const [navVisible, isLargeDevice] = useOutletContext();
   const [allPosts, setAllPosts] = useState([]);
 
   const auth = useSelector((state) => state.auth);
@@ -19,7 +19,7 @@ const Homepage = () => {
     return (
       <div
         className={`bg-gray-100 w-screen min-h-screen pt-[0.5rem]
-        ${navVisible && isSmallDevice ? "brightness-75 blur-sm" : null}`}
+        ${navVisible && !isLargeDevice ? "brightness-75 blur-sm" : null}`}
       >
         <NewPost setAllPosts={setAllPosts} />
         <Transition

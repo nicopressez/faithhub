@@ -61,7 +61,7 @@ const Header = () => {
         >
           <h1
             className="text-lg ml-2  text-cyan-400 font-extrabold tracking-wide
-          lg:text-3xl lg:ml-8 "
+          md:text-3xl lg:ml-8 "
           >
             FaithHub
           </h1>
