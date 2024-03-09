@@ -83,7 +83,8 @@ const NewComment = ({ postid, setNewComments }) => {
       <div className="relative z-50 flex  flex-row justify-center items-center mt-3 
        text-sm md:text-base">
         <img
-          className="mb-1 w-9 h-9 mr-2 md:mr-2 md:w-10 md:h-10 rounded-full object-cover"
+          className="mb-1 w-9 h-9 mr-2 md:mr-2 md:w-10 md:h-10 rounded-full object-cover
+          hidden md:inline"
           src={
             user && `https://faithhub-backend.fly.dev/${user.profile_picture}`
           }
@@ -100,7 +101,7 @@ const NewComment = ({ postid, setNewComments }) => {
               onChange={handleChange}
               onInput={handleInput}
               rows="1"
-              cols={isSmallDevice ? "20" : "65"}
+              cols={isSmallDevice ? "26" : "65"}
               name="content"
             ></textarea>
 
