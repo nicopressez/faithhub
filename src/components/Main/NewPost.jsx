@@ -13,7 +13,7 @@ import { useMediaQuery } from "@uidotdev/usehooks";
 const NewPost = ({ setAllPosts, own }) => {
 
   // Get device size for big screens
-  const isLargeDevice = useMediaQuery("only screen and (min-width: 1200px)");
+  const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
   const textareaRef = useRef(null);
 
@@ -120,10 +120,10 @@ const NewPost = ({ setAllPosts, own }) => {
       >
         <div
           className={`relative z-10
-            ml-auto mr-auto mt-[3.8rem] lg:mt-[4.5rem] bg-white min-h-[9rem] lg:min-h-52
+            ml-auto mr-auto mt-[3.8rem] md:mt-[4.5rem] bg-white min-h-[9rem] lg:min-h-52
              rounded-lg drop-shadow-md p-2 lg:p-6 lg:pt-5 font-Rubik
              text-sm md:text-base
-             ${own ? "lg:w-[55%]" : "lg:w-[45%]"}`}
+             ${own ? "lg:w-[55%]" : "lg:w-[50%]"}`}
         >
           <div
             className="flex  flex-row mt-3 justify-center relative
@@ -131,7 +131,7 @@ const NewPost = ({ setAllPosts, own }) => {
           >
             <Link to={`/profile/${user._id}`}>
               <img
-                className={`w-9 hidden h-9 mr-2 lg:mr-3 lg:w-12 lg:h-12 rounded-full object-cover lg:inline
+                className={`w-9 hidden h-9 mr-2 lg:mr-3 lg:w-12 lg:h-12 rounded-full object-cover md:inline
               `}
                 src={
                   user &&
@@ -188,7 +188,7 @@ const NewPost = ({ setAllPosts, own }) => {
                 ></button>
               )}
               <hr className="mt-2 text-center"></hr>
-              <div className="grid grid-cols-3 gap-1 lg:gap-5 mt-3">
+              <div className="grid grid-cols-3 gap-1 lg:gap-3 mt-3">
                 <label
                   htmlFor="discussion"
                   className={` border-cyan-400 border-4 rounded-full
@@ -279,7 +279,7 @@ const NewPost = ({ setAllPosts, own }) => {
                 >
                   <button
                     type="submit"
-                    className="text-center bg-gray-200 p-1 pl-2 pr-7 lg:pl-4 lg:pr-8 rounded-full
+                    className="text-center bg-gray-200 p-1 pl-2 pr-7 md:pl-4 md:pr-8 rounded-full
         relative group hover:bg-cyan-400 transition-all duration-200"
                   >
                     Post

@@ -13,7 +13,7 @@ const Nav = () => {
   const sideNav = useSelector((state) => state.sideNav);
 
   // Get device sizes to adjust the navbar logic for phones
-  const isLargeDevice = useMediaQuery("only screen and (min-width: 1200px)");
+  const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
   const { navVisible } = sideNav;
 

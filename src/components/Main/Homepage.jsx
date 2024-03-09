@@ -18,7 +18,7 @@ const Homepage = () => {
   if (user)
     return (
       <div
-        className={`bg-gray-100 w-screen min-h-screen pt-[0.5rem]
+        className={`bg-gray-100 w-screen min-h-screen pt-[0.5rem] pr-7 pl-5
         ${navVisible && !isLargeDevice ? "brightness-75 blur-sm" : null}`}
       >
         <NewPost setAllPosts={setAllPosts} />
@@ -29,16 +29,16 @@ const Homepage = () => {
           enterFrom="opacity-0 transform -translate-y-10"
           enterTo="opacity-100 transform translate-y-0"
         >
-          <div className="flex justify-center md:justify-normal mt-4 md:-mb-16 md:mt-4 font-Rubik relative">
+          <div className="flex mt-4 md:-mb-16 md:mt-4 font-Rubik relative">
             <Link
               to={`/profile/${user._id}/settings/preferences`}
-              className=" bg-gray-200 md:ml-[63%] rounded-lg p-1
+              className=" bg-gray-200 lg:ml-[25%] rounded-lg p-1
     text-gray-500 hover:brightness-95 hover:text-gray-600
      -mb-1 md:mb-0 pl-4 pr-2"
             >
               <FontAwesomeIcon icon={faGear} className="w-3 h-3 pr-1" />
 
-              <button>Feed preferences</button>
+              Feed preferences
             </Link>
           </div>
         </Transition>
