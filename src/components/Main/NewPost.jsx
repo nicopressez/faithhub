@@ -101,8 +101,9 @@ const NewPost = ({ setAllPosts, own }) => {
       >
         <div
           className={`relative z-10
-            ml-auto mr-auto mt-[3.5rem] lg:mt-[4.5rem] bg-white min-h-[8rem] md:min-h-52
-             rounded-lg drop-shadow-md p-1 md:p-6 md:pt-5 font-Rubik
+            ml-auto mr-auto mt-[3.8rem] lg:mt-[4.5rem] bg-white min-h-[9rem] md:min-h-52
+             rounded-lg drop-shadow-md p-2 md:p-6 md:pt-5 font-Rubik
+             text-sm md:text-base
              ${own ? "md:w-[55%]" : "md:w-[45%]"}`}
         >
           <div
@@ -124,7 +125,7 @@ const NewPost = ({ setAllPosts, own }) => {
                 <textarea
                   ref={textareaRef}
                   className={`bg-gray-200 rounded-full pl-4 pt-2 pb-2 
-                 overflow-visible resize-none pr-8
+                 overflow-visible resize-none pr-8 
                  h-auto md:min-h-[3rem] md:pt-3
                  `}
                   placeholder="What's on your mind..."
@@ -132,7 +133,7 @@ const NewPost = ({ setAllPosts, own }) => {
                   onChange={handleChange}
                   onInput={handleInput}
                   rows="1"
-                  cols={isSmallDevice ? own ? "30" : "25" 
+                  cols={isSmallDevice ? own ? "24" : "24" 
                   : own ? "105" : "75"}
                   name="content"
                 ></textarea>
@@ -260,7 +261,7 @@ const NewPost = ({ setAllPosts, own }) => {
                 >
                   <button
                     type="submit"
-                    className="text-center bg-gray-200 p-1 pl-4 pr-8 rounded-full
+                    className="text-center bg-gray-200 p-1 pl-2 pr-7 md:pl-4 md:pr-8 rounded-full
         relative group hover:bg-cyan-400 transition-all duration-200"
                   >
                     Post

@@ -10,10 +10,10 @@ const MainPage = () => {
   // Get device sizes to adjust the navbar logic for phones
   const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
   return (
-    <>
+    <div className="overflow-hidden">
       <Nav />
       <Outlet context={[navVisible, isSmallDevice]} />
-    </>
+    </div>
   );
 };
 
