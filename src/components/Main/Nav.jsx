@@ -13,21 +13,21 @@ const Nav = () => {
   const sideNav = useSelector((state) => state.sideNav);
 
   // Get device sizes to adjust the navbar logic for phones
-  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+  const isLargeDevice = useMediaQuery("only screen and (min-width: 1200px)");
 
   const { navVisible } = sideNav;
 
   return (
     <div
-      className={`h-[38rem] p-2 mt-[3.5rem] gap-1 w-[70%]
-      bg-white md:h-[91%] md:w-[15%] fixed font-Rubik
-      md:ml-5 md:mr-2 md:mt-[4.3rem] shadow-xl md:rounded-lg md:pt-5
-      flex flex-col md:gap-2 md:text-lg z-10 md:p-0
-      ${isSmallDevice ? "transition duration-300 ease-in-out transform" : ""}
+      className={`h-full p-2 mt-[3.5rem] gap-1 max-w-[25rem] w-[70%]
+      bg-white lg:h-[91%] lg:w-[15%] fixed font-Rubik
+      lg:ml-5 lg:mr-2 lg:mt-[4.3rem] shadow-xl lg:rounded-lg lg:pt-5
+      flex flex-col lg:gap-2 text-lg z-[9999] lg:p-0
+      ${!isLargeDevice ? "transition duration-300 ease-in-out transform" : ""}
          ${
-           isSmallDevice && navVisible
+           !isLargeDevice && navVisible
              ? "translate-x-0"
-             : isSmallDevice
+             : !isLargeDevice
                ? "-translate-x-full"
                : ""
          }`}
@@ -39,7 +39,7 @@ const Nav = () => {
             backgroundColor: isActive ? "#F3F4F6" : "",
           };
         }}
-        className={"pr-4 pl-4 md:pr-0 md:pl-8 p-2 hover:bg-[#FAFAFA]"}
+        className={"pr-4 pl-4 lg:pr-0 lg:pl-8 p-2 hover:bg-[#FAFAFA]"}
       >
         <FontAwesomeIcon
           icon={faHouse}
@@ -53,7 +53,7 @@ const Nav = () => {
             backgroundColor: isActive ? "" : "",
           };
         }}
-        className={"pr-4 pl-4 md:pr-0 md:pl-8 p-2 hover:bg-[#FAFAFA]"}
+        className={"pr-4 pl-4 lg:pr-0 lg:pl-8 p-2 hover:bg-[#FAFAFA]"}
       >
         <FontAwesomeIcon
           icon={faChurch}
@@ -67,7 +67,7 @@ const Nav = () => {
             backgroundColor: isActive ? "" : "",
           };
         }}
-        className={"pr-4 pl-4 md:pr-0 md:pl-8 p-2 hover:bg-[#FAFAFA]"}
+        className={"pr-4 pl-4 lg:pr-0 lg:pl-8 p-2 hover:bg-[#FAFAFA]"}
       >
         <FontAwesomeIcon
           icon={faUsers}
@@ -81,7 +81,7 @@ const Nav = () => {
             backgroundColor: isActive ? "" : "",
           };
         }}
-        className={" pr-4 pl-4 md:pr-0 md:pl-8 p-2 hover:bg-[#FAFAFA]"}
+        className={" pr-4 pl-4 lg:pr-0 lg:pl-8 p-2 hover:bg-[#FAFAFA]"}
       >
         <FontAwesomeIcon
           icon={faCalendarDays}

@@ -35,7 +35,7 @@ const Header = () => {
       >
         <h1
           className=" text-cyan-400 font-bold tracking-wide
-         text-2xl md:text-4xl text-center pt-3 md:pt-[0.4rem]"
+         text-2xl lg:text-4xl text-center pt-3 lg:pt-[0.4rem]"
         >
           FaithHub
         </h1>
@@ -51,7 +51,7 @@ const Header = () => {
         <FontAwesomeIcon
           icon={faBars}
           className="ml-3 h-5 w-5
-         text-gray-600 visible md:hidden"
+         text-gray-600 visible lg:hidden"
           onClick={() => dispatch(toggleNavBar())}
         />
         <Link
@@ -71,27 +71,27 @@ const Header = () => {
             type="text"
             placeholder="Search... "
             className="
-            bg-gray-100 hidden md:flex md:w-auto p-1 md:pl-3 pr-3 md:pr-10 ml-3 md:ml-8 rounded-large"
+            bg-gray-100 hidden lg:flex lg:w-auto p-1 lg:pl-3 pr-3 lg:pr-10 ml-3 lg:ml-8 rounded-large"
           ></input>
         </form>
         <div className="flex-grow"></div>
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
-          className="flex md:hidden mr-3 md:mr-6 w-6 h-6 text-cyan-400"
+          className="flex lg:hidden mr-3 lg:mr-6 w-6 h-6 text-cyan-400"
         />
         <FontAwesomeIcon
           icon={faMessage}
-          className=" mr-3 md:mr-6 w-6 h-6 text-cyan-400"
+          className=" mr-3 lg:mr-6 w-6 h-6 text-cyan-400"
         />
         <FontAwesomeIcon
           icon={faBell}
-          className="mr-3 md:mr-6 w-6 h-6   text-cyan-400"
+          className="mr-3 lg:mr-6 w-6 h-6   text-cyan-400"
         />
 
         <Menu as="div" className="relative">
           <Menu.Button>
             <img
-              className="w-9 h-9 mr-2 md:mr-6 md:w-11 md:h-11 rounded-full object-cover"
+              className="w-9 h-9 mr-2 lg:mr-6 lg:w-11 lg:h-11 rounded-full object-cover"
               src={
                 user &&
                 `https://faithhub-backend.fly.dev/${user.profile_picture}`
@@ -107,7 +107,7 @@ const Header = () => {
             leaveTo="transform scale-y-100 opacity-0"
           >
             <Menu.Items
-              className="absolute mt-2 mr-2 right-0 w-52 md:w-64 flex
+              className="absolute mt-2 mr-2 right-0 w-52 lg:w-64 flex
        flex-col bg-white gap-1 drop-shadow-xl rounded-lg text-lg 
          pt-2 pb-2 justify-center"
             >
