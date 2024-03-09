@@ -37,11 +37,11 @@ const Profile = () => {
   }, [id]);
   if (userInfo)
     return (
-      <div className="bg-gray-100 w-screen min-h-screen pt-[0.5rem]">
+      <div className="bg-gray-100 w-screen min-h-screen pt-[0.5rem] md:pt-[1rem] pl-2 pr-2 md:pr-7 md:pl-5">
         <div
           className=" 
-        ml-auto mr-auto mt-16 lg:mt-16 text-center bg-white md:w-[55%]
-         rounded-lg drop-shadow-md p-1 pb-2 lg:p-1 lg:pb-2 font-Rubik 
+        ml-auto mr-auto mt-16 md:mt-16 text-center bg-white lg:w-[60%]
+         rounded-lg drop-shadow-md p-1 pb-2 md:p-1 md:pb-2 font-Rubik 
          -mb-8"
         >
           <Transition

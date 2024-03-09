@@ -243,7 +243,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
           className={`ml-auto mr-auto mt-5 md:mt-20 bg-white
              rounded-lg drop-shadow-md p-3 md:p-5 font-Rubik
              relative z-0
-             ${own ? "lg:w-[55%]" : "lg:w-[50%]"}`}
+             ${own ? "lg:w-[60%]" : "lg:w-[50%]"}`}
         >
           {post.anonymous ? (
             <img

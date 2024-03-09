@@ -77,21 +77,21 @@ const Header = () => {
         <div className="flex-grow"></div>
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
-          className="flex lg:hidden mr-3 lg:mr-6 w-6 h-6 text-cyan-400"
+          className="flex lg:hidden mr-3 md:mr-4 lg:mr-6 w-6 h-6 text-cyan-400"
         />
         <FontAwesomeIcon
           icon={faMessage}
-          className=" mr-3 lg:mr-6 w-6 h-6 text-cyan-400"
+          className=" mr-3 md:mr-4 lg:mr-6 w-6 h-6 text-cyan-400"
         />
         <FontAwesomeIcon
           icon={faBell}
-          className="mr-3 lg:mr-6 w-6 h-6   text-cyan-400"
+          className="mr-3 md:mr-4 lg:mr-6 w-6 h-6   text-cyan-400"
         />
 
         <Menu as="div" className="relative">
           <Menu.Button>
             <img
-              className="w-9 h-9 mr-2 lg:mr-6 lg:w-11 lg:h-11 rounded-full object-cover"
+              className="w-9 h-9 mr-2 md:mr-6 md:w-10 md:h-10 lg:w-11 lg:h-11 rounded-full object-cover"
               src={
                 user &&
                 `https://faithhub-backend.fly.dev/${user.profile_picture}`
@@ -107,7 +107,7 @@ const Header = () => {
             leaveTo="transform scale-y-100 opacity-0"
           >
             <Menu.Items
-              className="absolute mt-2 mr-2 right-0 w-52 lg:w-64 flex
+              className="absolute mt-2 mr-2 right-0 w-52 md:w-64 flex
        flex-col bg-white gap-1 drop-shadow-xl rounded-lg text-lg 
          pt-2 pb-2 justify-center"
             >

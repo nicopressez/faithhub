@@ -11,7 +11,7 @@ import { useMediaQuery } from "@uidotdev/usehooks";
 const NewComment = ({ postid, setNewComments }) => {
 
   // Get device size to adjust design for small screens
-  const isSmallDevice = useMediaQuery("only screen and (max-width : 768px)");
+  const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
   const textarea = useRef(null);
 
@@ -123,7 +123,7 @@ const NewComment = ({ postid, setNewComments }) => {
               name="content"
             ></textarea>
 
-            {!isSmallDevice &&
+            {isLargeDevice &&
               <FontAwesomeIcon
               icon={faFaceSmile}
               onClick={toggleEmojis}

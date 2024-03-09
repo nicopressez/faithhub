@@ -23,7 +23,7 @@ const Nav = () => {
       bg-white lg:h-[91%] lg:w-[15%] fixed font-Rubik
       lg:ml-5 lg:mr-2 lg:mt-[4.3rem] shadow-xl lg:rounded-lg lg:pt-5
       flex flex-col lg:gap-2 text-lg z-[9999] lg:p-0
-      ${!isLargeDevice ? "transition duration-300 ease-in-out transform" : ""}
+      ${!isLargeDevice ? "-translate-x-full transition duration-300 ease-in-out transform" : ""}
          ${
            !isLargeDevice && navVisible
              ? "translate-x-0"

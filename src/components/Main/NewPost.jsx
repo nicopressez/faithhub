@@ -123,7 +123,7 @@ const NewPost = ({ setAllPosts, own }) => {
             ml-auto mr-auto mt-[3.8rem] md:mt-[4.5rem] bg-white min-h-[9rem] lg:min-h-52
              rounded-lg drop-shadow-md p-2 lg:p-6 lg:pt-5 font-Rubik
              text-sm md:text-base
-             ${own ? "lg:w-[55%]" : "lg:w-[50%]"}`}
+             ${own ? "lg:w-[60%]" : "lg:w-[50%]"}`}
         >
           <div
             className="flex  flex-row mt-3 justify-center relative
@@ -131,7 +131,7 @@ const NewPost = ({ setAllPosts, own }) => {
           >
             <Link to={`/profile/${user._id}`}>
               <img
-                className={`w-9 hidden h-9 mr-2 lg:mr-3 lg:w-12 lg:h-12 rounded-full object-cover md:inline
+                className={`w-9 hidden h-9 mr-2 lg:mr-3 md:w-12 md:h-12 rounded-full object-cover md:inline
               `}
                 src={
                   user &&

@@ -18,7 +18,7 @@ const Homepage = () => {
   if (user)
     return (
       <div
-        className={`bg-gray-100 w-screen min-h-screen pt-[0.5rem] pr-7 pl-5
+        className={`bg-gray-100 w-screen min-h-screen pt-[0.5rem] pr-2 pl-2 md:pr-7 md:pl-5
         ${navVisible && !isLargeDevice ? "brightness-75 blur-sm" : null}`}
       >
         <NewPost setAllPosts={setAllPosts} />
