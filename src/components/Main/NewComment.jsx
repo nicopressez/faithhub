@@ -1,5 +1,5 @@
 import { PropTypes } from "prop-types";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { lazy, Suspense } from "react";
@@ -20,6 +20,25 @@ const NewComment = ({ postid, setNewComments }) => {
 
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (textarea.current) {
+        // Get width of the main div of the new comment section
+        const parentWidth = textarea.current.parentNode.parentNode.parentNode.clientWidth;
+        
+        // Set textarea width as a percentage of main div width
+        textarea.current.style.width = `${parentWidth * 0.8}px`;
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+}, [])
 
   // Adjust textarea sizing and border radius on input
   const handleInput = (e) => {
@@ -101,7 +120,6 @@ const NewComment = ({ postid, setNewComments }) => {
               onChange={handleChange}
               onInput={handleInput}
               rows="1"
-              cols={isSmallDevice ? "26" : "65"}
               name="content"
             ></textarea>
 

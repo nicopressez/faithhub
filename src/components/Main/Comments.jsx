@@ -255,7 +255,8 @@ const Comments = ({ postid, newComments, setNewComments }) => {
     );
 
   if (!allComments[0] && !newComments[0])
-    return <p className="text-center text-gray-300 italic">No comments yet</p>;
+    return <p className="text-center text-gray-300 italic">
+      No comments yet</p>;
 
   if (user)
     return (
@@ -280,7 +281,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
               leaveTo="opacity-0 transform -translate-y-20 "
             >
               <div className="relative mb-5">
-                <div className="bg-gray-50 rounded-lg p-2">
+                <div className="bg-gray-50 rounded-lg p-1 md:p-2">
                   <div>
                     <Link to={`/profile/${comment.author._id}`}>
                       <img

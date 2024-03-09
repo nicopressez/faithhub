@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
 import { Transition } from "@headlessui/react";
@@ -24,6 +24,25 @@ const NewPost = ({ setAllPosts, own }) => {
 
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (textareaRef.current) {
+        // Get width of the main div of the new post section
+        const parentWidth = textareaRef.current.parentNode.parentNode.parentNode.clientWidth;
+        
+        // Set textarea width as a percentage of main div width
+        textareaRef.current.style.width = `${parentWidth * 0.9}px`;
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+}, [])
 
   const handleChange = (e) => {
     setPost(e.target.value);
@@ -133,8 +152,7 @@ const NewPost = ({ setAllPosts, own }) => {
                   onChange={handleChange}
                   onInput={handleInput}
                   rows="1"
-                  cols={isSmallDevice ? own ? "24" : "24" 
-                  : own ? "105" : "75"}
+                 
                   name="content"
                 ></textarea>
                 {!isSmallDevice &&
