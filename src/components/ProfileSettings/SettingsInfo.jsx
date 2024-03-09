@@ -187,7 +187,9 @@ const ProfileSettings = () => {
     return (
       <>
         <div
-          className={`bg-gray-100 w-screen h-screen pt-[0.5rem] ${
+          className={`bg-gray-100 w-screen h-screen pt-[0.5rem]
+          md:pl-5 md:pr-5
+           ${
             deleteDialog ? " blur-sm" : null
           }
         ${navVisible && !isLargeDevice ? "brightness-75 blur-sm" : null}`}
@@ -201,8 +203,8 @@ const ProfileSettings = () => {
           >
             <div
               className=" 
-        ml-auto mr-auto mt-[22%] md:mt-20 bg-white md:w-2/4
-         rounded-lg drop-shadow-md p-1 pb-8 md:p-3 md:pl-10 md:pr-10 font-Rubik "
+        ml-auto mr-auto mt-[16%] md:mt-[10%] lg:mt-20 bg-white lg:w-[55%]
+         rounded-lg drop-shadow-md p-1 pb-8 md:pl-3 md:pr-3 lg:p-3 lg:pl-10 lg:pr-10 font-Rubik "
             >
               <h2 className="text-2xl font-bold mb-2 text-center"> Account </h2>
               <hr className="w-3/4 ml-auto mr-auto mb-3"></hr>
@@ -218,7 +220,7 @@ const ProfileSettings = () => {
                   ></img>
                   <img
                     src={currentPic}
-                    className="group-hover:brightness-90 rounded-full object-cover  w-20 h-20 md:w-32 md:h-32
+                    className="group-hover:brightness-90 rounded-full object-cover  w-20 h-20 lg:w-32 lg:h-32
                 ml-auto mr-auto"
                   ></img>
                 </label>
@@ -256,7 +258,7 @@ const ProfileSettings = () => {
                   </h3>
                 )}
                 <div className="grid grid-cols-2 mt-3">
-                  <div className="flex flex-col font-bold md:ml-10">
+                  <div className="flex flex-col font-bold lg:ml-10">
                     <label htmlFor="username" className="text-lg mb-2 p-1">
                       Username:{" "}
                     </label>
@@ -356,7 +358,7 @@ const ProfileSettings = () => {
         <Dialog
           open={deleteDialog}
           onClose={() => setDeleteDialog(false)}
-          className="absolute top-[25%] md:top-[30%] -translate-x-1/2 left-1/2 bg-white w-full md:w-1/3
+          className="absolute top-[25%] lg:top-[30%] -translate-x-1/2 left-1/2 bg-white w-full lg:w-1/3
       rounded-lg drop-shadow-md p-1  font-Rubik text-center"
         >
           <Dialog.Panel>
@@ -370,7 +372,7 @@ const ProfileSettings = () => {
               This will permanently deactivate your account
             </Dialog.Description>
 
-            <p className=" w-full ml-auto mr-auto mb-2 md:mb-3">
+            <p className=" w-full ml-auto mr-auto mb-2 lg:mb-3">
               Are you sure you want to deactivate your account? All of your data
               will be permanently removed. This action cannot be undone.
             </p>
