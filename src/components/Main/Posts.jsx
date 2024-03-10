@@ -9,6 +9,7 @@ import {
   faTrash,
   faPenToSquare,
   faPaperPlane,
+  faHandsPraying
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom/dist";
 import Comments from "./Comments";
@@ -402,7 +403,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
           </p>
           <div>
             <FontAwesomeIcon
-              icon={faThumbsUp}
+              icon={post.type === "Prayer Request" ? faHandsPraying :faThumbsUp}
               onClick={(e) => handleLike(e, post._id)}
               className={`
                 mr-1  w-5 h-5 hover:text-cyan-500

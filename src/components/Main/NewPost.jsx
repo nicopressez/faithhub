@@ -120,7 +120,7 @@ const NewPost = ({ setAllPosts, own }) => {
       >
         <div
           className={`relative z-10
-            ml-auto mr-auto mt-[3.8rem] md:mt-[4.5rem] bg-white min-h-[9rem] lg:min-h-52
+            ml-auto mr-auto mt-[3.8rem] md:mt-[4.5rem] bg-white min-h-[10rem] lg:min-h-48
              rounded-lg drop-shadow-md p-2 lg:p-6 lg:pt-5 font-Rubik
              text-sm md:text-base
              ${own ? "lg:w-[60%]" : "lg:w-[50%]"}`}
@@ -244,7 +244,7 @@ const NewPost = ({ setAllPosts, own }) => {
                   ></input>
                 </label>
               </div>
-              <div className="mt-3">
+              <div className="mt-2 lg:mt-3">
                 <Transition
                   as="label"
                   htmlFor="anonymous"
@@ -259,6 +259,7 @@ const NewPost = ({ setAllPosts, own }) => {
                 >
                   <div className="relative">
                   Anonymous
+                  {isLargeDevice &&
                   <div className="inline group">
                   <FontAwesomeIcon icon={faCircleInfo} 
                   className=" text-gray-300 h-3 w-3 align-top pl-1"/>
@@ -267,7 +268,8 @@ const NewPost = ({ setAllPosts, own }) => {
                   text-gray-600 ml-1
                   text-sm"
                   >Hides your details but keeps your request visible for others to interact with.</p>
-                  </div>
+                  </div> }
+                  
                   
                   <input
                     type="checkbox"
