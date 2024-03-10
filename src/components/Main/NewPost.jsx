@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faFaceSmile, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
 import { Transition } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
@@ -168,8 +168,7 @@ const NewPost = ({ setAllPosts, own }) => {
                       ? "opacity-0 scale-y-0 origin-top"
                       : "opacity-100 scale-y-100 origin-top"
                   }
-            absolute top-0 
-            ${own ? "-right-[41%]" : "-right-[54%]"}
+            absolute top-0 -right-[22rem]
             transition-all duration-200`}
                 >
                   <EmojiPicker
@@ -258,13 +257,25 @@ const NewPost = ({ setAllPosts, own }) => {
                   leaveFrom="opacity-100 transform scale-y-100 origin-top"
                   leaveTo="opacity-0 transform scale-y-0 origin-top"
                 >
+                  <div className="relative">
                   Anonymous
+                  <div className="inline group">
+                  <FontAwesomeIcon icon={faCircleInfo} 
+                  className=" text-gray-300 h-3 w-3 align-top pl-1"/>
+                  <p className="absolute -top-4 hidden group-hover:inline w-[18rem]
+                  bg-gray-100 rounded-lg p-1 italic border-2 border-gray-300
+                  text-gray-600 ml-1
+                  text-sm"
+                  >Hides your details but keeps your request visible for others to interact with.</p>
+                  </div>
+                  
                   <input
                     type="checkbox"
                     className="ml-1"
                     id="anonymous"
                     name="anonymous"
                   ></input>
+                  </div>
                 </Transition>
 
                 <Transition
