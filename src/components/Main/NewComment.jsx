@@ -127,17 +127,17 @@ const NewComment = ({ postid, setNewComments }) => {
               <FontAwesomeIcon
               icon={faFaceSmile}
               onClick={toggleEmojis}
-              className="absolute right-3 bottom-[1.2rem] text-gray-400 h-5 hover:text-gray-500 
+              className="absolute right-3 top-2 text-gray-400 h-5 hover:text-gray-500 
             hover:cursor-pointer"
             />}
             <div
               className={`${
                 !showEmojis
-                  ? "opacity-0 scale-y-0 origin-bottom"
-                  : "opacity-100 scale-y-100 origin-bottom"
+                  ? "opacity-0"
+                  : "opacity-100"
               }
-            absolute bottom-0 left-[101%]
-            transition-all duration-200 z-50`}
+            absolute bottom-0 -right-[22rem]
+            transition duration-300 z-50`}
             >
               {showEmojis && (
                 <Suspense fallback={<div>Loading...</div>}>

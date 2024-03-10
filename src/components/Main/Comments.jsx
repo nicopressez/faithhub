@@ -310,7 +310,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                             leaveTo="transform scale-y-100 opacity-0"
                           >
                             <Menu.Items
-                              className="absolute -bottom-9 left-5 w-36 md:w-28 flex
+                              className="absolute -right-2 lg:-bottom-9 lg:left-5 w-24 lg:w-28 flex
                  flex-col bg-white gap-1 drop-shadow-xl rounded-lg
                    pt-2 pb-2 justify-center"
                             >
