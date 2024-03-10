@@ -20,6 +20,7 @@ import { jwtDecode } from "jwt-decode";
 import { PropTypes } from "prop-types";
 
 const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
+
   const [likedPosts, setLikedPosts] = useState();
   const auth = useSelector((state) => state.auth);
 
@@ -281,7 +282,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
                   leaveTo="opacity-0 transform scale-y-0 origin-top"
                 >
                   <Menu.Items
-                    className="absolute -bottom-9 left-5 w-36 md:w-28 flex
+                    className="absolute -right-2 lg:-bottom-9 lg:left-5 w-24 lg:w-28 flex
                  flex-col bg-white gap-1 drop-shadow-xl rounded-lg
                    pt-2 pb-2 justify-center"
                   >
