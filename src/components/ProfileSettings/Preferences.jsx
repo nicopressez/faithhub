@@ -87,7 +87,7 @@ const Preferences = () => {
   if (user)
     return (
       <div
-        className={`bg-gray-100 w-screen h-screen pt-[0.5rem] md:pl-5 md:pr-5
+        className={`bg-gray-100 w-screen h-screen pt-[0.5rem] pl-2 pr-2 md:pl-5 md:pr-5
         ${navVisible && !isLargeDevice ? "brightness-75 blur-sm" : null}`}
       >
         <Transition
