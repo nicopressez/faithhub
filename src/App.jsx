@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
 
   // Token refresh or redirect if no token
   useEffect(() => {
@@ -39,8 +40,10 @@ function App() {
     }
     if (!localStorage.getItem("token")) {
       navigate("/auth");
+    } else if (location.pathname === "/") {
+      navigate("/home")
     }
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, location.pathname]);
 
   return (
     <>
