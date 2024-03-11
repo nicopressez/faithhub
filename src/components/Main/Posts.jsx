@@ -19,6 +19,7 @@ import he from "he";
 import { Menu, Transition } from "@headlessui/react";
 import { jwtDecode } from "jwt-decode";
 import { PropTypes } from "prop-types";
+import PostsLoading from "./PostsLoading";
 
 const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
 
@@ -29,6 +30,8 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
 
   const [editing, setEditing] = useState();
   const [editedPost, setEditedPost] = useState("");
+
+  const [isLoading, setIsLoading] = useState(true)
 
   const dispatch = useDispatch();
 
@@ -69,6 +72,10 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
           localStorage.setItem("token", responseData.token);
           dispatch(tokenRefresh(responseData.user));
         }
+        // Toggle loading state
+        setTimeout(() => {
+          setIsLoading(false)
+        }, 500);
       } catch (err) {
         // TODO: Add error handling
         console.log(err);
@@ -230,6 +237,9 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
       console.log(err);
     }
   };
+
+  // Loading page
+ if (isLoading) return <PostsLoading />
 
   if (user && likedPosts)
     return allPosts.map((post) => (
@@ -428,6 +438,8 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
         </div>
       </Transition>
     ));
+
+
 };
 
 Posts.propTypes = {

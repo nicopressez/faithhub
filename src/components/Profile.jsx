@@ -37,7 +37,7 @@ const Profile = () => {
   }, [id]);
   if (userInfo)
     return (
-      <div className="bg-gray-100 w-screen min-h-screen pt-[0.5rem] md:pt-[1rem] pl-2 pr-2 md:pr-7 md:pl-5">
+      <div className="bg-gray-100 min-h-screen pt-[0.5rem] md:pt-[1rem] pl-2 pr-2 md:pr-7 md:pl-5 overflow-hidden">
         <div
           className=" 
         ml-auto mr-auto mt-16 md:mt-16 text-center bg-white lg:w-[60%]

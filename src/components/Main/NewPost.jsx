@@ -265,8 +265,7 @@ const NewPost = ({ setAllPosts, own }) => {
                   className=" text-gray-300 h-3 w-3 align-top pl-1"/>
                   <p className="absolute -top-4 hidden group-hover:inline w-[18rem]
                   bg-gray-100 rounded-lg p-1 italic border-2 border-gray-300
-                  text-gray-600 ml-1
-                  text-sm"
+                  text-gray-600 ml-1 text-sm"
                   >Hides your details but keeps your request visible for others to interact with.</p>
                   </div> }
                   
