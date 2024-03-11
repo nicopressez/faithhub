@@ -10,16 +10,16 @@ const PostsLoading = ({own}) => {
         enterFrom="opacity-0"
         enterTo="opacity-100">
         <div
-          className={`ml-auto mr-auto mt-5 md:mt-20 bg-gradient-to-b from-gray-200 to-gray-300
+          className={`ml-auto mr-auto mt-10 md:mt-20 bg-gradient-to-b from-gray-200 to-gray-300
              rounded-lg drop-shadow-md p-3 md:p-5 font-Rubik
              relative h-56 animate-pulse
              ${own ? "lg:w-[60%]" : "lg:w-[50%]"}`}
         >
             </div>
             <div
-          className={`ml-auto mr-auto mt-5 md:mt-20 bg-gradient-to-b from-gray-200 to-gray-300
+          className={`ml-auto mr-auto mt-10 md:mt-20 bg-gradient-to-b from-gray-200 to-gray-300
              rounded-lg drop-shadow-md p-3 md:p-5 font-Rubik
-             relative h-56 animate-pulse
+             relative h-56 animate-pulse mb-10
              ${own ? "lg:w-[60%]" : "lg:w-[50%]"}`}
         >
             </div>

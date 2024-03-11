@@ -34,7 +34,7 @@ const Homepage = () => {
               to={`/profile/${user._id}/settings/preferences`}
               className=" bg-gray-200 lg:ml-[25%] rounded-lg p-1
     text-gray-500 hover:brightness-95 hover:text-gray-600
-     -mb-1 md:mb-0 pl-4 pr-2"
+     -mb-6 md:mb-0 pl-4 pr-2"
             >
               <FontAwesomeIcon icon={faGear} className="w-3 h-3 pr-1" />
 
