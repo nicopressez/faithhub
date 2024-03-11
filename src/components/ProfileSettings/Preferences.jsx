@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Loading from "../Loading";
 import { tokenRefresh } from "../../reducers/auth";
 import { useOutletContext } from "react-router-dom";
 import { Transition } from "@headlessui/react";
@@ -215,7 +214,6 @@ const Preferences = () => {
       </div>
     );
 
-  return <Loading />;
 };
 
 export default Preferences;

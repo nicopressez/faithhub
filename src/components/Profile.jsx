@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Loading from "./Loading";
 import ErrorPage from "./ErrorPage";
 import { faLocationDot, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -100,8 +99,6 @@ const Profile = () => {
     );
 
   if (error) return <ErrorPage />;
-
-  return <Loading />;
 };
 
 export default Profile;

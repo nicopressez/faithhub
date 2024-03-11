@@ -9,7 +9,6 @@ import uploadImg from "../../assets/upload.png";
 import { useEffect, useState } from "react";
 import ErrorPage from "../ErrorPage";
 import { logoutSuccess, tokenRefresh } from "../../reducers/auth";
-import Loading from "../Loading";
 import { Dialog } from "@headlessui/react";
 import { Transition } from "@headlessui/react";
 
@@ -409,7 +408,6 @@ const ProfileSettings = () => {
 
   if (errorPage) return <ErrorPage />;
 
-  return <Loading />;
 };
 
 export default ProfileSettings;
