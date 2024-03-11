@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ErrorPage from "./ErrorPage";
+import ErrorPage from "../ErrorPage";
 import { faLocationDot, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Posts from "./Main/Posts";
-import NewPost from "./Main/NewPost";
+import Posts from "../Main/Posts";
+import NewPost from "../Main/NewPost";
 import { useSelector } from "react-redux";
 import { Transition } from "@headlessui/react";
+import ProfileLoading from "./ProfileLoading";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState();
   const [error, setError] = useState(false);
   const { id } = useParams();
   const [allPosts, setAllPosts] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(true)
 
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
@@ -28,12 +31,18 @@ const Profile = () => {
           setError(true);
         }
         setUserInfo(result.user);
+        // Toggle loading state
+        setIsLoading(false)
       } catch (err) {
         setError(true);
       }
     };
     fetchUserInfo();
   }, [id]);
+
+  // Loading for user info section
+  if (isLoading) return <ProfileLoading />
+
   if (userInfo)
     return (
       <div className="bg-gray-100 min-h-screen pt-[0.5rem] md:pt-[1rem] pl-2 pr-2 md:pr-7 md:pl-5 overflow-hidden">
@@ -86,15 +95,18 @@ const Profile = () => {
         </div>
 
         {user && id === user._id && (
+          <div>
           <NewPost setAllPosts={setAllPosts} own={true} />
-        )}
-
-        <Posts
+          <Posts
           allPosts={allPosts}
           setAllPosts={setAllPosts}
           own={true}
           profileId={id}
         />
+        </div>
+        )}
+
+        
       </div>
     );
 
