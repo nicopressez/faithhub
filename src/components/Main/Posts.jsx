@@ -239,7 +239,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
   };
 
   // Loading page
- if (isLoading) return <PostsLoading />
+ if (isLoading) return <PostsLoading own={own}/>
 
   if (user && likedPosts)
     return allPosts.map((post) => (
