@@ -8,6 +8,7 @@ import { PropTypes } from "prop-types";
 import { tokenRefresh } from "../../reducers/auth";
 import EmojiPicker from "emoji-picker-react";
 import { useMediaQuery } from "@uidotdev/usehooks";
+import NewPostLoading from "./NewPostLoading";
 
 
 const NewPost = ({ setAllPosts, own }) => {
@@ -21,6 +22,8 @@ const NewPost = ({ setAllPosts, own }) => {
   const [post, setPost] = useState("");
   const [type, setType] = useState("Discussion");
   const [showEmojis, setShowEmojis] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(true)
 
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
@@ -43,6 +46,12 @@ const NewPost = ({ setAllPosts, own }) => {
       window.removeEventListener('resize', handleResize);
     };
 }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 200);
+  },[])
 
   const handleChange = (e) => {
     setPost(e.target.value);
@@ -108,6 +117,9 @@ const NewPost = ({ setAllPosts, own }) => {
       e.target.style.borderRadius = "2rem";
     }
   };
+
+  // Loading page
+  if (isLoading) return <NewPostLoading own={own}/>
 
   if (user)
     return (
