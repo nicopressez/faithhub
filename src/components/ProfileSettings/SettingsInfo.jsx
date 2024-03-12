@@ -228,6 +228,7 @@ const ProfileSettings = () => {
                   id="profile_picture"
                   name="profile_picture"
                   type="file"
+                  accept="image/x-png,image/jpeg"
                   onChange={(e) => {
                     handleChange(e);
                     onPicChange(e);
