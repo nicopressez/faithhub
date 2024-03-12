@@ -14,8 +14,10 @@ import { logoutSuccess } from "../reducers/auth";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { toggleNavBar, hideNavBar } from "../reducers/sidenav";
+import SearchBar from "./SearchBar";
 
 const Header = () => {
+
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,18 +29,6 @@ const Header = () => {
     navigate("/auth");
   };
 
-  const handleSearch = async(e) => {
-    const query = e.target.value
-    console.log(query)
-    try  {
-      const response = await fetch(`https://faithhub-backend.fly.dev/profile/searchbar?query=${query}`)
-      const data = await response.json()
-      console.log(data)
-    } catch (err) {
-      // TODO: Add error handling
-      console.log(err)
-    }
-  }
 
   if (!localStorage.getItem("token"))
     return (
@@ -59,7 +49,7 @@ const Header = () => {
     <>
       <div
         className="bg-white font-Rubik h-[3.5rem] drop-shadow 
-    fixed top-0 w-screen z-50 flex flex-row items-center "
+    fixed top-0 w-screen z-[10000] flex flex-row items-center "
       >
         <FontAwesomeIcon
           icon={faBars}
@@ -79,15 +69,7 @@ const Header = () => {
             FaithHub
           </h1>
         </Link>
-        <form>
-          <input
-            onChange={handleSearch}
-            type="text"
-            placeholder="Search... "
-            className="
-            bg-gray-100 hidden lg:flex lg:w-auto p-1 lg:pl-3 pr-3 lg:pr-10 ml-3 lg:ml-8 rounded-large"
-          ></input>
-        </form>
+        <SearchBar />
         <div className="flex-grow"></div>
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
