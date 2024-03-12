@@ -27,9 +27,22 @@ const Header = () => {
     navigate("/auth");
   };
 
+  const handleSearch = async(e) => {
+    const query = e.target.value
+    console.log(query)
+    try  {
+      const response = await fetch(`https://faithhub-backend.fly.dev/profile/searchbar?query=${query}`)
+      const data = await response.json()
+      console.log(data)
+    } catch (err) {
+      // TODO: Add error handling
+      console.log(err)
+    }
+  }
+
   if (!localStorage.getItem("token"))
     return (
-      <div
+      <div 
         className="bg-white font-Rubik h-[3.5rem] drop-shadow 
     fixed top-0 w-screen z-50"
       >
@@ -68,6 +81,7 @@ const Header = () => {
         </Link>
         <form>
           <input
+            onChange={handleSearch}
             type="text"
             placeholder="Search... "
             className="

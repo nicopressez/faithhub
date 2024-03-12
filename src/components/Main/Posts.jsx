@@ -418,11 +418,13 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
               className={`
                 mr-1  w-5 h-5 hover:text-cyan-500
                 hover:cursor-pointer active:text-cyan-600
+                transition-colors duration-300
                 ${
                   likedPosts.some((id) => post._id === id)
                     ? "text-cyan-600"
                     : "text-cyan-400"
-                }`}
+                }
+                `}
             />
             <span>{post.likes.length}</span>
             <hr className="mt-2 w-[90%] ml-auto mr-auto"></hr>
