@@ -27,7 +27,7 @@ const SearchBar = () => {
         }
       }
     return (
-    <div className="relative group">
+    <div className="relative group font-Rubik">
         <form>
           <input
             onChange={handleSearch}
@@ -38,32 +38,41 @@ const SearchBar = () => {
           ></input>
         </form>
         {searchResults && searchInput.length > 3 &&
-         <div className="absolute top-10 left-12 bg-white border-2 rounded-lg flex-col
-        w-60 hidden group-focus-within:flex
+         <div className="w-64 absolute top-10 left-8 bg-white border-2 rounded-lg flex-col
+        w-98 hidden group-focus-within:flex p-1
         ">
             {loading ? 
             <div
-            className="hover:bg-gray-100 pt-[0.10rem] pb-[0.10rem]">
-              <p>Loading...</p>
+            className="bg-gray-100 pt-[0.10rem] pb-[0.10rem] text-center">
+              <p className="italic text-gray-400">
+                Searching...</p>
             </div>
-            :
+            : // If results, display them
+            searchResults[0] ?
              searchResults.map((user, id) => (
                 <Link key={id}
                 to={`/profile/${user._id}`}
-                className="hover:bg-gray-100 pt-[0.10rem] pb-[0.10rem]">
+                className="hover:bg-gray-100 pt-[0.10rem] pb-[0.10rem] pl-1">
                     <img
-              className="w-9 h-9 mr-2 md:mr-2 md:w-8 md:h-8 lg:w-9 lg:h-9 rounded-full object-cover
+              className="w-9 h-9 mr-3 md:mr-3 md:w-8 md:h-8 lg:w-9 lg:h-9 rounded-full object-cover
               inline"
               src={
                 user &&
                 `https://faithhub-backend.fly.dev/${user.profile_picture}`
               }
             />
-            <p className="inline">{user.first_name} {user.last_name}</p>
+            <p className="inline font-bold">{user.first_name} {user.last_name}</p>
             </Link>
             )
-
-            )}
+            )
+          : // If no results from search
+          <div
+            className="bg-gray-100 pt-[0.10rem] pb-[0.10rem] text-center">
+              <p className="italic text-gray-400">
+                No results found
+                </p>
+            </div>
+          }
 
         </div>
 }
