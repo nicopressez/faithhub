@@ -11,12 +11,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Transition } from "@headlessui/react";
 import { logoutSuccess } from "../reducers/auth";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { toggleNavBar, hideNavBar } from "../reducers/sidenav";
 import SearchBar from "./SearchBar";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Header = () => {
 
@@ -24,12 +24,24 @@ const Header = () => {
    const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
   const [searchVisible, setSearchVisible] = useState(false)
+  const [sideMenu, setSideMenu] = useState(false)
 
   const auth = useSelector((state) => state.auth);
+
+  const location = useLocation()
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { user } = auth;
+
+  useEffect(() => {
+    // Only show the sidenav menu when needed for navigation
+    if(location.pathname === "/home" ||
+    /\/profile\/.*\/settings\//.test(location.pathname)){
+      setSideMenu(true)
+    }
+
+  },[location.pathname])
 
   const handleLogout = () => {
     dispatch(logoutSuccess());
@@ -66,12 +78,21 @@ const Header = () => {
         className="bg-white font-Rubik h-[3.5rem] drop-shadow 
     fixed top-0 w-screen z-[10000] flex flex-row items-center "
       >
+        {sideMenu && 
+        <Transition
+        appear={true}
+        show={true}
+        enter="transition duration-100"
+        enterFrom="opacity-0 transform scale-x-0 origin-left"
+        enterTo="opacity-100 transform scale-x-100 origin-left"
+        >
         <FontAwesomeIcon
           icon={faBars}
           className="ml-3 h-5 w-5
          text-gray-600 visible lg:hidden"
           onClick={() => dispatch(toggleNavBar())}
         />
+        </Transition>}
         <Link
           to={"/home"}
           className="flex"
