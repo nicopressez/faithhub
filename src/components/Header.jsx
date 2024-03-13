@@ -69,14 +69,18 @@ const Header = () => {
           className="flex"
           onClick={() => dispatch(hideNavBar())}
         >
-          <h1
-            className="text-lg ml-2  text-cyan-400 font-extrabold tracking-wide
-          md:text-3xl lg:ml-8 "
-          >
+            {(isLargeDevice || (!isLargeDevice &&  !searchVisible))
+             &&
+             <h1
+             className="text-lg ml-2  text-cyan-400 font-extrabold tracking-wide
+           md:text-3xl lg:ml-8 "
+           >
             FaithHub
-          </h1>
+            </h1>}
         </Link>
-        {isLargeDevice || searchVisible &&
+        {isLargeDevice ?
+        <SearchBar /> :
+        searchVisible &&
         <SearchBar />}
         <div className="flex-grow"></div>
         <FontAwesomeIcon
@@ -93,6 +97,8 @@ const Header = () => {
           className="mr-3 md:mr-4 lg:mr-6 w-6 h-6   text-cyan-400"
         />
 
+        {(isLargeDevice || (!isLargeDevice &&  !searchVisible))
+             &&
         <Menu as="div" className="relative">
           <Menu.Button>
             <img
@@ -164,7 +170,9 @@ const Header = () => {
             </Menu.Items>
           </Transition>
         </Menu>
+      }
       </div>
+      
     </>
   );
 };

@@ -1,7 +1,12 @@
+import { Transition } from "@headlessui/react";
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 const SearchBar = () => {
+
+  // Get device size for big screens
+  const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
     const [searchResults, setSearchResults] = useState([])
     const [searchInput, setSearchInput] = useState("")
@@ -31,7 +36,15 @@ const SearchBar = () => {
         setSearchInput("")
       }
     return (
-    <div className="relative group font-Rubik">
+    <Transition
+    appear={true}
+    show={true}
+    enter={!isLargeDevice ? "transition duration-200" : ""}
+    enterFrom="opacity-0 transform scale-x-0 origin-left"
+    enterTo="opacity-100 transform scale-x-100 origin-left"
+    >
+    <div className="relative group font-Rubik
+    ">
         <form>
           <input
             onChange={handleSearch}
@@ -91,6 +104,7 @@ const SearchBar = () => {
         </div>
 }
         </div>
+        </Transition>
     )
 };
 
