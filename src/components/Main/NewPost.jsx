@@ -17,6 +17,7 @@ const NewPost = ({ setAllPosts, own }) => {
   const textareaRef = useRef(null);
 
   const dispatch = useDispatch();
+  const [error, setError] = useState(false)
   const [post, setPost] = useState("");
   const [type, setType] = useState("Discussion");
   const [showEmojis, setShowEmojis] = useState(false);
@@ -89,8 +90,7 @@ const NewPost = ({ setAllPosts, own }) => {
         textareaRef.current.style.height = "auto";
       }, 50);
     } catch (err) {
-      // TODO: Add error handling
-      console.log(err);
+      setError(true)
     }
   };
 
@@ -124,6 +124,7 @@ const NewPost = ({ setAllPosts, own }) => {
              text-sm md:text-base
              ${own ? "lg:w-[60%]" : "lg:w-[50%]"}`}
         >
+          
           <div
             className="flex  flex-row mt-3 justify-center relative
         "
@@ -305,7 +306,20 @@ const NewPost = ({ setAllPosts, own }) => {
               </div>
             </form>
           </div>
+          {error && 
+      <Transition as="div"
+      className="mt-6 -mb-1 lg:-mb-3"
+      appear={true}
+      show={true}
+      enter="transition duration-300"
+      enterFrom="opacity-0 transform scale-y-0 origin-top"
+      enterTo="opacity-100 transform scale-y-100 origin-top">
+      <p className="text-center text-red-500 italic">
+        We couldn&apos;t proceed with your request. Please try again later.
+      </p>
+      </Transition>}
         </div>
+        
       </Transition>
     );
 };

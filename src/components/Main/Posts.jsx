@@ -23,11 +23,11 @@ import PostsLoading from "./PostsLoading";
 
 const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
 
-  const [likedPosts, setLikedPosts] = useState();
   const auth = useSelector((state) => state.auth);
 
+  const [error, setError] = useState(false)
+  const [likedPosts, setLikedPosts] = useState();
   const [newComments, setNewComments] = useState([]);
-
   const [editing, setEditing] = useState();
   const [editedPost, setEditedPost] = useState("");
 
@@ -77,8 +77,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
           setIsLoading(false)
         }, 500);
       } catch (err) {
-        // TODO: Add error handling
-        console.log(err);
+        setError(true)
       }
     };
     fetchPosts();
@@ -139,8 +138,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
         }),
       );
     } catch (err) {
-      // TODO: Add error handling
-      console.log(err);
+      setError(true)
     }
   };
 
@@ -206,8 +204,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
       // Toggle form back to post
       setEditing();
     } catch (err) {
-      // TODO: Add error handling
-      console.log(err);
+      setError(true)
     }
   };
 
@@ -231,15 +228,27 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
       // Remove deleted post
       const updatedPosts = allPosts.filter((post) => post._id !== id);
       setAllPosts(updatedPosts);
-      console.log(result);
     } catch (err) {
-      // TODO : Add error handling
-      console.log(err);
+      setError(true)
     }
   };
 
   // Loading page
  if (isLoading) return <PostsLoading own={own}/>
+
+ if (error) return (
+  <Transition
+  className="mt-9 lg:mt-20"
+  appear={true}
+  show={true}
+  enter="transition duration-300"
+  enterFrom="opacity-0 transform scale-y-0 origin-top"
+  enterTo="opacity-100 transform scale-y-100 origin-top">
+  <p className="text-center text-red-600 italic font-Rubik">
+    An error occured while loading posts, please try again later.
+  </p>
+  </Transition>
+ )
 
   if (user && likedPosts)
     return allPosts.map((post) => (

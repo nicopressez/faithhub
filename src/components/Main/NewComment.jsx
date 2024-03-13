@@ -6,6 +6,7 @@ import { lazy, Suspense } from "react";
 import { faPaperPlane, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
 const EmojiPicker = lazy(() => import("emoji-picker-react"));
 import { useMediaQuery } from "@uidotdev/usehooks";
+import { Transition } from "@headlessui/react";
 
 
 const NewComment = ({ postid, setNewComments }) => {
@@ -15,6 +16,7 @@ const NewComment = ({ postid, setNewComments }) => {
 
   const textarea = useRef(null);
 
+  const [error, setError] = useState(false)
   const [comment, setComment] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
 
@@ -93,12 +95,12 @@ const NewComment = ({ postid, setNewComments }) => {
         textarea.current.style.height = "auto";
       }, 50);
     } catch (err) {
-      // TODO :Error page
-      console.log(err);
+      setError(true)
     }
   };
   if (user)
     return (
+      <>
       <div className="relative z-50 flex  flex-row justify-center items-center mt-3 
        text-sm md:text-base">
         <img
@@ -164,6 +166,19 @@ const NewComment = ({ postid, setNewComments }) => {
           </div>
         </form>
       </div>
+      {error && 
+      <Transition
+      className="-mb-2"
+      appear={true}
+      show={true}
+      enter="transition duration-300"
+      enterFrom="opacity-0 transform scale-y-0 origin-top"
+      enterTo="opacity-100 transform scale-y-100 origin-top">
+      <p className="text-center text-red-500 italic">
+        Your comment couldn&apos;t be posted. Please try again later
+      </p>
+      </Transition>}
+      </>
     );
 };
 
