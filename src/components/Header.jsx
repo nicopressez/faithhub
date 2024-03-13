@@ -36,6 +36,14 @@ const Header = () => {
     navigate("/auth");
   };
 
+  const toggleSearchBar = () => {
+    if (searchVisible) {
+      setSearchVisible(false)
+    } else {
+      setSearchVisible(true);
+  }
+  }
+
 
   if (!localStorage.getItem("token"))
     return (
@@ -72,20 +80,24 @@ const Header = () => {
             {(isLargeDevice || (!isLargeDevice &&  !searchVisible))
              &&
              <h1
-             className="text-lg ml-2  text-cyan-400 font-extrabold tracking-wide
+             className="text-2xl ml-2  text-cyan-400 font-extrabold tracking-wide
            md:text-3xl lg:ml-8 "
            >
             FaithHub
             </h1>}
         </Link>
         {isLargeDevice ?
-        <SearchBar /> :
+        <SearchBar setSearchVisible={setSearchVisible}
+        searchVisible={searchVisible}
+        /> :
         searchVisible &&
-        <SearchBar />}
+        <SearchBar setSearchVisible={setSearchVisible}
+        searchVisible={searchVisible}
+        />}
         <div className="flex-grow"></div>
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
-          onClick={() => setSearchVisible(!searchVisible)}
+          onClick={toggleSearchBar}
           className="flex lg:hidden mr-3 md:mr-4 lg:mr-6 w-6 h-6 text-cyan-400"
         />
         <FontAwesomeIcon

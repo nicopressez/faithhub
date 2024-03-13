@@ -1,9 +1,19 @@
 import { Transition } from "@headlessui/react";
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Link } from "react-router-dom"
 import { useMediaQuery } from "@uidotdev/usehooks";
+import { PropTypes } from "prop-types";
 
-const SearchBar = () => {
+
+const SearchBar = ({ setSearchVisible, searchVisible }) => {
+
+  const searchInputRef = useRef(null)
+
+  useEffect(() => {
+    if (searchVisible && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [searchVisible, searchInputRef]);
 
   // Get device size for big screens
   const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
@@ -33,7 +43,9 @@ const SearchBar = () => {
       }
 
       const clearInput = () => {
-        setSearchInput("")
+        // When clicking away to a search result, clear input info and state
+        setSearchInput("");
+        setSearchVisible(false)
       }
     return (
     <Transition
@@ -47,16 +59,17 @@ const SearchBar = () => {
     ">
         <form>
           <input
+            ref={searchInputRef}
             onChange={handleSearch}
             value={searchInput}
             type="text"
             placeholder="Search... "
             className="
-            bg-gray-100  flex lg:w-auto p-1 lg:pl-3 pr-3 lg:pr-10 ml-3 lg:ml-8 rounded-large"
+            bg-gray-100  flex lg:w-auto p-1 pl-3 pr-3 lg:pr-10 ml-3 lg:ml-8 rounded-large"
           ></input>
         </form>
         {searchResults && searchInput.length > 3 &&
-         <div className="w-64 absolute top-10 left-8 bg-white border-2 rounded-lg flex-col
+         <div className="w-64 absolute top-10 left-3 lg:left-8 bg-white border-2 rounded-lg flex-col
         w-98 hidden group-focus-within:flex p-1
         ">
             {loading ? 
@@ -107,5 +120,10 @@ const SearchBar = () => {
         </Transition>
     )
 };
+
+SearchBar.propTypes = {
+  setSearchVisible: PropTypes.func,
+  searchVisible: PropTypes.bool
+}
 
 export default SearchBar
