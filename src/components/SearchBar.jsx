@@ -4,16 +4,22 @@ import { Link } from "react-router-dom"
 const SearchBar = () => {
 
     const [searchResults, setSearchResults] = useState([])
+    const [searchInput, setSearchInput] = useState("")
+    const [loading, setLoading] = useState(false)
 
     const handleSearch = async(e) => {
         const query = e.target.value
+        setSearchInput(query)
         try  {
           if (query.length > 3)
          { 
+          setLoading(true)
           const response = await fetch(`https://faithhub-backend.fly.dev/profile/searchbar?query=${query}`)
           const result = await response.json()
-          console.log(result)
           setSearchResults(result.data)
+          setTimeout(() => {
+            setLoading(false)
+          }, 200);
         }
         } catch (err) {
           // TODO: Add error handling
@@ -21,7 +27,7 @@ const SearchBar = () => {
         }
       }
     return (
-    <div className="relative">
+    <div className="relative group">
         <form>
           <input
             onChange={handleSearch}
@@ -31,10 +37,17 @@ const SearchBar = () => {
             bg-gray-100 hidden lg:flex lg:w-auto p-1 lg:pl-3 pr-3 lg:pr-10 ml-3 lg:ml-8 rounded-large"
           ></input>
         </form>
-        <div className="absolute top-10 left-12 bg-white border-2 rounded-lg flex flex-col
-        w-60
+        {searchResults && searchInput.length > 3 &&
+         <div className="absolute top-10 left-12 bg-white border-2 rounded-lg flex-col
+        w-60 hidden group-focus-within:flex
         ">
-            {searchResults && searchResults.map((user, id) => (
+            {loading ? 
+            <div
+            className="hover:bg-gray-100 pt-[0.10rem] pb-[0.10rem]">
+              <p>Loading...</p>
+            </div>
+            :
+             searchResults.map((user, id) => (
                 <Link key={id}
                 to={`/profile/${user._id}`}
                 className="hover:bg-gray-100 pt-[0.10rem] pb-[0.10rem]">
@@ -53,6 +66,7 @@ const SearchBar = () => {
             )}
 
         </div>
+}
         </div>
     )
 };
