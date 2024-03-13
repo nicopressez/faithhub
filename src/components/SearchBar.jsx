@@ -39,7 +39,7 @@ const SearchBar = () => {
             type="text"
             placeholder="Search... "
             className="
-            bg-gray-100 hidden lg:flex lg:w-auto p-1 lg:pl-3 pr-3 lg:pr-10 ml-3 lg:ml-8 rounded-large"
+            bg-gray-100  flex lg:w-auto p-1 lg:pl-3 pr-3 lg:pr-10 ml-3 lg:ml-8 rounded-large"
           ></input>
         </form>
         {searchResults && searchInput.length > 3 &&

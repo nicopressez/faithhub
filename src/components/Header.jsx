@@ -15,8 +15,15 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { toggleNavBar, hideNavBar } from "../reducers/sidenav";
 import SearchBar from "./SearchBar";
+import { useMediaQuery } from "@uidotdev/usehooks";
+import { useState } from "react";
 
 const Header = () => {
+
+   // Get device size for big screens
+   const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
+
+  const [searchVisible, setSearchVisible] = useState(false)
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -69,10 +76,12 @@ const Header = () => {
             FaithHub
           </h1>
         </Link>
-        <SearchBar />
+        {isLargeDevice || searchVisible &&
+        <SearchBar />}
         <div className="flex-grow"></div>
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
+          onClick={() => setSearchVisible(!searchVisible)}
           className="flex lg:hidden mr-3 md:mr-4 lg:mr-6 w-6 h-6 text-cyan-400"
         />
         <FontAwesomeIcon
