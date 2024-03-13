@@ -236,6 +236,15 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
   // Loading page
  if (isLoading) return <PostsLoading own={own}/>
 
+ // If rendering from profile page and no activity yet
+ if(own && !isLoading && !allPosts[0]) return(
+    <p className="
+    mt-20 lg:mt-32
+    text-center mt-50 z-50 text-gray-400 w-full italic font-Rubik
+    text-xl">
+   No recent activity</p>
+ )
+
  if (error) return (
   <Transition
   className="mt-9 lg:mt-20"
@@ -249,6 +258,8 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
   </p>
   </Transition>
  )
+
+ 
 
   if (user && likedPosts)
     return allPosts.map((post) => (

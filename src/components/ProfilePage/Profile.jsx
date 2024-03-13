@@ -50,7 +50,7 @@ const Profile = () => {
           className=" 
         ml-auto mr-auto mt-16 md:mt-16 text-center bg-white lg:w-[60%]
          rounded-lg drop-shadow-md p-1 pb-2 md:p-1 md:pb-2 font-Rubik 
-         -mb-8"
+         "
         >
           <Transition
             show={true}
@@ -61,7 +61,7 @@ const Profile = () => {
           >
             {user && user._id !== id && (
               <button
-                className="absolute right-2 top-2 text-center bg-gray-200 pr-3 pt-1 pb-1 rounded-full
+                className="absolute right-2 top-2 text-center bg-gray-200 pr-3 pt-1 pb-1 pl-3 rounded-full
          group hover:bg-cyan-400 transition-all duration-200 group"
               >
                 Chat
@@ -94,9 +94,10 @@ const Profile = () => {
           </Transition>
         </div>
 
-        {user && id === user._id && (
+        {user && (
           <div>
-          <NewPost setAllPosts={setAllPosts} own={true} />
+          {id === user._id &&
+            <NewPost setAllPosts={setAllPosts} own={true} />}
           <Posts
           allPosts={allPosts}
           setAllPosts={setAllPosts}

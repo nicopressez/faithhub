@@ -119,10 +119,10 @@ const NewPost = ({ setAllPosts, own }) => {
       >
         <div
           className={`relative z-10
-            ml-auto mr-auto mt-[3.8rem] md:mt-[4.5rem] bg-white min-h-[10rem] lg:min-h-48
+            ml-auto mr-auto bg-white min-h-[10rem] lg:min-h-48
              rounded-lg drop-shadow-md p-2 lg:p-6 lg:pt-5 font-Rubik
              text-sm md:text-base
-             ${own ? "lg:w-[60%]" : "lg:w-[50%]"}`}
+             ${own ? "lg:w-[60%] mt-[2rem] lg:mt-[4rem]" : "lg:w-[50%] mt-[3.8rem] md:mt-[4.5rem]"}`}
         >
           
           <div
