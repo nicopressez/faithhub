@@ -6,6 +6,7 @@ const SearchBar = () => {
     const [searchResults, setSearchResults] = useState([])
     const [searchInput, setSearchInput] = useState("")
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false)
 
     const handleSearch = async(e) => {
         const query = e.target.value
@@ -22,15 +23,19 @@ const SearchBar = () => {
           }, 200);
         }
         } catch (err) {
-          // TODO: Add error handling
-          console.log(err)
+          setError(true)
         }
+      }
+
+      const clearInput = () => {
+        setSearchInput("")
       }
     return (
     <div className="relative group font-Rubik">
         <form>
           <input
             onChange={handleSearch}
+            value={searchInput}
             type="text"
             placeholder="Search... "
             className="
@@ -47,11 +52,20 @@ const SearchBar = () => {
               <p className="italic text-gray-400">
                 Searching...</p>
             </div>
-            : // If results, display them
+            :
+            // If error during search
+            error ? 
+            <div
+            className="bg-gray-100 pt-[0.10rem] pb-[0.10rem] text-center">
+              <p className="italic text-gray-400">
+                An error happened, please try again</p>
+            </div>
+            : // If there are results, display them
             searchResults[0] ?
              searchResults.map((user, id) => (
                 <Link key={id}
                 to={`/profile/${user._id}`}
+                onClick={clearInput}
                 className="hover:bg-gray-100 pt-[0.10rem] pb-[0.10rem] pl-1">
                     <img
               className="w-9 h-9 mr-3 md:mr-3 md:w-8 md:h-8 lg:w-9 lg:h-9 rounded-full object-cover
@@ -65,7 +79,7 @@ const SearchBar = () => {
             </Link>
             )
             )
-          : // If no results from search
+          :  // If no results from search
           <div
             className="bg-gray-100 pt-[0.10rem] pb-[0.10rem] text-center">
               <p className="italic text-gray-400">
