@@ -8,6 +8,7 @@ import {
   faUser,
   faMagnifyingGlass,
   faBars,
+  faArrowDown
 } from "@fortawesome/free-solid-svg-icons";
 import { Menu, Transition } from "@headlessui/react";
 import { logoutSuccess } from "../reducers/auth";
@@ -134,6 +135,7 @@ const Header = () => {
              &&
         <Menu as="div" className="relative">
           <Menu.Button>
+            <div className="group w-9 h-9 mr-2 md:mr-6 md:w-10 md:h-10 lg:w-11 lg:h-11 rounded-full object-cover relative">
             <img
               className="w-9 h-9 mr-2 md:mr-6 md:w-10 md:h-10 lg:w-11 lg:h-11 rounded-full object-cover"
               src={
@@ -141,6 +143,10 @@ const Header = () => {
                 `https://faithhub-backend.fly.dev/${user.profile_picture}`
               }
             />
+            <FontAwesomeIcon icon={faArrowDown} 
+            className="  absolute -bottom-1 -right-1 bg-gray-200 p-[0.15rem] rounded-full h-3 w-3 md:h-4 md:w-4 opacity-80 
+            group-hover:opacity-90 transition-opacity duration-100"/>
+            </div>
           </Menu.Button>
           <Transition
             enter="transition duration-200 ease-out"
