@@ -275,6 +275,7 @@ const Signup = ({ toSignup, setToSignup }) => {
                 id="profile_picture"
                 name="profile_picture"
                 type="file"
+                accept="image/x-png,image/jpeg"
                 onChange={handlePhotoChange}
                 className="
                  w-0 h-0 absolute"

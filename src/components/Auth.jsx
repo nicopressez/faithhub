@@ -60,6 +60,44 @@ const Auth = () => {
     }
   };
 
+  // Login with test user credentials
+  const testUserAuth = async(e) => {
+    e.preventDefault()
+    // Set loading
+    dispatch(loginRequest());
+    const credentials = {
+      username: "johndoe",
+      password: "testuser"
+    };
+    try {
+      const response = await fetch(
+        "https://faithhub-backend.fly.dev/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(credentials),
+        },
+      );
+      const result = await response.json();
+
+      if (response.status === 200) {
+        const token = result.token;
+        localStorage.setItem("token", token);
+        // Decode token, send user data to state
+        const decodedJWT = jwtDecode(token);
+        dispatch(loginSuccess(decodedJWT.user));
+      }
+    } catch (err) {
+      // Invalid credentials, set error message
+      setTimeout(() => {
+        dispatch(loginFailed());
+      }, 500);
+    }
+  };
+  
+
   return (
     <div className=" bg-gray-100 w-screen h-screen fixed md:pl-5 md:pr-5">
       <Transition
@@ -98,6 +136,12 @@ const Auth = () => {
               type="submit"
               value="Login"
             ></input>
+            <button type="button"
+            className={`rounded-lg -mt-2 p-3 mr-4 ml-4 md:ml-6 md:mr-6  bg-green-400 text-white
+            font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
+            onClick={testUserAuth}>
+              Test user
+            </button>
           </form>
           <button
             className="text-sm md:text-base pb-4 text-cyan-500 underline
