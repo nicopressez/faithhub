@@ -89,8 +89,8 @@ const Header = () => {
         >
         <FontAwesomeIcon
           icon={faBars}
-          className="ml-3 h-5 w-5
-         text-gray-600 visible lg:hidden"
+          className="ml-2 h-5 w-5
+         text-gray-600 visible lg:hidden bg-gray-100 rounded-full p-2"
           onClick={() => dispatch(toggleNavBar())}
         />
         </Transition>}
@@ -103,7 +103,7 @@ const Header = () => {
              &&
              <h1
              className="text-2xl ml-2  text-cyan-400 font-extrabold tracking-wide
-           md:text-3xl lg:ml-8 "
+           md:text-3xl lg:ml-6 "
            >
             FaithHub
             </h1>}
@@ -120,15 +120,15 @@ const Header = () => {
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
           onClick={toggleSearchBar}
-          className="flex lg:hidden mr-3 md:mr-4 lg:mr-6 w-6 h-6 text-cyan-400"
+          className="flex lg:hidden mr-1 md:mr-2 lg:mr-4 w-6 h-6 text-cyan-400 bg-gray-100 rounded-full p-3"
         />
         <FontAwesomeIcon
           icon={faMessage}
-          className=" mr-3 md:mr-4 lg:mr-6 w-6 h-6 text-cyan-400"
+          className=" mr-1 md:mr-3 lg:mr-4 w-6 h-6 text-cyan-400 bg-gray-100 rounded-full p-3"
         />
         <FontAwesomeIcon
           icon={faBell}
-          className="mr-3 md:mr-4 lg:mr-6 w-6 h-6   text-cyan-400"
+          className="mr-1 md:mr-3 lg:mr-4 w-6 h-6   text-cyan-400 bg-gray-100 rounded-full p-3"
         />
 
         {(isLargeDevice || (!isLargeDevice &&  !searchVisible))
