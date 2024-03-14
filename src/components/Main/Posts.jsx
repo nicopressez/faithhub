@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { tokenRefresh } from "../../reducers/auth";
 import Moment from "react-moment";
@@ -24,6 +24,9 @@ import PostsLoading from "./PostsLoading";
 const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
 
   const auth = useSelector((state) => state.auth);
+
+  const textareaRef = useRef(null)
+  const [rows, setRows] = useState(1); 
 
   const [error, setError] = useState(false)
   const [likedPosts, setLikedPosts] = useState();
@@ -142,7 +145,12 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
     }
   };
 
-  // Toggle editing form
+  const calculateRows = (content) => {
+    // Calculate rows based on post content
+    const numRows = Math.max(3, Math.ceil(content.length / 60));
+    return { rows: numRows};
+  };
+
   const toggleEdit = (e, post) => {
     e.preventDefault();
     setEditing(post._id);
@@ -150,7 +158,11 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
       content: post.content,
       type: post.type,
     });
+    const { rows } = calculateRows(post.content);
+    setRows(rows); // Update rows state
   };
+  
+
 
   // Update edited comment on form input
   const handleEditChange = (e) => {
@@ -398,6 +410,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
               className="mt-1 relative"
             >
               <textarea
+               ref={textareaRef}
                 name="content"
                 className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
                   overflow-visible resize-none pr-8 text-gray-600"
@@ -405,8 +418,8 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
                 value={he.decode(editedPost.content)}
                 onChange={handleEditChange}
                 onInput={handleInput}
-                rows="1"
-                cols="60"
+                rows={rows}
+                cols="60" 
               ></textarea>
               {editedPost.content.length > 4 && (
                 <button

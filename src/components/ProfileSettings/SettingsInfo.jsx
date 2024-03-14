@@ -379,19 +379,19 @@ const ProfileSettings = () => {
               Deactivate account
             </Dialog.Title>
             <Dialog.Description className="font-bold mb-2">
-              {user._id !== "65f2fdc6c21f8475fee0fa2e" &&
+              {user.username !== "johndoe" &&
               "This will permanently deactivate your account"
                 }
             </Dialog.Description>
 
             <p className=" w-full ml-auto mr-auto mb-2 lg:mb-3">
-              {user._id === "65f2fdc6c21f8475fee0fa2e" ?
+              {user.username === "johndoe" ?
               "Test user can't be deleted. Please try again from a different account."
               :
               "Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone."}
             </p>
 
-            {user._id !== "65f2fdc6c21f8475fee0fa2e" &&
+            {user.username !== "johndoe" &&
               <button
               onClick={(e) => {
                 setDeleteDialog(false);
