@@ -9,14 +9,22 @@ import {
   faPenToSquare,
   faTrash,
   faPaperPlane,
+  faFaceSmile
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Transition, Menu } from "@headlessui/react";
 import { tokenRefresh } from "../../reducers/auth";
 import { jwtDecode } from "jwt-decode";
 import he from "he";
+import { useMediaQuery } from "@uidotdev/usehooks";
+import EmojiPicker from "emoji-picker-react";
+
 
 const Comments = ({ postid, newComments, setNewComments }) => {
+
+   // Get device size to adjust design for small screens
+   const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
+
   const dispatch = useDispatch();
 
   const auth = useSelector((state) => state.auth);
@@ -31,6 +39,8 @@ const Comments = ({ postid, newComments, setNewComments }) => {
 
   const [editing, setEditing] = useState();
   const [editedComment, setEditedComment] = useState("");
+
+  const [showEmojis, setShowEmojis] = useState(false);
 
   // Error handling
   const [errors, setErrors] = useState(false);
@@ -159,6 +169,15 @@ const Comments = ({ postid, newComments, setNewComments }) => {
   const handleInput = (e) => {
     e.target.style.height = "auto";
     e.target.style.height = e.target.scrollHeight + "px";
+  };
+
+  const toggleEmojis = () => {
+    setShowEmojis(!showEmojis);
+  };
+
+  const handleEmoji = (emojiObject) => {
+      const newContent = editedComment + emojiObject.emoji;
+      setEditedComment(newContent);
   };
 
   const handleEdit = async (e, id, isNew = false) => {
@@ -390,6 +409,29 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                         cols="60"
                         rows={rows}
                       ></textarea>
+                      {isLargeDevice &&
+                  <FontAwesomeIcon
+                  icon={faFaceSmile}
+                  onClick={toggleEmojis}
+                  className="absolute right-3 top-3 text-gray-400 h-5 hover:text-gray-500 
+            hover:cursor-pointer"
+                />}
+                <div
+                  className={`${
+                    !showEmojis
+                      ? "opacity-0 scale-y-0 origin-top"
+                      : "opacity-100 scale-y-100 origin-top"
+                  }
+            absolute top-0 -right-[22rem]
+            transition-all duration-200`}
+                >
+                  <EmojiPicker
+                    height={400}
+                    onEmojiClick={(emojiObject) => {
+                      handleEmoji(emojiObject);
+                    }}
+                  />
+                </div>
                       {editedComment.length > 4 && (
                         <button
                           type="submit"
