@@ -526,6 +526,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                         className="mt-1 relative"
                       >
                         <textarea
+                          ref={textareaRef}
                           name="content"
                           className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
                   overflow-visible resize-none pr-8 text-gray-600"
@@ -533,7 +534,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                           value={editedComment}
                           onChange={handleEditChange}
                           onInput={handleInput}
-                          rows="1"
+                          rows={rows}
                           cols="60"
                         ></textarea>
                         {editedComment.length > 4 && (
