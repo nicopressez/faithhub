@@ -1,5 +1,5 @@
 import { PropTypes } from "prop-types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
@@ -25,6 +25,9 @@ const Comments = ({ postid, newComments, setNewComments }) => {
   const [allComments, setAllComments] = useState([]);
   const [showAll, setShowAll] = useState(false);
   const [likedComments, setLikedComments] = useState();
+
+  const textareaRef = useRef(null)
+  const [rows, setRows] = useState(1); 
 
   const [editing, setEditing] = useState();
   const [editedComment, setEditedComment] = useState("");
@@ -132,11 +135,19 @@ const Comments = ({ postid, newComments, setNewComments }) => {
     }
   };
 
+  const calculateRows = (content) => {
+    // Calculate rows based on post content
+    const numRows = Math.max(3, Math.ceil(content.length / 60));
+    return { rows: numRows};
+  };
+
   const toggleEdit = (e, comment) => {
     // Initiate editing form
     e.preventDefault();
     setEditing(comment._id);
     setEditedComment(comment.content);
+    const { rows } = calculateRows(comment.content);
+    setRows(rows); // Update rows state
   };
 
   // Update edited comment on form input
@@ -369,14 +380,15 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                     >
                       <textarea
                         name="content"
+                        ref={textareaRef}
                         className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
                   overflow-visible resize-none pr-8 text-gray-600"
                         placeholder="Your comment must be 4 characters long"
                         value={he.decode(editedComment)}
                         onChange={handleEditChange}
                         onInput={handleInput}
-                        rows="1"
                         cols="60"
+                        rows={rows}
                       ></textarea>
                       {editedComment.length > 4 && (
                         <button
