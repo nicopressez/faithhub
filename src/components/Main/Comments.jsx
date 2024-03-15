@@ -145,7 +145,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
     // Initiate editing form
     e.preventDefault();
     setEditing(comment._id);
-    setEditedComment(comment.content);
+    setEditedComment(he.decode(comment.content));
     const { rows } = calculateRows(comment.content);
     setRows(rows); // Update rows state
   };

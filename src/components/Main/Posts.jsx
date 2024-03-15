@@ -155,7 +155,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
     e.preventDefault();
     setEditing(post._id);
     setEditedPost({
-      content: post.content,
+      content: he.decode(post.content),
       type: post.type,
     });
     const { rows } = calculateRows(post.content);
