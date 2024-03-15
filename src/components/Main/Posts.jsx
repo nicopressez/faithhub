@@ -9,7 +9,8 @@ import {
   faTrash,
   faPenToSquare,
   faPaperPlane,
-  faHandsPraying
+  faHandsPraying,
+  faFaceSmile
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom/dist";
 import Comments from "./Comments";
@@ -20,8 +21,13 @@ import { Menu, Transition } from "@headlessui/react";
 import { jwtDecode } from "jwt-decode";
 import { PropTypes } from "prop-types";
 import PostsLoading from "./PostsLoading";
+import { useMediaQuery } from "@uidotdev/usehooks";
+import EmojiPicker from "emoji-picker-react";
 
 const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
+
+   // Get device size to adjust design for small screens
+   const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
   const auth = useSelector((state) => state.auth);
 
@@ -34,6 +40,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
   const [editing, setEditing] = useState();
   const [editedPost, setEditedPost] = useState("");
 
+  const [showEmojis, setShowEmojis] = useState(false);
   const [isLoading, setIsLoading] = useState(true)
 
   const dispatch = useDispatch();
@@ -180,6 +187,16 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
 
   const handleTypeEdit = (e) => {
     editedPost.type = e.target.value;
+  };
+
+  const toggleEmojis = () => {
+    setShowEmojis(!showEmojis);
+  };
+
+  const handleEmoji = (emojiObject) => {
+      const newContent = editedPost.content + emojiObject.emoji;
+      const newPost = { ...editedPost, content: newContent };
+      setEditedPost(newPost);
   };
 
   const handleEdit = async (e, id) => {
@@ -415,12 +432,35 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
                 className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
                   overflow-visible resize-none pr-8 text-gray-600"
                 placeholder="Your comment must be 4 characters long"
-                value={he.decode(editedPost.content)}
+                value={editedPost.content}
                 onChange={handleEditChange}
                 onInput={handleInput}
                 rows={rows}
                 cols="60" 
               ></textarea>
+              {isLargeDevice &&
+                  <FontAwesomeIcon
+                  icon={faFaceSmile}
+                  onClick={toggleEmojis}
+                  className="absolute right-3 top-3 text-gray-400 h-5 hover:text-gray-500 
+            hover:cursor-pointer"
+                />}
+                <div
+                  className={`${
+                    !showEmojis
+                      ? "opacity-0 scale-y-0 origin-top"
+                      : "opacity-100 scale-y-100 origin-top"
+                  }
+            absolute top-0 -right-[22rem]
+            transition-all duration-200`}
+                >
+                  <EmojiPicker
+                    height={400}
+                    onEmojiClick={(emojiObject) => {
+                      handleEmoji(emojiObject);
+                    }}
+                  />
+                </div>
               {editedPost.content.length > 4 && (
                 <button
                   type="submit"
