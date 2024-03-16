@@ -106,6 +106,26 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
     setLikedPosts(postsUserLiked);
   }, [allPosts, user]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (textareaRef.current) {
+        // Get width of the main div of the post edit form 
+        const parentWidth = textareaRef.current.parentNode.parentNode.clientWidth;
+        
+        // Set textarea width as a percentage of main div width
+        textareaRef.current.style.width = `${parentWidth * 0.9}px`;
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    if (editing) handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+}, [editing])
+
+
   const handleLike = async (e, id) => {
     try {
       const response = await fetch(
@@ -325,7 +345,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
           {
             // Edit/delete menu
             user._id === post.author._id && (
-              <Menu as="div" className="relative float-right">
+              <Menu as="div" className="relative float-right z-50">
                 <Menu.Button>
                   <FontAwesomeIcon
                     className="mt-1 mr-1 h-4
@@ -436,7 +456,6 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
                 onChange={handleEditChange}
                 onInput={handleInput}
                 rows={rows}
-                cols="60" 
               ></textarea>
               {isLargeDevice &&
                   <FontAwesomeIcon

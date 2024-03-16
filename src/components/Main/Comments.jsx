@@ -42,10 +42,29 @@ const Comments = ({ postid, newComments, setNewComments }) => {
 
   const [showEmojis, setShowEmojis] = useState(false);
 
-  // Error handling
-  const [errors, setErrors] = useState(false);
-  const [editingError, setEditingError] = useState(false);
-  const [deletingError, setDeletingError] = useState(false);
+    // Error handling
+    const [errors, setErrors] = useState(false);
+    const [editingError, setEditingError] = useState(false);
+    const [deletingError, setDeletingError] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (textareaRef.current) {
+        // Get width of the main div of the edit form section
+        const parentWidth = textareaRef.current.parentNode.parentNode.parentNode.clientWidth;
+        
+        // Set textarea width as a percentage of main div width
+        textareaRef.current.style.width = `${parentWidth * 0.9}px`;
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    if (editing) handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+}, [editing])
 
   useEffect(() => {
     const fetchTopComments = async () => {
@@ -323,7 +342,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                     {
                       // Edit/delete menu
                       user._id === comment.author._id && (
-                        <Menu as="div" className="relative float-right">
+                        <Menu as="div" className="relative float-right z-50">
                           <Menu.Button>
                             <FontAwesomeIcon
                               className="mt-1 mr-1 h-4
@@ -577,7 +596,6 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                           onChange={handleEditChange}
                           onInput={handleInput}
                           rows={rows}
-                          cols="60"
                         ></textarea>
                         {editedComment.length > 4 && (
                           <button
