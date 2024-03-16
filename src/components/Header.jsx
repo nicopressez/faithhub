@@ -163,9 +163,9 @@ const Header = () => {
             >
               <Menu.Item>
                 {({ active }) => (
-                  <a
+                  <Link
                     className={`${active && "bg-gray-100"} pl-2`}
-                    href={`/profile/${user._id}`}
+                    to={`/profile/${user._id}`}
                   >
                     <FontAwesomeIcon
                       icon={faUser}
@@ -173,14 +173,14 @@ const Header = () => {
                       onClick={() => dispatch(hideNavBar())}
                     />
                     Profile
-                  </a>
+                  </Link>
                 )}
               </Menu.Item>
               <Menu.Item>
                 {({ active }) => (
-                  <a
+                  <Link
                     className={`${active && "bg-gray-100"} pl-2`}
-                    href={`/profile/${user._id}/settings/info`}
+                    to={`/profile/${user._id}/settings/info`}
                   >
                     <FontAwesomeIcon
                       icon={faGear}
@@ -188,7 +188,7 @@ const Header = () => {
                       onClick={() => dispatch(hideNavBar())}
                     />
                     Account settings
-                  </a>
+                  </Link>
                 )}
               </Menu.Item>
               <Menu.Item>
