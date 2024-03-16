@@ -47,6 +47,7 @@ const Nav = () => {
         />
         Home
       </NavLink>
+      {/* 
       <NavLink
         style={({ isActive }) => {
           return {
@@ -89,6 +90,7 @@ const Nav = () => {
         />
         Events
       </NavLink>
+      */}
       <div className="flex-grow"></div>
     </div>
   );

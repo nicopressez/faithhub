@@ -59,6 +59,7 @@ const Profile = () => {
             enterFrom="opacity-0"
             enterTo="opacity-100"
           >
+            {/*
             {user && user._id !== id && (
               <button
                 className="absolute right-2 top-2 text-center bg-gray-200 pr-3 pt-1 pb-1 pl-3 rounded-full
@@ -73,6 +74,7 @@ const Profile = () => {
                 />
               </button>
             )}
+            */}
             <img
               className="border-cyan-400 border-4 p-[0.20rem] mt-3 mb-3 ml-auto mr-auto w-24 h-24 md:w-36 md:h-36 rounded-full object-cover
              "
