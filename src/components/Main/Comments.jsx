@@ -419,8 +419,8 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                       <textarea
                         name="content"
                         ref={textareaRef}
-                        className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
-                  overflow-visible resize-none pr-8 text-gray-600"
+                        className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2 pr-8
+                  overflow-visible resize-none  text-gray-600 relative"
                         placeholder="Your comment must be 4 characters long"
                         value={he.decode(editedComment)}
                         onChange={handleEditChange}
@@ -432,7 +432,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                   <FontAwesomeIcon
                   icon={faFaceSmile}
                   onClick={toggleEmojis}
-                  className="absolute right-3 top-3 text-gray-400 h-5 hover:text-gray-500 
+                  className="absolute lg:right-10 top-3 text-gray-400 h-5 hover:text-gray-500 
             hover:cursor-pointer"
                 />}
                 <div
@@ -455,7 +455,7 @@ const Comments = ({ postid, newComments, setNewComments }) => {
                         <button
                           type="submit"
                           className="absolute bottom-[0%]
-                 -translate-y-1/2 cursor-pointer right-[19%]"
+                 -translate-y-1/2 cursor-pointer sm:right-20 md:right-12 lg:right-10"
                         >
                           <FontAwesomeIcon
                             icon={faPaperPlane}

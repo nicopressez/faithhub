@@ -461,7 +461,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
                   <FontAwesomeIcon
                   icon={faFaceSmile}
                   onClick={toggleEmojis}
-                  className="absolute right-3 top-3 text-gray-400 h-5 hover:text-gray-500 
+                  className="absolute lg:right-16 top-3 text-gray-400 h-5 hover:text-gray-500 
             hover:cursor-pointer"
                 />}
                 <div
@@ -484,7 +484,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
                 <button
                   type="submit"
                   className="absolute bottom-[0%]
-                 -translate-y-1/2 cursor-pointer right-[19%]"
+                 -translate-y-1/2 cursor-pointer sm:right-26 md:right-20 lg:right-16"
                 >
                   <FontAwesomeIcon
                     icon={faPaperPlane}
