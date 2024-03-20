@@ -1,8 +1,19 @@
-# React + Vite
+[API Repo](https://github.com/nicopressez/faithhub-backend)
+[Live demo](https://faithhub-demo.netlify.app/)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Technologies Used:**
+React, Node.js, Express, MongoDB & Mongoose, Tailwind, Redux, JWT, AWS, Multer, Jest
 
-Currently, two official plugins are available:
+**What I've Built and Learned:**
+User authentication using BCRYPT, Passport, and JWT tokens
+Profile management allowing users to create, edit, and delete their profiles
+Post creation and management functionalities
+Interaction capabilities with posts and comments
+Personalized feed based on user preferences
+Responsive design for seamless experience across devices
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Ongoing Development:**
+Code refactoring for improved readability, maintainability, and scalability
+Integration of church groups functionality
+Implementation of a messaging system
+Addition of live notifications for instant user engagement
