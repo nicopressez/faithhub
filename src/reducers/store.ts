@@ -1,8 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./auth.ts";
-import signupReducer from "./signup";
-import settingsReducer from "./settings.ts";
-import sideNavReducer from "./sidenav";
+import authReducer from "./auth.js";
+import signupReducer from "./signup.js";
+import settingsReducer from "./settings.js";
+import sideNavReducer from "./sidenav.js";
 
 export const store = configureStore({
   reducer: {

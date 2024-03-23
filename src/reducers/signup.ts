@@ -1,6 +1,21 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+type credentialsType = {
+  username: string,
+    password: string,
+    password_verif: string,
+    first_name: string,
+    last_name: string,
+    location: string,
+}
+
+interface signupState {
+  isLoading: boolean,
+  error: string | null,
+  credentials: credentialsType
+}
+
+const initialState : signupState = {
   isLoading: false,
   error: null,
   credentials: {
@@ -20,14 +35,14 @@ export const signupSlice = createSlice({
     signupRequest(state) {
       state.isLoading = true;
     },
-    signupNext(state, action) {
+    signupNext(state, action: PayloadAction<credentialsType>) {
       (state.isLoading = false), (state.credentials = action.payload);
       state.error = null;
     },
-    signupChange(state, action) {
+    signupChange(state, action: PayloadAction<credentialsType>) {
       state.credentials = action.payload;
     },
-    signupFailed(state, action) {
+    signupFailed(state, action: PayloadAction<string>) {
       (state.isLoading = false), (state.error = action.payload);
     },
     signupSuccess(state) {
