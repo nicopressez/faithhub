@@ -86,8 +86,10 @@ const Auth = () => {
         const token = result.token;
         localStorage.setItem("token", token);
         // Decode token, send user data to state
+        
         const decodedJWT = jwtDecode(token);
         dispatch(loginSuccess(decodedJWT.user));
+        
       }
     } catch (err) {
       // Invalid credentials, set error message

@@ -1,6 +1,29 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+interface User {
+  bio: string;
+  connect?: string[];
+  first_name: string;
+  friends?: string[];
+  last_name: string;
+  location?: string;
+  password?: string;
+  posts:[string]
+  preferences: string[]
+  profile_picture: string;
+  username: string;
+  _id: string;
+}
+
+interface AuthState {
+  isLoggedIn: boolean;
+  user: User | null;
+  isLoading: boolean;
+  error: string | null;
+
+}
+
+const initialState: AuthState = {
   isLoggedIn: false,
   user: null,
   isLoading: false,
@@ -15,7 +38,7 @@ export const authSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-    loginSuccess(state, action) {
+    loginSuccess(state, action: PayloadAction<User>) {
       state.isLoggedIn = true;
       state.isLoading = false;
       state.user = action.payload;
@@ -29,7 +52,7 @@ export const authSlice = createSlice({
       localStorage.removeItem("token");
       (state.isLoggedIn = false), (state.user = null);
     },
-    tokenRefresh(state, action) {
+    tokenRefresh(state, action: PayloadAction<User>) {
       state.user = action.payload;
     },
   },
