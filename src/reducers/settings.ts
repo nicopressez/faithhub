@@ -1,6 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+type errorType = {
+    username: string | null,
+    first_name: string | null,
+    last_name: string |null,
+    bio: string | null,
+    location: string | null,
+}
+
+interface settingsState{
+  isLoading: boolean;
+  errors: errorType;
+  success: boolean;
+}
+
+const initialState : settingsState = {
   isLoading: false,
   errors: {
     username: null,
@@ -24,7 +38,7 @@ export const settingsSlice = createSlice({
       state.isLoading = false;
       state.success = true;
     },
-    updateFailed(state, action) {
+    updateFailed(state, action: PayloadAction<errorType>) {
       (state.isLoading = false),
         (state.errors = action.payload),
         (state.success = false);
