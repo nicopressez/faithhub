@@ -1,18 +1,37 @@
 import { useOutletContext } from "react-router-dom";
 import Posts from "./Posts";
 import NewPost from "./NewPost";
-import { useState } from "react";
+import React,{ useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../reducers/hooks";
 import { Transition } from "@headlessui/react";
+import { OutletContextType } from "./MainPage";
+
+interface Posts {
+  _id: string;
+  anonymous: boolean;
+  content: string;
+  comments: string[];
+  likes: string[];
+  edited:boolean;
+  date: string;
+  type:string;
+  author: {
+    _id: string;
+    profile_picture: string;
+    first_name: string;
+    last_name: string;
+  }
+}
 
 const Homepage = () => {
-  const [navVisible, isLargeDevice] = useOutletContext();
-  const [allPosts, setAllPosts] = useState([]);
+  const outletContext = useOutletContext<OutletContextType>();
+  const { navVisible, isLargeDevice } = outletContext;
+  const [allPosts, setAllPosts] = useState<Posts[]>([]);
 
-  const auth = useSelector((state) => state.auth);
+  const auth = useAppSelector((state) => state.auth);
   const { user } = auth;
 
   if (user)

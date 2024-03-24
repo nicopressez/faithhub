@@ -85,6 +85,7 @@ const NewPost = ({ setAllPosts, own }) => {
       localStorage.setItem("token", result.token);
       dispatch(tokenRefresh(result.user));
       // Add post to array
+      console.log(result.post)
       setAllPosts((prevPosts) => [result.post, ...prevPosts]);
       // Reset post form
       setShowEmojis(false);
