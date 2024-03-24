@@ -28,6 +28,20 @@ type newComment = {
   _id?: string;
 }
 
+interface Comment {
+  _id: string;
+  author: {
+    _id: string;
+    profile_picture: string;
+    first_name: string;
+    last_name: string;
+  };
+  date: string;
+  content: string;
+  edited: boolean;
+  likes: string[]
+}
+
 type CommentsProps = {
   postid: string;
   newComments: newComment[];
@@ -46,14 +60,14 @@ const Comments = ({ postid, newComments, setNewComments } :
   const auth = useAppSelector((state) => state.auth);
   const { user } = auth;
 
-  const [allComments, setAllComments] = useState([]);
+  const [allComments, setAllComments] = useState<Comment[]>([]);
   const [showAll, setShowAll] = useState(false);
-  const [likedComments, setLikedComments] = useState();
+  const [likedComments, setLikedComments] = useState<string[]>([]);
 
-  const textareaRef = useRef(null)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [rows, setRows] = useState(1); 
 
-  const [editing, setEditing] = useState();
+  const [editing, setEditing] = useState<string>();
   const [editedComment, setEditedComment] = useState("");
 
   const [showEmojis, setShowEmojis] = useState(false);
@@ -67,7 +81,7 @@ const Comments = ({ postid, newComments, setNewComments } :
     const handleResize = () => {
       if (textareaRef.current) {
         // Get width of the main div of the edit form section
-        const parentWidth = textareaRef.current.parentNode.parentNode.parentNode.clientWidth;
+        const parentWidth = (textareaRef.current.parentNode?.parentNode?.parentNode as HTMLElement).clientWidth;
         
         // Set textarea width as a percentage of main div width
         textareaRef.current.style.width = `${parentWidth * 0.9}px`;
@@ -98,11 +112,11 @@ const Comments = ({ postid, newComments, setNewComments } :
   }, [postid]);
 
   useEffect(() => {
-    const commentsUserLiked = [];
+    const commentsUserLiked:string[] = [];
     // Go through all posts likes and look for match with user id
     allComments.map((comment) => {
       for (let i = 0; i < comment.likes.length; i++) {
-        if (comment.likes[i] === user._id) {
+        if (comment.likes[i] === user?._id) {
           commentsUserLiked.push(comment._id);
         }
       }
@@ -110,7 +124,7 @@ const Comments = ({ postid, newComments, setNewComments } :
     setLikedComments(commentsUserLiked);
   }, [allComments, user]);
 
-  const handleLike = async (e, id) => {
+  const handleLike = async (id:string) => {
     try {
       const response = await fetch(
         `https://faithhub-backend.fly.dev/post/${postid}/comments/${id}/like`,
@@ -137,7 +151,8 @@ const Comments = ({ postid, newComments, setNewComments } :
       }
 
       // Update likes count
-      setAllComments((comments) =>
+      if(user){ 
+        setAllComments((comments) =>
         comments.map((comment) => {
           if (comment._id === id) {
             return {
@@ -151,12 +166,13 @@ const Comments = ({ postid, newComments, setNewComments } :
           return comment;
         }),
       );
+    }
     } catch (err) {
       setErrors(true);
     }
   };
 
-  const handleShowAll = async (e) => {
+  const handleShowAll = async (e : React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       const response = await fetch(
@@ -491,7 +507,7 @@ const Comments = ({ postid, newComments, setNewComments } :
                   <div className="float-right">
                     <FontAwesomeIcon
                       icon={faThumbsUp}
-                      onClick={(e) => handleLike(e, comment._id, false)}
+                      onClick={() => handleLike(comment._id)}
                       className={`
                 mr-1  w-4 h-4 hover:text-cyan-500
                 hover:cursor-pointer active:text-cyan-600
