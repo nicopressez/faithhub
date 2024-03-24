@@ -14,7 +14,7 @@
     "include": [
         "src/**/*.ts",
         "src/**/*.tsx"
-, "src/components/utils/sorting.js"      ],
+, "src/components/Main/Comments.jsx"      ],
       "exclude": [
         "node_modules"
       ]

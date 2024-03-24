@@ -87,6 +87,7 @@ const NewComment = ({ postid, setNewComments }) => {
       );
       const result = await response.json();
       const newComment = { ...result.comment, postid };
+      console.log(newComment)
       // Add comment to array
       setNewComments((prevComments) => [...prevComments, newComment]);
       // Reset form

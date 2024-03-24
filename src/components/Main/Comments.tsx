@@ -1,5 +1,4 @@
-import { PropTypes } from "prop-types";
-import { useEffect, useRef, useState } from "react";
+import React,{ useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
@@ -11,7 +10,7 @@ import {
   faPaperPlane,
   faFaceSmile
 } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppSelector, useAppDispatch } from '../../reducers/hooks'
 import { Transition, Menu } from "@headlessui/react";
 import { tokenRefresh } from "../../reducers/auth";
 import { jwtDecode } from "jwt-decode";
@@ -19,15 +18,32 @@ import he from "he";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import EmojiPicker from "emoji-picker-react";
 
+type newComment = {
+  author:string;
+  content: string;
+  date?: string;
+  edited: boolean;
+  likes?: string[];
+  postid: string;
+  _id?: string;
+}
 
-const Comments = ({ postid, newComments, setNewComments }) => {
+type CommentsProps = {
+  postid: string;
+  newComments: newComment[];
+  setNewComments: React.Dispatch<React.SetStateAction<newComment[]>>
+}
+
+
+const Comments = ({ postid, newComments, setNewComments } : 
+  CommentsProps ) => {
 
    // Get device size to adjust design for small screens
    const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const auth = useSelector((state) => state.auth);
+  const auth = useAppSelector((state) => state.auth);
   const { user } = auth;
 
   const [allComments, setAllComments] = useState([]);
@@ -648,12 +664,6 @@ const Comments = ({ postid, newComments, setNewComments }) => {
         )}
       </div>
     );
-};
-
-Comments.propTypes = {
-  postid: PropTypes.string,
-  newComments: PropTypes.array,
-  setNewComments: PropTypes.func,
 };
 
 export default Comments;
