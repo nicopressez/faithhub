@@ -6,11 +6,12 @@ import {
   faChurch,
   faHouse,
 } from "@fortawesome/free-solid-svg-icons";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../reducers/hooks";
 import { useMediaQuery } from "@uidotdev/usehooks";
+import React from "react";
 
 const Nav = () => {
-  const sideNav = useSelector((state) => state.sideNav);
+  const sideNav = useAppSelector((state) => state.sideNav);
 
   // Get device sizes to adjust the navbar logic for phones
   const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");

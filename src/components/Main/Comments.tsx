@@ -18,7 +18,7 @@ import he from "he";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 
-type newComment = {
+export type newComment = {
   author: string;
   content: string;
   date?: string;

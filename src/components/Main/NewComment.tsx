@@ -1,24 +1,30 @@
-import { PropTypes } from "prop-types";
-import { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React,{ useState, useRef, useEffect } from "react";
+import { useAppSelector } from "../../reducers/hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { lazy, Suspense } from "react";
 import { faPaperPlane, faFaceSmile } from "@fortawesome/free-solid-svg-icons";
 const EmojiPicker = lazy(() => import("emoji-picker-react"));
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { Transition } from "@headlessui/react";
+import { newComment } from "./Comments";
+import { EmojiClickData } from "emoji-picker-react";
 
-const NewComment = ({ postid, setNewComments }) => {
+type NewCommentProps = {
+  postid: string;
+  setNewComments: React.Dispatch<React.SetStateAction<newComment[]>>
+}
+
+const NewComment = ({ postid, setNewComments } : NewCommentProps) => {
   // Get device size to adjust design for small screens
   const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
-  const textarea = useRef(null);
+  const textarea = useRef<HTMLTextAreaElement>(null);
 
   const [error, setError] = useState(false);
   const [comment, setComment] = useState("");
   const [showEmojis, setShowEmojis] = useState(false);
 
-  const auth = useSelector((state) => state.auth);
+  const auth = useAppSelector((state) => state.auth);
   const { user } = auth;
 
   useEffect(() => {
@@ -26,7 +32,7 @@ const NewComment = ({ postid, setNewComments }) => {
       if (textarea.current) {
         // Get width of the main div of the new comment section
         const parentWidth =
-          textarea.current.parentNode.parentNode.parentNode.clientWidth;
+          (textarea.current.parentNode?.parentNode?.parentNode as HTMLElement).clientWidth;
 
         // Set textarea width as a percentage of main div width
         textarea.current.style.width = `${parentWidth * 0.8}px`;
@@ -42,7 +48,7 @@ const NewComment = ({ postid, setNewComments }) => {
   }, []);
 
   // Adjust textarea sizing and border radius on input
-  const handleInput = (e) => {
+  const handleInput = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height = "auto";
     e.target.style.height = e.target.scrollHeight + "px";
     if (
@@ -55,7 +61,7 @@ const NewComment = ({ postid, setNewComments }) => {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
   };
 
@@ -63,11 +69,11 @@ const NewComment = ({ postid, setNewComments }) => {
     setShowEmojis(!showEmojis);
   };
 
-  const handleEmoji = (emojiObject) => {
+  const handleEmoji = (emojiObject: EmojiClickData) => {
     setComment((prevComment) => prevComment + emojiObject.emoji);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const content = {
@@ -91,7 +97,7 @@ const NewComment = ({ postid, setNewComments }) => {
       // Reset form
       setComment("");
       setTimeout(() => {
-        textarea.current.style.height = "auto";
+        if (textarea.current) textarea.current.style.height = "auto";
       }, 50);
     } catch (err) {
       setError(true);
@@ -122,7 +128,7 @@ const NewComment = ({ postid, setNewComments }) => {
                 value={comment}
                 onChange={handleChange}
                 onInput={handleInput}
-                rows="1"
+                rows={1}
                 name="content"
               ></textarea>
 
@@ -180,11 +186,6 @@ const NewComment = ({ postid, setNewComments }) => {
         )}
       </>
     );
-};
-
-NewComment.propTypes = {
-  postid: PropTypes.string,
-  setNewComments: PropTypes.func,
 };
 
 export default NewComment;
