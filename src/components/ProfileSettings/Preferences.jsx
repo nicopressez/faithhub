@@ -191,21 +191,22 @@ const Preferences = () => {
               <hr className="w-3/4 ml-auto mr-auto mt-3"></hr>
 
               {submitToggle && (
-                 <Transition
-                 show={true}
-                 appear={true}
-                 enter="transition duration-200"
-                 enterFrom="transform scale-y-0 origin-top opacity-0"
-                 enterTo="transform scale-y-100 origin-top opacity-100"
-                 leave="transition duration-200"
-                 leaveFrom="transform scale-y-100 origin-top opacity-100"
-                 leaveTo="transform scale-y-0 origin-top opacity-0">
-                <input
-                  type="submit"
-                  value="Confirm"
-                  className=" bg-cyan-400 text-white
+                <Transition
+                  show={true}
+                  appear={true}
+                  enter="transition duration-200"
+                  enterFrom="transform scale-y-0 origin-top opacity-0"
+                  enterTo="transform scale-y-100 origin-top opacity-100"
+                  leave="transition duration-200"
+                  leaveFrom="transform scale-y-100 origin-top opacity-100"
+                  leaveTo="transform scale-y-0 origin-top opacity-0"
+                >
+                  <input
+                    type="submit"
+                    value="Confirm"
+                    className=" bg-cyan-400 text-white
         p-1 pl-6 pr-6 rounded-md text-xl mt-3 block ml-auto mr-auto hover:cursor-pointer"
-                />
+                  />
                 </Transition>
               )}
             </form>
@@ -213,7 +214,6 @@ const Preferences = () => {
         </Transition>
       </div>
     );
-
 };
 
 export default Preferences;

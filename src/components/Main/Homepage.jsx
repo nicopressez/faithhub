@@ -37,7 +37,6 @@ const Homepage = () => {
      -mb-6 md:mb-0 pl-4 pr-2"
             >
               <FontAwesomeIcon icon={faGear} className="w-3 h-3 pr-1" />
-
               Feed preferences
             </Link>
           </div>

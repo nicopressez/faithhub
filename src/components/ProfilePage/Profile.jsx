@@ -15,7 +15,7 @@ const Profile = () => {
   const { id } = useParams();
   const [allPosts, setAllPosts] = useState([]);
 
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
@@ -32,7 +32,7 @@ const Profile = () => {
         }
         setUserInfo(result.user);
         // Toggle loading state
-        setIsLoading(false)
+        setIsLoading(false);
       } catch (err) {
         setError(true);
       }
@@ -41,7 +41,7 @@ const Profile = () => {
   }, [id]);
 
   // Loading for user info section
-  if (isLoading) return <ProfileLoading />
+  if (isLoading) return <ProfileLoading />;
 
   if (userInfo)
     return (
@@ -98,18 +98,17 @@ const Profile = () => {
 
         {user && (
           <div>
-          {id === user._id &&
-            <NewPost setAllPosts={setAllPosts} own={true} />}
-          <Posts
-          allPosts={allPosts}
-          setAllPosts={setAllPosts}
-          own={true}
-          profileId={id}
-        />
-        </div>
+            {id === user._id && (
+              <NewPost setAllPosts={setAllPosts} own={true} />
+            )}
+            <Posts
+              allPosts={allPosts}
+              setAllPosts={setAllPosts}
+              own={true}
+              profileId={id}
+            />
+          </div>
         )}
-
-        
       </div>
     );
 

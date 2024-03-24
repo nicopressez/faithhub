@@ -61,13 +61,13 @@ const Auth = () => {
   };
 
   // Login with test user credentials
-  const testUserAuth = async(e) => {
-    e.preventDefault()
+  const testUserAuth = async (e) => {
+    e.preventDefault();
     // Set loading
     dispatch(loginRequest());
     const credentials = {
       username: "johndoe",
-      password: "testuser"
+      password: "testuser",
     };
     try {
       const response = await fetch(
@@ -86,10 +86,9 @@ const Auth = () => {
         const token = result.token;
         localStorage.setItem("token", token);
         // Decode token, send user data to state
-        
+
         const decodedJWT = jwtDecode(token);
         dispatch(loginSuccess(decodedJWT.user));
-        
       }
     } catch (err) {
       // Invalid credentials, set error message
@@ -98,7 +97,6 @@ const Auth = () => {
       }, 500);
     }
   };
-  
 
   return (
     <div className=" bg-gray-100 w-screen h-screen fixed md:pl-5 md:pr-5">
@@ -138,10 +136,12 @@ const Auth = () => {
               type="submit"
               value="Login"
             ></input>
-            <button type="button"
-            className={`rounded-lg -mt-2 p-3 mr-4 ml-4 md:ml-6 md:mr-6  bg-green-400 text-white
+            <button
+              type="button"
+              className={`rounded-lg -mt-2 p-3 mr-4 ml-4 md:ml-6 md:mr-6  bg-green-400 text-white
             font-bold hover:cursor-pointer ${isLoading ? "brightness-95" : null}`}
-            onClick={testUserAuth}>
+              onClick={testUserAuth}
+            >
               Test user
             </button>
           </form>

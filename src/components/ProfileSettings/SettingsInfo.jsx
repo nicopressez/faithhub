@@ -188,9 +188,7 @@ const ProfileSettings = () => {
         <div
           className={`bg-gray-100 w-screen h-screen pt-[0.5rem] pl-2 pr-2
           md:pl-5 md:pr-5
-           ${
-            deleteDialog ? " blur-sm" : null
-          }
+           ${deleteDialog ? " blur-sm" : null}
         ${navVisible && !isLargeDevice ? "brightness-75 blur-sm" : null}`}
         >
           <Transition
@@ -345,20 +343,21 @@ const ProfileSettings = () => {
 
                 {settingChange[0] && (
                   <Transition
-                  show={true}
-                  appear={true}
-                  enter="transition duration-200"
-                  enterFrom="transform scale-y-0 origin-top opacity-0"
-                  enterTo="transform scale-y-100 origin-top opacity-100"
-                  leave="transition duration-200"
-                  leaveFrom="transform scale-y-100 origin-top opacity-100"
-                  leaveTo="transform scale-y-0 origin-top opacity-0">
-                  <input
-                    type="Submit"
-                    value="Confirm settings"
-                    className=" bg-cyan-400 text-white
+                    show={true}
+                    appear={true}
+                    enter="transition duration-200"
+                    enterFrom="transform scale-y-0 origin-top opacity-0"
+                    enterTo="transform scale-y-100 origin-top opacity-100"
+                    leave="transition duration-200"
+                    leaveFrom="transform scale-y-100 origin-top opacity-100"
+                    leaveTo="transform scale-y-0 origin-top opacity-0"
+                  >
+                    <input
+                      type="Submit"
+                      value="Confirm settings"
+                      className=" bg-cyan-400 text-white
         p-1 pl-6 pr-6 rounded-md text-xl mt-3 block ml-auto mr-auto hover:cursor-pointer"
-                  ></input>
+                    ></input>
                   </Transition>
                 )}
               </form>
@@ -380,27 +379,26 @@ const ProfileSettings = () => {
             </Dialog.Title>
             <Dialog.Description className="font-bold mb-2">
               {user.username !== "johndoe" &&
-              "This will permanently deactivate your account"
-                }
+                "This will permanently deactivate your account"}
             </Dialog.Description>
 
             <p className=" w-full ml-auto mr-auto mb-2 lg:mb-3">
-              {user.username === "johndoe" ?
-              "Test user can't be deleted. Please try again from a different account."
-              :
-              "Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone."}
+              {user.username === "johndoe"
+                ? "Test user can't be deleted. Please try again from a different account."
+                : "Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone."}
             </p>
 
-            {user.username !== "johndoe" &&
+            {user.username !== "johndoe" && (
               <button
-              onClick={(e) => {
-                setDeleteDialog(false);
-                handleDelete(e);
-              }}
-              className= {`bg-red-600 p-1 pl-3 pr-3 mb-2 rounded-md text-lg text-white mr-3`}
-            >
-              Delete
-            </button>}
+                onClick={(e) => {
+                  setDeleteDialog(false);
+                  handleDelete(e);
+                }}
+                className={`bg-red-600 p-1 pl-3 pr-3 mb-2 rounded-md text-lg text-white mr-3`}
+              >
+                Delete
+              </button>
+            )}
             <button
               onClick={() => setDeleteDialog(false)}
               className="bg-gray-400 p-1 pl-3 pr-3 rounded-md text-lg text-white mr-3"
@@ -413,7 +411,6 @@ const ProfileSettings = () => {
     );
 
   if (errorPage) return <ErrorPage />;
-
 };
 
 export default ProfileSettings;

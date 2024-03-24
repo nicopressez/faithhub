@@ -1,4 +1,4 @@
-import React,{ useEffect, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
@@ -8,25 +8,25 @@ import {
   faPenToSquare,
   faTrash,
   faPaperPlane,
-  faFaceSmile
+  faFaceSmile,
 } from "@fortawesome/free-solid-svg-icons";
-import { useAppSelector, useAppDispatch } from '../../reducers/hooks'
+import { useAppSelector, useAppDispatch } from "../../reducers/hooks";
 import { Transition, Menu } from "@headlessui/react";
-import { tokenRefresh } from "../../reducers/auth";
-import { jwtDecode } from "jwt-decode";
+import { User, tokenRefresh } from "../../reducers/auth";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 import he from "he";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import EmojiPicker from "emoji-picker-react";
+import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 
 type newComment = {
-  author:string;
+  author: string;
   content: string;
   date?: string;
   edited: boolean;
   likes?: string[];
   postid: string;
-  _id?: string;
-}
+  _id: string;
+};
 
 interface Comment {
   _id: string;
@@ -39,21 +39,22 @@ interface Comment {
   date: string;
   content: string;
   edited: boolean;
-  likes: string[]
+  likes: string[];
 }
 
 type CommentsProps = {
   postid: string;
   newComments: newComment[];
-  setNewComments: React.Dispatch<React.SetStateAction<newComment[]>>
+  setNewComments: React.Dispatch<React.SetStateAction<newComment[]>>;
+};
+
+interface userJwtPayload extends JwtPayload {
+  user: User;
 }
 
-
-const Comments = ({ postid, newComments, setNewComments } : 
-  CommentsProps ) => {
-
-   // Get device size to adjust design for small screens
-   const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
+const Comments = ({ postid, newComments, setNewComments }: CommentsProps) => {
+  // Get device size to adjust design for small screens
+  const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
   const dispatch = useAppDispatch();
 
@@ -64,37 +65,42 @@ const Comments = ({ postid, newComments, setNewComments } :
   const [showAll, setShowAll] = useState(false);
   const [likedComments, setLikedComments] = useState<string[]>([]);
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const [rows, setRows] = useState(1); 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [rows, setRows] = useState(1);
 
-  const [editing, setEditing] = useState<string>();
+  const [editing, setEditingInternal] = useState<string>();
+  // Allow to set edit without argument
+  const setEditing = (value?: string) => setEditingInternal(value);
+
   const [editedComment, setEditedComment] = useState("");
 
   const [showEmojis, setShowEmojis] = useState(false);
 
-    // Error handling
-    const [errors, setErrors] = useState(false);
-    const [editingError, setEditingError] = useState(false);
-    const [deletingError, setDeletingError] = useState(false);
+  // Error handling
+  const [errors, setErrors] = useState(false);
+  const [editingError, setEditingError] = useState(false);
+  const [deletingError, setDeletingError] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       if (textareaRef.current) {
         // Get width of the main div of the edit form section
-        const parentWidth = (textareaRef.current.parentNode?.parentNode?.parentNode as HTMLElement).clientWidth;
-        
+        const parentWidth = (
+          textareaRef.current.parentNode?.parentNode?.parentNode as HTMLElement
+        ).clientWidth;
+
         // Set textarea width as a percentage of main div width
         textareaRef.current.style.width = `${parentWidth * 0.9}px`;
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     if (editing) handleResize();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
-}, [editing])
+  }, [editing]);
 
   useEffect(() => {
     const fetchTopComments = async () => {
@@ -112,7 +118,7 @@ const Comments = ({ postid, newComments, setNewComments } :
   }, [postid]);
 
   useEffect(() => {
-    const commentsUserLiked:string[] = [];
+    const commentsUserLiked: string[] = [];
     // Go through all posts likes and look for match with user id
     allComments.map((comment) => {
       for (let i = 0; i < comment.likes.length; i++) {
@@ -124,7 +130,7 @@ const Comments = ({ postid, newComments, setNewComments } :
     setLikedComments(commentsUserLiked);
   }, [allComments, user]);
 
-  const handleLike = async (id:string) => {
+  const handleLike = async (id: string) => {
     try {
       const response = await fetch(
         `https://faithhub-backend.fly.dev/post/${postid}/comments/${id}/like`,
@@ -151,58 +157,63 @@ const Comments = ({ postid, newComments, setNewComments } :
       }
 
       // Update likes count
-      if(user){ 
+      if (user) {
         setAllComments((comments) =>
-        comments.map((comment) => {
-          if (comment._id === id) {
-            return {
-              ...comment,
-              likes:
-                result.message === "Like added"
-                  ? [...comment.likes, user._id]
-                  : comment.likes.filter((id) => id !== user._id),
-            };
-          }
-          return comment;
-        }),
-      );
-    }
+          comments.map((comment) => {
+            if (comment._id === id) {
+              return {
+                ...comment,
+                likes:
+                  result.message === "Like added"
+                    ? [...comment.likes, user._id]
+                    : comment.likes.filter((id) => id !== user._id),
+              };
+            }
+            return comment;
+          }),
+        );
+      }
     } catch (err) {
       setErrors(true);
     }
   };
 
-  const handleShowAll = async (e : React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(
-        `https://faithhub-backend.fly.dev/post/${postid}/comments`,
-      );
-      const data = await response.json();
-      setAllComments(data.comments);
-      // Go through new comments likes and look for match with user id
-      const commentsUserLiked = [];
-      allComments.map((comment) => {
-        for (let i = 0; i < comment.likes.length; i++) {
-          if (comment.likes[i] === user._id) {
-            commentsUserLiked.push(comment._id);
+  const handleShowAll = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (user) {
+      e.preventDefault();
+      try {
+        const response = await fetch(
+          `https://faithhub-backend.fly.dev/post/${postid}/comments`,
+        );
+        const data = await response.json();
+        setAllComments(data.comments);
+        // Go through new comments likes and look for match with user id
+        const commentsUserLiked: string[] = [];
+        allComments.map((comment) => {
+          for (let i = 0; i < comment.likes.length; i++) {
+            if (comment.likes[i] === user._id) {
+              commentsUserLiked.push(comment._id);
+            }
           }
-        }
-      });
-      setLikedComments((prevLikes) => [...prevLikes, commentsUserLiked]);
-      setShowAll(true);
-    } catch (err) {
-      setErrors(true);
+        });
+        setLikedComments((prevLikes) => [...prevLikes, ...commentsUserLiked]);
+        setShowAll(true);
+      } catch (err) {
+        setErrors(true);
+      }
     }
   };
 
-  const calculateRows = (content) => {
+  const calculateRows = (content: string) => {
     // Calculate rows based on post content
     const numRows = Math.max(3, Math.ceil(content.length / 60));
-    return { rows: numRows};
+    return { rows: numRows };
   };
 
-  const toggleEdit = (e, comment) => {
+  const toggleEdit = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    comment: Comment | newComment,
+  ) => {
     // Initiate editing form
     e.preventDefault();
     setEditing(comment._id);
@@ -212,12 +223,12 @@ const Comments = ({ postid, newComments, setNewComments } :
   };
 
   // Update edited comment on form input
-  const handleEditChange = (e) => {
+  const handleEditChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditedComment(e.target.value);
   };
 
   // When reaching a new line on the editing input, go to next line
-  const handleInput = (e) => {
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height = "auto";
     e.target.style.height = e.target.scrollHeight + "px";
   };
@@ -226,12 +237,16 @@ const Comments = ({ postid, newComments, setNewComments } :
     setShowEmojis(!showEmojis);
   };
 
-  const handleEmoji = (emojiObject) => {
-      const newContent = editedComment + emojiObject.emoji;
-      setEditedComment(newContent);
+  const handleEmoji = (emojiObject: EmojiClickData) => {
+    const newContent = editedComment + emojiObject.emoji;
+    setEditedComment(newContent);
   };
 
-  const handleEdit = async (e, id, isNew = false) => {
+  const handleEdit = async (
+    e: React.FormEvent<HTMLFormElement>,
+    id: string,
+    isNew = false,
+  ) => {
     e.preventDefault();
     const content = {
       content: editedComment,
@@ -251,7 +266,7 @@ const Comments = ({ postid, newComments, setNewComments } :
       const result = await response.json();
       // Refresh token
       localStorage.setItem("token", result.token);
-      const decodedJWT = jwtDecode(result.token);
+      const decodedJWT = jwtDecode<userJwtPayload>(result.token);
       dispatch(tokenRefresh(decodedJWT.user));
       // For new comments, edit the value in new comments
       if (isNew) {
@@ -280,7 +295,11 @@ const Comments = ({ postid, newComments, setNewComments } :
     }
   };
 
-  const handleDelete = async (e, id, isNew = false) => {
+  const handleDelete = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: string,
+    isNew = false,
+  ) => {
     e.preventDefault();
     try {
       const response = await fetch(
@@ -295,7 +314,7 @@ const Comments = ({ postid, newComments, setNewComments } :
       const result = await response.json();
       // Refresh token
       localStorage.setItem("token", result.token);
-      const decodedJWT = jwtDecode(result.token);
+      const decodedJWT = jwtDecode<userJwtPayload>(result.token);
       dispatch(tokenRefresh(decodedJWT.user));
       // Remove deleted comment from array
       if (isNew) {
@@ -336,8 +355,7 @@ const Comments = ({ postid, newComments, setNewComments } :
     );
 
   if (!allComments[0] && !newComments[0])
-    return <p className="text-center text-gray-300 italic">
-      No comments yet</p>;
+    return <p className="text-center text-gray-300 italic">No comments yet</p>;
 
   if (user)
     return (
@@ -457,32 +475,33 @@ const Comments = ({ postid, newComments, setNewComments } :
                         value={he.decode(editedComment)}
                         onChange={handleEditChange}
                         onInput={handleInput}
-                        cols="60"
+                        cols={60}
                         rows={rows}
                       ></textarea>
-                      {isLargeDevice &&
-                  <FontAwesomeIcon
-                  icon={faFaceSmile}
-                  onClick={toggleEmojis}
-                  className="absolute lg:right-10 top-3 text-gray-400 h-5 hover:text-gray-500 
+                      {isLargeDevice && (
+                        <FontAwesomeIcon
+                          icon={faFaceSmile}
+                          onClick={toggleEmojis}
+                          className="absolute lg:right-10 top-3 text-gray-400 h-5 hover:text-gray-500 
             hover:cursor-pointer"
-                />}
-                <div
-                  className={`${
-                    !showEmojis
-                      ? "opacity-0 scale-y-0 origin-top"
-                      : "opacity-100 scale-y-100 origin-top"
-                  }
+                        />
+                      )}
+                      <div
+                        className={`${
+                          !showEmojis
+                            ? "opacity-0 scale-y-0 origin-top"
+                            : "opacity-100 scale-y-100 origin-top"
+                        }
             absolute top-0 -right-[22rem]
             transition-all duration-200`}
-                >
-                  <EmojiPicker
-                    height={400}
-                    onEmojiClick={(emojiObject) => {
-                      handleEmoji(emojiObject);
-                    }}
-                  />
-                </div>
+                      >
+                        <EmojiPicker
+                          height={400}
+                          onEmojiClick={(emojiObject) => {
+                            handleEmoji(emojiObject);
+                          }}
+                        />
+                      </div>
                       {editedComment.length > 4 && (
                         <button
                           type="submit"

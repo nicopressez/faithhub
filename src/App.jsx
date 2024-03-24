@@ -41,7 +41,7 @@ function App() {
     if (!localStorage.getItem("token")) {
       navigate("/auth");
     } else if (location.pathname === "/") {
-      navigate("/home")
+      navigate("/home");
     }
   }, [dispatch, navigate, location.pathname]);
 

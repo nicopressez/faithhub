@@ -19,6 +19,7 @@
 ## Ongoing Development
 
 **Please do keep in mind that the time that it took me to create the project is very inflated by the fact that I was learning a lot of things on the go.**
+
 - Code refactoring for improved readability, maintainability, and scalability
 - Integration of church groups functionality
 - Implementation of a messaging system

@@ -4,7 +4,7 @@ import Auth from "./components/Auth";
 import Homepage from "./components/Main/Homepage";
 import Profile from "./components/ProfilePage/Profile";
 import SettingsInfo from "./components/ProfileSettings/SettingsInfo";
-import ErrorPage from "./components/ErrorPage"
+import ErrorPage from "./components/ErrorPage";
 import Preferences from "./components/ProfileSettings/Preferences";
 import Settings from "./components/ProfileSettings/Settings";
 import MainPage from "./components/Main/MainPage";

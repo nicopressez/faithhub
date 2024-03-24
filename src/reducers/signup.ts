@@ -1,21 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type credentialsType = {
-  username: string,
-    password: string,
-    password_verif: string,
-    first_name: string,
-    last_name: string,
-    location: string,
-}
+  username: string;
+  password: string;
+  password_verif: string;
+  first_name: string;
+  last_name: string;
+  location: string;
+};
 
 interface signupState {
-  isLoading: boolean,
-  error: string | null,
-  credentials: credentialsType
+  isLoading: boolean;
+  error: string | null;
+  credentials: credentialsType;
 }
 
-const initialState : signupState = {
+const initialState: signupState = {
   isLoading: false,
   error: null,
   credentials: {

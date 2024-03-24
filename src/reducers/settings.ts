@@ -1,20 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type errorType = {
-    username: string | null,
-    first_name: string | null,
-    last_name: string |null,
-    bio: string | null,
-    location: string | null,
-}
+  username: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  bio: string | null;
+  location: string | null;
+};
 
-interface settingsState{
+interface settingsState {
   isLoading: boolean;
   errors: errorType;
   success: boolean;
 }
 
-const initialState : settingsState = {
+const initialState: settingsState = {
   isLoading: false,
   errors: {
     username: null,

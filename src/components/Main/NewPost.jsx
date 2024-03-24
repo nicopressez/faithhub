@@ -1,7 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faFaceSmile, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faFaceSmile,
+  faCircleInfo,
+} from "@fortawesome/free-solid-svg-icons";
 import { Transition } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import { PropTypes } from "prop-types";
@@ -10,14 +14,13 @@ import EmojiPicker from "emoji-picker-react";
 import { useMediaQuery } from "@uidotdev/usehooks";
 
 const NewPost = ({ setAllPosts, own }) => {
-
   // Get device size for big screens
   const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
   const textareaRef = useRef(null);
 
   const dispatch = useDispatch();
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
   const [post, setPost] = useState("");
   const [type, setType] = useState("Discussion");
   const [showEmojis, setShowEmojis] = useState(false);
@@ -29,20 +32,21 @@ const NewPost = ({ setAllPosts, own }) => {
     const handleResize = () => {
       if (textareaRef.current) {
         // Get width of the main div of the new post section
-        const parentWidth = textareaRef.current.parentNode.parentNode.parentNode.clientWidth;
-        
+        const parentWidth =
+          textareaRef.current.parentNode.parentNode.parentNode.clientWidth;
+
         // Set textarea width as a percentage of main div width
         textareaRef.current.style.width = `${parentWidth * 0.9}px`;
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
-}, [])
+  }, []);
 
   const handleChange = (e) => {
     setPost(e.target.value);
@@ -90,7 +94,7 @@ const NewPost = ({ setAllPosts, own }) => {
         textareaRef.current.style.height = "auto";
       }, 50);
     } catch (err) {
-      setError(true)
+      setError(true);
     }
   };
 
@@ -124,7 +128,6 @@ const NewPost = ({ setAllPosts, own }) => {
              text-sm md:text-base
              ${own ? "lg:w-[60%] mt-[2rem] lg:mt-[4rem]" : "lg:w-[50%] mt-[3.8rem] md:mt-[4.5rem]"}`}
         >
-          
           <div
             className="flex  flex-row mt-3 justify-center relative
         "
@@ -152,16 +155,16 @@ const NewPost = ({ setAllPosts, own }) => {
                   onChange={handleChange}
                   onInput={handleInput}
                   rows="1"
-                 
                   name="content"
                 ></textarea>
-                {isLargeDevice &&
+                {isLargeDevice && (
                   <FontAwesomeIcon
-                  icon={faFaceSmile}
-                  onClick={toggleEmojis}
-                  className="absolute right-3 top-3 text-gray-400 h-5 hover:text-gray-500 
+                    icon={faFaceSmile}
+                    onClick={toggleEmojis}
+                    className="absolute right-3 top-3 text-gray-400 h-5 hover:text-gray-500 
             hover:cursor-pointer"
-                />}
+                  />
+                )}
                 <div
                   className={`${
                     !showEmojis
@@ -215,7 +218,7 @@ const NewPost = ({ setAllPosts, own }) => {
         ${type !== "Prayer Request" ? "hover:bg-gray-100" : ""}
         `}
                 >
-                 {!isLargeDevice ? "Prayer" : "Prayer Request"}
+                  {!isLargeDevice ? "Prayer" : "Prayer Request"}
                   <input
                     onChange={handleType}
                     value="Prayer Request"
@@ -258,24 +261,29 @@ const NewPost = ({ setAllPosts, own }) => {
                   leaveTo="opacity-0 transform scale-y-0 origin-top"
                 >
                   <div className="relative">
-                  Anonymous
-                  {isLargeDevice &&
-                  <div className="inline group">
-                  <FontAwesomeIcon icon={faCircleInfo} 
-                  className=" text-gray-300 h-3 w-3 align-top pl-1"/>
-                  <p className="absolute -top-4 hidden group-hover:inline w-[18rem]
+                    Anonymous
+                    {isLargeDevice && (
+                      <div className="inline group">
+                        <FontAwesomeIcon
+                          icon={faCircleInfo}
+                          className=" text-gray-300 h-3 w-3 align-top pl-1"
+                        />
+                        <p
+                          className="absolute -top-4 hidden group-hover:inline w-[18rem]
                   bg-gray-100 rounded-lg p-1 italic border-2 border-gray-300
                   text-gray-600 ml-1 text-sm"
-                  >Hides your details but keeps your request visible for others to interact with.</p>
-                  </div> }
-                  
-                  
-                  <input
-                    type="checkbox"
-                    className="ml-1"
-                    id="anonymous"
-                    name="anonymous"
-                  ></input>
+                        >
+                          Hides your details but keeps your request visible for
+                          others to interact with.
+                        </p>
+                      </div>
+                    )}
+                    <input
+                      type="checkbox"
+                      className="ml-1"
+                      id="anonymous"
+                      name="anonymous"
+                    ></input>
                   </div>
                 </Transition>
 
@@ -306,20 +314,23 @@ const NewPost = ({ setAllPosts, own }) => {
               </div>
             </form>
           </div>
-          {error && 
-      <Transition as="div"
-      className="mt-6 -mb-1 lg:-mb-3"
-      appear={true}
-      show={true}
-      enter="transition duration-300"
-      enterFrom="opacity-0 transform scale-y-0 origin-top"
-      enterTo="opacity-100 transform scale-y-100 origin-top">
-      <p className="text-center text-red-500 italic">
-        We couldn&apos;t proceed with your request. Please try again later.
-      </p>
-      </Transition>}
+          {error && (
+            <Transition
+              as="div"
+              className="mt-6 -mb-1 lg:-mb-3"
+              appear={true}
+              show={true}
+              enter="transition duration-300"
+              enterFrom="opacity-0 transform scale-y-0 origin-top"
+              enterTo="opacity-100 transform scale-y-100 origin-top"
+            >
+              <p className="text-center text-red-500 italic">
+                We couldn&apos;t proceed with your request. Please try again
+                later.
+              </p>
+            </Transition>
+          )}
         </div>
-        
       </Transition>
     );
 };

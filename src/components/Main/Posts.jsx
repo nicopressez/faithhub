@@ -10,7 +10,7 @@ import {
   faPenToSquare,
   faPaperPlane,
   faHandsPraying,
-  faFaceSmile
+  faFaceSmile,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom/dist";
 import Comments from "./Comments";
@@ -25,23 +25,22 @@ import { useMediaQuery } from "@uidotdev/usehooks";
 import EmojiPicker from "emoji-picker-react";
 
 const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
-
-   // Get device size to adjust design for small screens
-   const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
+  // Get device size to adjust design for small screens
+  const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
   const auth = useSelector((state) => state.auth);
 
-  const textareaRef = useRef(null)
-  const [rows, setRows] = useState(1); 
+  const textareaRef = useRef(null);
+  const [rows, setRows] = useState(1);
 
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
   const [likedPosts, setLikedPosts] = useState();
   const [newComments, setNewComments] = useState([]);
   const [editing, setEditing] = useState();
   const [editedPost, setEditedPost] = useState("");
 
   const [showEmojis, setShowEmojis] = useState(false);
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();
 
@@ -84,10 +83,10 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
         }
         // Toggle loading state
         setTimeout(() => {
-          setIsLoading(false)
+          setIsLoading(false);
         }, 500);
       } catch (err) {
-        setError(true)
+        setError(true);
       }
     };
     fetchPosts();
@@ -109,22 +108,22 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
   useEffect(() => {
     const handleResize = () => {
       if (textareaRef.current) {
-        // Get width of the main div of the post edit form 
-        const parentWidth = textareaRef.current.parentNode.parentNode.clientWidth;
-        
+        // Get width of the main div of the post edit form
+        const parentWidth =
+          textareaRef.current.parentNode.parentNode.clientWidth;
+
         // Set textarea width as a percentage of main div width
         textareaRef.current.style.width = `${parentWidth * 0.9}px`;
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     if (editing) handleResize();
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
-}, [editing])
-
+  }, [editing]);
 
   const handleLike = async (e, id) => {
     try {
@@ -168,14 +167,14 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
         }),
       );
     } catch (err) {
-      setError(true)
+      setError(true);
     }
   };
 
   const calculateRows = (content) => {
     // Calculate rows based on post content
     const numRows = Math.max(3, Math.ceil(content.length / 60));
-    return { rows: numRows};
+    return { rows: numRows };
   };
 
   const toggleEdit = (e, post) => {
@@ -188,8 +187,6 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
     const { rows } = calculateRows(post.content);
     setRows(rows); // Update rows state
   };
-  
-
 
   // Update edited comment on form input
   const handleEditChange = (e) => {
@@ -214,9 +211,9 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
   };
 
   const handleEmoji = (emojiObject) => {
-      const newContent = editedPost.content + emojiObject.emoji;
-      const newPost = { ...editedPost, content: newContent };
-      setEditedPost(newPost);
+    const newContent = editedPost.content + emojiObject.emoji;
+    const newPost = { ...editedPost, content: newContent };
+    setEditedPost(newPost);
   };
 
   const handleEdit = async (e, id) => {
@@ -253,7 +250,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
       // Toggle form back to post
       setEditing();
     } catch (err) {
-      setError(true)
+      setError(true);
     }
   };
 
@@ -278,37 +275,41 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
       const updatedPosts = allPosts.filter((post) => post._id !== id);
       setAllPosts(updatedPosts);
     } catch (err) {
-      setError(true)
+      setError(true);
     }
   };
 
   // Loading page
- if (isLoading) return <PostsLoading own={own}/>
+  if (isLoading) return <PostsLoading own={own} />;
 
- // If rendering from profile page and no activity yet
- if(own && !isLoading && !allPosts[0]) return(
-    <p className="
+  // If rendering from profile page and no activity yet
+  if (own && !isLoading && !allPosts[0])
+    return (
+      <p
+        className="
     mt-20 lg:mt-32
     text-center mt-50 z-50 text-gray-400 w-full italic font-Rubik
-    text-xl">
-   No recent activity</p>
- )
+    text-xl"
+      >
+        No recent activity
+      </p>
+    );
 
- if (error) return (
-  <Transition
-  className="mt-9 lg:mt-20"
-  appear={true}
-  show={true}
-  enter="transition duration-300"
-  enterFrom="opacity-0 transform scale-y-0 origin-top"
-  enterTo="opacity-100 transform scale-y-100 origin-top">
-  <p className="text-center text-red-600 italic font-Rubik">
-    An error occured while loading posts, please try again later.
-  </p>
-  </Transition>
- )
-
- 
+  if (error)
+    return (
+      <Transition
+        className="mt-9 lg:mt-20"
+        appear={true}
+        show={true}
+        enter="transition duration-300"
+        enterFrom="opacity-0 transform scale-y-0 origin-top"
+        enterTo="opacity-100 transform scale-y-100 origin-top"
+      >
+        <p className="text-center text-red-600 italic font-Rubik">
+          An error occured while loading posts, please try again later.
+        </p>
+      </Transition>
+    );
 
   if (user && likedPosts)
     return allPosts.map((post) => (
@@ -447,7 +448,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
               className="mt-1 relative"
             >
               <textarea
-               ref={textareaRef}
+                ref={textareaRef}
                 name="content"
                 className="bg-gray-100 rounded-lg  pl-2 pb-2 pt-2
                   overflow-visible resize-none pr-8 text-gray-600"
@@ -457,29 +458,30 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
                 onInput={handleInput}
                 rows={rows}
               ></textarea>
-              {isLargeDevice &&
-                  <FontAwesomeIcon
+              {isLargeDevice && (
+                <FontAwesomeIcon
                   icon={faFaceSmile}
                   onClick={toggleEmojis}
                   className="absolute lg:right-16 top-3 text-gray-400 h-5 hover:text-gray-500 
             hover:cursor-pointer"
-                />}
-                <div
-                  className={`${
-                    !showEmojis
-                      ? "opacity-0 scale-y-0 origin-top"
-                      : "opacity-100 scale-y-100 origin-top"
-                  }
+                />
+              )}
+              <div
+                className={`${
+                  !showEmojis
+                    ? "opacity-0 scale-y-0 origin-top"
+                    : "opacity-100 scale-y-100 origin-top"
+                }
             absolute top-0 -right-[22rem]
             transition-all duration-200`}
-                >
-                  <EmojiPicker
-                    height={400}
-                    onEmojiClick={(emojiObject) => {
-                      handleEmoji(emojiObject);
-                    }}
-                  />
-                </div>
+              >
+                <EmojiPicker
+                  height={400}
+                  onEmojiClick={(emojiObject) => {
+                    handleEmoji(emojiObject);
+                  }}
+                />
+              </div>
               {editedPost.content.length > 4 && (
                 <button
                   type="submit"
@@ -505,7 +507,9 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
           </p>
           <div>
             <FontAwesomeIcon
-              icon={post.type === "Prayer Request" ? faHandsPraying :faThumbsUp}
+              icon={
+                post.type === "Prayer Request" ? faHandsPraying : faThumbsUp
+              }
               onClick={(e) => handleLike(e, post._id)}
               className={`
                 mr-1  w-5 h-5 hover:text-cyan-500
@@ -532,8 +536,6 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
         </div>
       </Transition>
     ));
-
-
 };
 
 Posts.propTypes = {
