@@ -9,7 +9,7 @@ import { useAppSelector } from "../../reducers/hooks";
 import { Transition } from "@headlessui/react";
 import { OutletContextType } from "./MainPage";
 
-interface Posts {
+export interface Posts {
   _id: string;
   anonymous: boolean;
   content: string;

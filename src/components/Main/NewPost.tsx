@@ -1,5 +1,5 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
+import React,{ useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowRight,
@@ -8,24 +8,30 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Transition } from "@headlessui/react";
 import { Link } from "react-router-dom";
-import { PropTypes } from "prop-types";
 import { tokenRefresh } from "../../reducers/auth";
-import EmojiPicker from "emoji-picker-react";
+import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import { useMediaQuery } from "@uidotdev/usehooks";
+import { Posts } from "./Homepage";
 
-const NewPost = ({ setAllPosts, own }) => {
+type NewPostProps = {
+  setAllPosts: React.Dispatch<React.SetStateAction<Posts[]>>;
+  own?: boolean;
+}
+
+const NewPost = ({ setAllPosts, own } : NewPostProps) => {
   // Get device size for big screens
   const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
-  const textareaRef = useRef(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const anonymousRef = useRef<HTMLInputElement>(null)
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [error, setError] = useState(false);
   const [post, setPost] = useState("");
   const [type, setType] = useState("Discussion");
   const [showEmojis, setShowEmojis] = useState(false);
 
-  const auth = useSelector((state) => state.auth);
+  const auth = useAppSelector((state) => state.auth);
   const { user } = auth;
 
   useEffect(() => {
@@ -33,7 +39,7 @@ const NewPost = ({ setAllPosts, own }) => {
       if (textareaRef.current) {
         // Get width of the main div of the new post section
         const parentWidth =
-          textareaRef.current.parentNode.parentNode.parentNode.clientWidth;
+          (textareaRef.current.parentNode?.parentNode?.parentNode as HTMLElement).clientWidth;
 
         // Set textarea width as a percentage of main div width
         textareaRef.current.style.width = `${parentWidth * 0.9}px`;
@@ -48,11 +54,11 @@ const NewPost = ({ setAllPosts, own }) => {
     };
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPost(e.target.value);
   };
 
-  const handleType = (e) => {
+  const handleType = (e: React.ChangeEvent<HTMLInputElement>) => {
     setType(e.target.value);
   };
 
@@ -60,16 +66,16 @@ const NewPost = ({ setAllPosts, own }) => {
     setShowEmojis(!showEmojis);
   };
 
-  const handleEmoji = (emojiObject) => {
+  const handleEmoji = (emojiObject: EmojiClickData) => {
     setPost((prevPost) => prevPost + emojiObject.emoji);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = {
       content: post,
       type,
-      anonymous: type === "Prayer Request" ? e.target.anonymous.checked : false,
+      anonymous: type === "Prayer Request" ? anonymousRef.current?.checked : false,
     };
     try {
       const response = await fetch(`https://faithhub-backend.fly.dev/post`, {
@@ -85,14 +91,15 @@ const NewPost = ({ setAllPosts, own }) => {
       localStorage.setItem("token", result.token);
       dispatch(tokenRefresh(result.user));
       // Add post to array
-      console.log(result.post)
       setAllPosts((prevPosts) => [result.post, ...prevPosts]);
       // Reset post form
       setShowEmojis(false);
       setPost("");
       setType("Discussion");
       setTimeout(() => {
+        if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
+        }
       }, 50);
     } catch (err) {
       setError(true);
@@ -100,7 +107,7 @@ const NewPost = ({ setAllPosts, own }) => {
   };
 
   // Adjust textarea sizing and border radius on input
-  const handleInput = (e) => {
+  const handleInput = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height = "auto";
     e.target.style.height = e.target.scrollHeight + "px";
     if (
@@ -155,7 +162,7 @@ const NewPost = ({ setAllPosts, own }) => {
                   value={post}
                   onChange={handleChange}
                   onInput={handleInput}
-                  rows="1"
+                  rows={1}
                   name="content"
                 ></textarea>
                 {isLargeDevice && (
@@ -280,6 +287,7 @@ const NewPost = ({ setAllPosts, own }) => {
                       </div>
                     )}
                     <input
+                      ref={anonymousRef}
                       type="checkbox"
                       className="ml-1"
                       id="anonymous"
@@ -334,11 +342,6 @@ const NewPost = ({ setAllPosts, own }) => {
         </div>
       </Transition>
     );
-};
-
-NewPost.propTypes = {
-  setAllPosts: PropTypes.func,
-  own: PropTypes.bool,
 };
 
 export default NewPost;
