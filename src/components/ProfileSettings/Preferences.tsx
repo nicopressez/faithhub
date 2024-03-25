@@ -1,63 +1,73 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React,{ useRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
 import { tokenRefresh } from "../../reducers/auth";
 import { useOutletContext } from "react-router-dom";
 import { Transition } from "@headlessui/react";
+import { OutletContextType } from "../Main/MainPage";
 
 const Preferences = () => {
   const [updated, setUpdated] = useState(false);
   const [submitToggle, setSubmitToggle] = useState(false);
 
-  const auth = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const { user } = auth;
 
-  const [navVisible, isLargeDevice] = useOutletContext();
+  const outletContext = useOutletContext<OutletContextType>();
+  const { navVisible, isLargeDevice } = outletContext;
 
-  const handleCheckAll = (e) => {
+  const formRef = useRef<HTMLFormElement>(null)
+
+  const handleCheckAll = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const form = e.target.form;
-    for (let i = 0; i < form.elements.length; i++) {
-      const element = form.elements[i];
+    if (formRef.current){
+      for (let i = 0; i < formRef.current.elements.length; i++) {
+      const element = formRef.current.elements[i] as HTMLInputElement;
       if (element.type === "checkbox") {
         element.checked = true;
       }
     }
+  }
   };
 
-  const handleClearAll = (e) => {
+  const handleClearAll = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const form = e.target.form;
-    for (let i = 0; i < form.elements.length; i++) {
-      const element = form.elements[i];
+    if (formRef.current){
+      for (let i = 0; i < formRef.current.elements.length; i++) {
+      const element = formRef.current.elements[i] as HTMLInputElement;
       if (element.type === "checkbox") {
         element.checked = false;
       }
     }
+  }
   };
 
-  const checkChange = (e) => {
+  const checkChange = 
+  (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
     // If the current form is different from initial one, toggle
     // submit button
-    const form = e.target.form;
-    for (let i = 0; i < form.elements.length; i++) {
-      const element = form.elements[i];
+    if(formRef.current){
+    for (let i = 0; i < formRef.current.elements.length; i++) {
+      const element = formRef.current.elements[i] as HTMLInputElement;
       if (element.defaultChecked !== element.checked) {
         setSubmitToggle(true);
         return;
       }
       setSubmitToggle(false);
     }
+  }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) return;
     setUpdated(false);
-    const preferences = [];
+    const preferences: string[] = [];
     const token = localStorage.getItem("token");
+    const form = e.currentTarget;
     // Iterate through form and populate preferences
-    Array.prototype.forEach.call(e.target.elements, (element) => {
-      if (element.checked) {
+    Array.from(form.elements).forEach((element: HTMLInputElement) => {
+      if (element.type === "checkbox" && element.checked) {
         preferences.push(element.name);
       }
     });
@@ -109,6 +119,7 @@ const Preferences = () => {
               <br></br>
             </p>
             <form
+              ref={formRef}
               onSubmit={handleSubmit}
               onChange={checkChange}
               className="flex flex-col"
