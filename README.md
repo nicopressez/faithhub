@@ -2,7 +2,7 @@
 
 **Type:** a Social media Application
 
-**Technologies used:** React, Node.js, Express, MongoDB & Mongoose, Tailwind, Redux, JWT, AWS, Multer, Jest
+**Technologies used:** Typescript, React, Node.js, Express, MongoDB & Mongoose, Tailwind, Redux, JWT, AWS, Multer, Jest
 
 **Deploy:** https://faithhub-demo.netlify.app/
 **API Repository:** https://github.com/nicopressez/faithhub-backend
