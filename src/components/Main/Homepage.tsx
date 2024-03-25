@@ -9,7 +9,7 @@ import { useAppSelector } from "../../reducers/hooks";
 import { Transition } from "@headlessui/react";
 import { OutletContextType } from "./MainPage";
 
-export interface Posts {
+export interface PostsType {
   _id: string;
   anonymous: boolean;
   content: string;
@@ -29,7 +29,7 @@ export interface Posts {
 const Homepage = () => {
   const outletContext = useOutletContext<OutletContextType>();
   const { navVisible, isLargeDevice } = outletContext;
-  const [allPosts, setAllPosts] = useState<Posts[]>([]);
+  const [allPosts, setAllPosts] = useState<PostsType[]>([]);
 
   const auth = useAppSelector((state) => state.auth);
   const { user } = auth;

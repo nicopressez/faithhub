@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React,{ useEffect, useRef, useState } from "react";
+import { useAppSelector, useAppDispatch } from "../../reducers/hooks";
 import { tokenRefresh } from "../../reducers/auth";
 import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,36 +13,54 @@ import {
   faFaceSmile,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom/dist";
-import Comments from "./Comments";
+import Comments, { newComment, userJwtPayload } from "./Comments";
 import NewComment from "./NewComment";
 import defaultImg from "../../assets/defaultProfile.png";
 import he from "he";
 import { Menu, Transition } from "@headlessui/react";
 import { jwtDecode } from "jwt-decode";
-import { PropTypes } from "prop-types";
 import PostsLoading from "./PostsLoading";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import EmojiPicker from "emoji-picker-react";
+import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
+import { PostsType } from "./Homepage";
 
-const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
+type PostsProps = {
+  allPosts: PostsType[];
+  setAllPosts: React.Dispatch<React.SetStateAction<PostsType[]>>;
+  own?: boolean;
+  profileId?: string;
+}
+
+type EditedPostType = {
+  content: string;
+  type: string;
+}
+
+const Posts = ({ allPosts, setAllPosts, own, profileId } : 
+  PostsProps) => {
   // Get device size to adjust design for small screens
   const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
-  const auth = useSelector((state) => state.auth);
+  const auth = useAppSelector((state) => state.auth);
 
-  const textareaRef = useRef(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [rows, setRows] = useState(1);
 
   const [error, setError] = useState(false);
-  const [likedPosts, setLikedPosts] = useState();
-  const [newComments, setNewComments] = useState([]);
-  const [editing, setEditing] = useState();
-  const [editedPost, setEditedPost] = useState("");
+  const [likedPosts, setLikedPosts] = useState<string[]>([]);
+  const [newComments, setNewComments] = useState<newComment[]>([]);
+  const [editing, setEditingInternal] = useState<string>();
+  // Allow to set edit without argument
+  const setEditing = (value?: string) => setEditingInternal(value);
 
+  const [editedPost, setEditedPost] = useState<EditedPostType>({
+    content: "",
+    type:""
+  });
   const [showEmojis, setShowEmojis] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { user } = auth;
 
@@ -93,11 +111,11 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
   }, [dispatch, setAllPosts, profileId, own]);
 
   useEffect(() => {
-    const postsUserLiked = [];
+    const postsUserLiked: string[] = [];
     // Go through all posts likes and look for match with user id
     allPosts.map((post) => {
       for (let i = 0; i < post.likes.length; i++) {
-        if (post.likes[i] === user._id) {
+        if (post.likes[i] === user?._id) {
           postsUserLiked.push(post._id);
         }
       }
@@ -110,7 +128,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
       if (textareaRef.current) {
         // Get width of the main div of the post edit form
         const parentWidth =
-          textareaRef.current.parentNode.parentNode.clientWidth;
+          (textareaRef.current.parentNode?.parentNode as HTMLElement).clientWidth;
 
         // Set textarea width as a percentage of main div width
         textareaRef.current.style.width = `${parentWidth * 0.9}px`;
@@ -125,7 +143,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
     };
   }, [editing]);
 
-  const handleLike = async (e, id) => {
+  const handleLike = async (id: string) => {
     try {
       const response = await fetch(
         `https://faithhub-backend.fly.dev/post/${id}/like`,
@@ -152,6 +170,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
       }
 
       // Update likes count
+      if(user) 
       setAllPosts((allPosts) =>
         allPosts.map((post) => {
           if (post._id === id) {
@@ -171,13 +190,13 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
     }
   };
 
-  const calculateRows = (content) => {
+  const calculateRows = (content: string) => {
     // Calculate rows based on post content
     const numRows = Math.max(3, Math.ceil(content.length / 60));
     return { rows: numRows };
   };
 
-  const toggleEdit = (e, post) => {
+  const toggleEdit = (e: React.MouseEvent<HTMLButtonElement>, post: PostsType) => {
     e.preventDefault();
     setEditing(post._id);
     setEditedPost({
@@ -189,7 +208,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
   };
 
   // Update edited comment on form input
-  const handleEditChange = (e) => {
+  const handleEditChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditedPost({
       content: e.target.value,
       type: editedPost.type,
@@ -197,12 +216,12 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
   };
 
   // When reaching a new line on the editing input, go to next line
-  const handleInput = (e) => {
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height = "auto";
     e.target.style.height = e.target.scrollHeight + "px";
   };
 
-  const handleTypeEdit = (e) => {
+  const handleTypeEdit = (e: React.ChangeEvent<HTMLSelectElement>) => {
     editedPost.type = e.target.value;
   };
 
@@ -210,13 +229,13 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
     setShowEmojis(!showEmojis);
   };
 
-  const handleEmoji = (emojiObject) => {
+  const handleEmoji = (emojiObject: EmojiClickData) => {
     const newContent = editedPost.content + emojiObject.emoji;
     const newPost = { ...editedPost, content: newContent };
     setEditedPost(newPost);
   };
 
-  const handleEdit = async (e, id) => {
+  const handleEdit = async (e: React.FormEvent<HTMLFormElement>, id: string) => {
     e.preventDefault();
     const data = {
       content: editedPost.content,
@@ -237,7 +256,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
       const result = await response.json();
       // Refresh token
       localStorage.setItem("token", result.token);
-      const decodedJWT = jwtDecode(result.token);
+      const decodedJWT = jwtDecode<userJwtPayload>(result.token);
       dispatch(tokenRefresh(decodedJWT.user));
       // Update post info
       allPosts.map((post) => {
@@ -254,7 +273,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
     }
   };
 
-  const handleDelete = async (e, id) => {
+  const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
     e.preventDefault();
     try {
       const response = await fetch(
@@ -269,7 +288,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
       const result = await response.json();
       // Refresh token
       localStorage.setItem("token", result.token);
-      const decodedJWT = jwtDecode(result.token);
+      const decodedJWT = jwtDecode<userJwtPayload>(result.token);
       dispatch(tokenRefresh(decodedJWT.user));
       // Remove deleted post
       const updatedPosts = allPosts.filter((post) => post._id !== id);
@@ -510,7 +529,7 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
               icon={
                 post.type === "Prayer Request" ? faHandsPraying : faThumbsUp
               }
-              onClick={(e) => handleLike(e, post._id)}
+              onClick={() => handleLike(post._id)}
               className={`
                 mr-1  w-5 h-5 hover:text-cyan-500
                 hover:cursor-pointer active:text-cyan-600
@@ -536,13 +555,6 @@ const Posts = ({ allPosts, setAllPosts, own, profileId }) => {
         </div>
       </Transition>
     ));
-};
-
-Posts.propTypes = {
-  allPosts: PropTypes.array,
-  setAllPosts: PropTypes.func,
-  own: PropTypes.bool,
-  profileId: PropTypes.array,
 };
 
 export default Posts;

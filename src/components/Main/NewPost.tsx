@@ -11,10 +11,10 @@ import { Link } from "react-router-dom";
 import { tokenRefresh } from "../../reducers/auth";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { Posts } from "./Homepage";
+import { PostsType } from "./Homepage";
 
 type NewPostProps = {
-  setAllPosts: React.Dispatch<React.SetStateAction<Posts[]>>;
+  setAllPosts: React.Dispatch<React.SetStateAction<PostsType[]>>;
   own?: boolean;
 }
 
