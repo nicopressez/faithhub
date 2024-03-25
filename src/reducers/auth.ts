@@ -8,7 +8,7 @@ export interface User {
   last_name: string;
   location?: string;
   password?: string;
-  posts: [string];
+  posts: string[];
   preferences: string[];
   profile_picture: string;
   username: string;

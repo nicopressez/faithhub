@@ -1,7 +1,11 @@
 import { Transition } from "@headlessui/react";
-import { PropTypes } from "prop-types";
+import React from "react";
 
-const PostsLoading = ({ own }) => {
+type PostsLoadingProps = {
+  own?:boolean
+}
+
+const PostsLoading = ({ own }: PostsLoadingProps) => {
   return (
     <Transition
       appear={true}
@@ -110,10 +114,6 @@ const PostsLoading = ({ own }) => {
       </div>
     </Transition>
   );
-};
-
-PostsLoading.propTypes = {
-  own: PropTypes.bool,
 };
 
 export default PostsLoading;

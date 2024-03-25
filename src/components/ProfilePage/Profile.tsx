@@ -1,23 +1,25 @@
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ErrorPage from "../ErrorPage";
 import { faLocationDot, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Posts from "../Main/Posts";
 import NewPost from "../Main/NewPost";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../reducers/hooks";
 import { Transition } from "@headlessui/react";
 import ProfileLoading from "./ProfileLoading";
+import { User } from "../../reducers/auth";
+import { PostsType } from "../Main/Homepage";
 
 const Profile = () => {
-  const [userInfo, setUserInfo] = useState();
+  const [userInfo, setUserInfo] = useState<User>();
   const [error, setError] = useState(false);
   const { id } = useParams();
-  const [allPosts, setAllPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState<PostsType[]>([]);
 
   const [isLoading, setIsLoading] = useState(true);
 
-  const auth = useSelector((state) => state.auth);
+  const auth = useAppSelector((state) => state.auth);
   const { user } = auth;
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
 import Auth from "./components/Auth";
 import Homepage from "./components/Main/Homepage";
-import Profile from "./components/ProfilePage/Profile";
+import Profile from "./components/ProfilePage/Profile.tsx";
 import SettingsInfo from "./components/ProfileSettings/SettingsInfo";
 import ErrorPage from "./components/ErrorPage";
 import Preferences from "./components/ProfileSettings/Preferences";
