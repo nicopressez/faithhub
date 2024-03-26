@@ -1,11 +1,11 @@
 import { Transition } from "@headlessui/react";
-import { useState, useEffect, useRef } from "react";
+import React,{ useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { PropTypes } from "prop-types";
+import { User } from "../reducers/auth";
 
 const SearchBar = ({ setSearchVisible, searchVisible }) => {
-  const searchInputRef = useRef(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (searchVisible && searchInputRef.current) {
@@ -16,12 +16,12 @@ const SearchBar = ({ setSearchVisible, searchVisible }) => {
   // Get device size for big screens
   const isLargeDevice = useMediaQuery("only screen and (min-width: 1040px)");
 
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState<User[]>([]);
   const [searchInput, setSearchInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const handleSearch = async (e) => {
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchInput(query);
     try {
@@ -119,11 +119,6 @@ const SearchBar = ({ setSearchVisible, searchVisible }) => {
       </div>
     </Transition>
   );
-};
-
-SearchBar.propTypes = {
-  setSearchVisible: PropTypes.func,
-  searchVisible: PropTypes.bool,
 };
 
 export default SearchBar;

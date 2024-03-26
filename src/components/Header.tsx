@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../reducers/hooks";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMessage,
@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { toggleNavBar, hideNavBar } from "../reducers/sidenav";
 import SearchBar from "./SearchBar";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 
 const Header = () => {
   // Get device size for big screens
@@ -26,10 +26,10 @@ const Header = () => {
   const [searchVisible, setSearchVisible] = useState(false);
   const [sideMenu, setSideMenu] = useState(false);
 
-  const auth = useSelector((state) => state.auth);
+  const auth = useAppSelector((state) => state.auth);
 
   const location = useLocation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const { user } = auth;
@@ -143,7 +143,7 @@ const Header = () => {
                 <img
                   className="w-9 h-9 mr-2 md:mr-6 md:w-10 md:h-10 lg:w-11 lg:h-11 rounded-full object-cover"
                   src={
-                    user &&
+                    user?.profile_picture &&
                     `https://faithhub-backend.fly.dev/${user.profile_picture}`
                   }
                 />
@@ -171,7 +171,7 @@ const Header = () => {
                   {({ active }) => (
                     <Link
                       className={`${active && "bg-gray-100"} pl-2`}
-                      to={`/profile/${user._id}`}
+                      to={`/profile/${user?._id}`}
                     >
                       <FontAwesomeIcon
                         icon={faUser}
@@ -186,7 +186,7 @@ const Header = () => {
                   {({ active }) => (
                     <Link
                       className={`${active && "bg-gray-100"} pl-2`}
-                      to={`/profile/${user._id}/settings/info`}
+                      to={`/profile/${user?._id}/settings/info`}
                     >
                       <FontAwesomeIcon
                         icon={faGear}
