@@ -1,14 +1,15 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React,{ useEffect } from "react";
+import { useAppDispatch } from "./reducers/hooks";
 import { loginSuccess, logoutSuccess } from "./reducers/auth";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { userJwtPayload } from "./components/Main/Comments";
 
 function App() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
   // Token refresh or redirect if no token
@@ -28,7 +29,7 @@ function App() {
           );
           const result = await response.json();
           localStorage.setItem("token", result.token);
-          const decodedToken = jwtDecode(result.token);
+          const decodedToken = jwtDecode<userJwtPayload>(result.token);
           dispatch(loginSuccess(decodedToken.user));
         } catch (err) {
           // Invalid token, log out and clear token
