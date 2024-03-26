@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import React,{ useState, useEffect } from "react";
 import { Transition } from "@headlessui/react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../reducers/hooks";
 import { loginSuccess } from "../reducers/auth";
 import {
   signupRequest,
@@ -13,12 +13,12 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import uploadImg from "../assets/upload.png";
 import defaultImg from "../assets/defaultProfile.png";
-import { PropTypes } from "prop-types";
+import { userJwtPayload } from "./Main/Comments";
 
 const Signup = ({ toSignup, setToSignup }) => {
-  const auth = useSelector((state) => state.auth);
-  const signup = useSelector((state) => state.signup);
-  const dispatch = useDispatch();
+  const auth = useAppSelector((state) => state.auth);
+  const signup = useAppSelector((state) => state.signup);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const { isLoggedIn } = auth;
@@ -34,12 +34,14 @@ const Signup = ({ toSignup, setToSignup }) => {
     }
   }, [isLoggedIn, navigate]);
 
-  const handlePhotoChange = (e) => {
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
     setPhoto(URL.createObjectURL(e.target.files[0]));
+    }
   };
 
   // Update credentials on input change
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     dispatch(
       signupChange({
@@ -49,15 +51,16 @@ const Signup = ({ toSignup, setToSignup }) => {
     );
   };
 
-  const handleSignup_pageOne = async (e) => {
+  const handleSignup_pageOne = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(signupRequest());
+    const form = e.currentTarget
 
     const values = {
       ...credentials,
-      username: e.target.username.value,
-      password: e.target.password.value,
-      password_verif: e.target.password_verif.value,
+      username: form.username.value,
+      password: form.password.value,
+      password_verif: form.password_verif.value,
     };
     // Check if credentials are valid
     const checkUsername = await fetch(
@@ -89,15 +92,16 @@ const Signup = ({ toSignup, setToSignup }) => {
     setPage(2);
   };
 
-  const handleSignup_pageTwo = async (e) => {
+  const handleSignup_pageTwo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(signupRequest());
+    const form = e.currentTarget
     const formData = new FormData();
 
     // Check if data sent is valid
     if (
-      e.target.first_name.value.length < 4 ||
-      e.target.first_name.value.length > 16
+      form.first_name.value.length < 4 ||
+      form.first_name.value.length > 16
     ) {
       dispatch(
         signupFailed(
@@ -107,8 +111,8 @@ const Signup = ({ toSignup, setToSignup }) => {
       return;
     }
     if (
-      e.target.last_name.value.length < 4 ||
-      e.target.last_name.value.length > 16
+      form.last_name.value.length < 4 ||
+      form.last_name.value.length > 16
     ) {
       dispatch(
         signupFailed("Your last name must be between 4 and 16 characters long"),
@@ -117,14 +121,14 @@ const Signup = ({ toSignup, setToSignup }) => {
     }
 
     // Data valid, send all credentials to new form
-    if (e.target.profile_picture.files.length > 0) {
-      formData.append("profile_picture", e.target.profile_picture.files[0]);
+    if (form.profile_picture.files.length > 0) {
+      formData.append("profile_picture", form.profile_picture.files[0]);
     } else {
       // If no file is selected, append the default photo
       const defaultImgResponse = await fetch(defaultImg);
       const defaultImgBlob = await defaultImgResponse.blob();
       const defaultImgFile = new File([defaultImgBlob], "defaultProfile.png", {
-        type: defaultImgResponse.headers.get("content-type"),
+        type: defaultImgResponse.headers.get("content-type") || undefined,
       });
       formData.append("profile_picture", defaultImgFile);
     }
@@ -152,7 +156,7 @@ const Signup = ({ toSignup, setToSignup }) => {
         const token = result.token;
         localStorage.setItem("token", token);
         // Decode token, send user data to state
-        const decodedJWT = jwtDecode(token);
+        const decodedJWT = jwtDecode<userJwtPayload>(token);
         dispatch(loginSuccess(decodedJWT.user));
       }
     } catch (err) {
@@ -327,9 +331,5 @@ const Signup = ({ toSignup, setToSignup }) => {
     );
 };
 
-Signup.propTypes = {
-  toSignup: PropTypes.bool,
-  setToSignup: PropTypes.func,
-};
 
 export default Signup;
