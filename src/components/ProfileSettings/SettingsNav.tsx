@@ -1,5 +1,6 @@
+import React from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../reducers/hooks";
 import { logoutSuccess } from "../../reducers/auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,9 +12,9 @@ import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@uidotdev/usehooks";
 
 const SettingsNav = () => {
-  const auth = useSelector((state) => state.auth);
-  const sideNav = useSelector((state) => state.sideNav);
-  const dispatch = useDispatch();
+  const auth = useAppSelector((state) => state.auth);
+  const sideNav = useAppSelector((state) => state.sideNav);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const { user } = auth;

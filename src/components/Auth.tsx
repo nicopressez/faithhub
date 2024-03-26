@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
+import React,{ useState, useEffect } from "react";
 import { Transition } from "@headlessui/react";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../reducers/hooks";
 import { loginRequest, loginSuccess, loginFailed } from "../reducers/auth";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import Signup from "./Signup";
+import { userJwtPayload } from "./Main/Comments";
 
 const Auth = () => {
-  const auth = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const { isLoggedIn, isLoading, error } = auth;
@@ -22,12 +23,12 @@ const Auth = () => {
     }
   }, [isLoggedIn, navigate]);
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Set loading
     dispatch(loginRequest());
 
-    const form = e.target;
+    const form = e.currentTarget;
     const payload = {
       username: form.username.value,
       password: form.password.value,
@@ -49,7 +50,7 @@ const Auth = () => {
         const token = result.token;
         localStorage.setItem("token", token);
         // Decode token, send user data to state
-        const decodedJWT = jwtDecode(token);
+        const decodedJWT = jwtDecode<userJwtPayload>(token);
         dispatch(loginSuccess(decodedJWT.user));
       }
     } catch (err) {
@@ -61,7 +62,7 @@ const Auth = () => {
   };
 
   // Login with test user credentials
-  const testUserAuth = async (e) => {
+  const testUserAuth = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     // Set loading
     dispatch(loginRequest());
@@ -87,7 +88,7 @@ const Auth = () => {
         localStorage.setItem("token", token);
         // Decode token, send user data to state
 
-        const decodedJWT = jwtDecode(token);
+        const decodedJWT = jwtDecode<userJwtPayload>(token);
         dispatch(loginSuccess(decodedJWT.user));
       }
     } catch (err) {
