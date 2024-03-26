@@ -1,15 +1,16 @@
 import { Outlet } from "react-router-dom";
 import SettingsNav from "./SettingsNav";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../reducers/hooks";
 import { useParams } from "react-router-dom";
 import ErrorPage from "../ErrorPage";
 import { useMediaQuery } from "@uidotdev/usehooks";
+import React from "react";
 
 const ProfileSettings = () => {
   const { id } = useParams();
 
-  const auth = useSelector((state) => state.auth);
-  const sideNav = useSelector((state) => state.sideNav);
+  const auth = useAppSelector((state) => state.auth);
+  const sideNav = useAppSelector((state) => state.sideNav);
 
   const { user } = auth;
   const { navVisible } = sideNav;

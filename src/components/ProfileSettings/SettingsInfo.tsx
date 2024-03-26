@@ -1,33 +1,36 @@
 import { useParams, useNavigate, useOutletContext } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
 import {
   updateRequest,
   updateFailed,
   updateSuccess,
 } from "../../reducers/settings";
 import uploadImg from "../../assets/upload.png";
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 import ErrorPage from "../ErrorPage";
-import { logoutSuccess, tokenRefresh } from "../../reducers/auth";
+import { User, logoutSuccess, tokenRefresh } from "../../reducers/auth";
 import { Dialog } from "@headlessui/react";
 import { Transition } from "@headlessui/react";
+import { OutletContextType } from "../Main/MainPage";
 
 const ProfileSettings = () => {
   const { id } = useParams();
-  const settings = useSelector((state) => state.settings);
-  const auth = useSelector((state) => state.auth);
+  const settings = useAppSelector((state) => state.settings);
+  const auth = useAppSelector((state) => state.auth);
   const { user } = auth;
   const { isLoading, errors, success } = settings;
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [currentPic, setCurrentPic] = useState();
-  const [userInfo, setUserInfo] = useState();
-  const [settingChange, setSettingChange] = useState([]);
+  const [currentPic, setCurrentPic] = useState<string>();
+  const [userInfo, setUserInfo] = useState<User>();
+  const [settingChange, setSettingChange] = useState<string[]>([]);
   const [errorPage, setErrorPage] = useState(false);
   const [deleteDialog, setDeleteDialog] = useState(false);
-  const [navVisible, isLargeDevice] = useOutletContext();
+
+  const outletContext = useOutletContext<OutletContextType>();
+  const { navVisible, isLargeDevice } = outletContext;
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -52,16 +55,19 @@ const ProfileSettings = () => {
     }
   }, [userInfo]);
 
-  const onPicChange = (e) => {
-    setCurrentPic(URL.createObjectURL(e.target.files[0]));
+  const onPicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setCurrentPic(URL.createObjectURL(e.target.files[0]));
+    }
   };
 
   // Toggle confirm settings button on change
-  const handleChange = (e) => {
+  const handleChange = (e : React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { value, name } = e.target;
+    
     // The value is back to the original, remove from settingChange
-    if (userInfo[name] === value) {
+    if (userInfo && userInfo[name] === value) {
       if (settingChange.find((setting) => setting === name)) {
         const updated = settingChange.filter((setting) => setting !== name);
         setSettingChange(updated);
@@ -75,14 +81,16 @@ const ProfileSettings = () => {
     }
   };
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(updateRequest());
+    if (!userInfo) return;
 
+    const form = e.currentTarget
     // Check if username already taken
-    if (e.target.username.value !== userInfo.username) {
+    if (form.username.value !== userInfo.username) {
       const checkUsername = await fetch(
-        `https://faithhub-backend.fly.dev/profile/username/${e.target.username.value}`,
+        `https://faithhub-backend.fly.dev/profile/username/${form.username.value}`,
       );
       if (checkUsername.status !== 200) {
         return dispatch(
@@ -96,8 +104,8 @@ const ProfileSettings = () => {
 
     // Check form fields validity before making update request
     if (
-      e.target.username.value.length > 16 ||
-      e.target.username.value.length < 4
+      form.username.value.length > 16 ||
+      form.username.value.length < 4
     ) {
       dispatch(
         updateFailed({
@@ -107,8 +115,8 @@ const ProfileSettings = () => {
       );
     }
     if (
-      e.target.first_name.value.length < 2 ||
-      e.target.first_name.value.length > 12
+      form.first_name.value.length < 2 ||
+      form.first_name.value.length > 12
     ) {
       dispatch(
         updateFailed({
@@ -118,8 +126,8 @@ const ProfileSettings = () => {
       );
     }
     if (
-      e.target.last_name.value.length < 2 ||
-      e.target.last_name.value.length > 12
+      form.last_name.value.length < 2 ||
+      form.last_name.value.length > 12
     ) {
       dispatch(
         updateFailed({
@@ -135,16 +143,16 @@ const ProfileSettings = () => {
     }
 
     const formData = new FormData();
-    if (e.target.profile_picture.files.length > 0) {
-      formData.append("profile_picture", e.target.profile_picture.files[0]);
+    if (form.profile_picture.files.length > 0) {
+      formData.append("profile_picture", form.profile_picture.files[0]);
     } else {
       formData.append("profile_picture", userInfo.profile_picture);
     }
-    formData.append("username", e.target.username.value);
-    formData.append("first_name", e.target.first_name.value);
-    formData.append("last_name", e.target.last_name.value);
-    formData.append("bio", e.target.bio.value);
-    formData.append("location", e.target.location.value);
+    formData.append("username", form.username.value);
+    formData.append("first_name", form.first_name.value);
+    formData.append("last_name", form.last_name.value);
+    formData.append("bio", form.bio.value);
+    formData.append("location", form.location.value);
     try {
       const response = await fetch(
         `https://faithhub-backend.fly.dev/profile/${id}/update`,
@@ -166,7 +174,7 @@ const ProfileSettings = () => {
     }
   };
 
-  const handleDelete = async (e) => {
+  const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
       await fetch(`https://faithhub-backend.fly.dev/profile/${id}/delete`, {
