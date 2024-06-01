@@ -48,7 +48,7 @@ type CommentsProps = {
   setNewComments: React.Dispatch<React.SetStateAction<newComment[]>>;
 };
 
-interface userJwtPayload extends JwtPayload {
+export interface userJwtPayload extends JwtPayload {
   user: User;
 }
 
